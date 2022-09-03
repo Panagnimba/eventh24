@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'jtest',
+    title: 'EventH24',
     htmlAttrs: {
       lang: 'en'
     },
