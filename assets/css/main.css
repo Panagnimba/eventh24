@@ -1,0 +1,57 @@
+*{
+    box-sizing: border-box;
+}
+:root{
+    --primary : #232f3e;
+    --second : #09112a;
+    --third : #FC0404;
+    --general : #f3f4f6;
+    --fourth:#026002;
+}
+/* for chrome */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+.container{
+    min-width: 100vw;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.bg-primary{
+    background-color: var(--primary);
+}
+.bg-second{
+    background-color: var(--second);
+}
+.bg-third{
+    background-color: var(--third);
+}
+.bg-general{
+    background-color: var(--general);
+}
+.bg-fourth{
+    background-color: var(--fourth);
+}
+.text-primary{
+    color: var(--primary);
+}
+.text-second{
+    color: var(--second);
+}
+.text-third{
+    color: var(--third);
+}
+.text-general{
+    color: var(--general);
+}
+.text-fourth{
+    color: var(--fourth);
+}
+body{
+    font-family: "Roboto",sans-serif;
+}
