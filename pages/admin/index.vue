@@ -85,8 +85,7 @@ export default {
       store.state.admin.isAuthenticated == false ||
       store.state.admin.token == null
     )
-      // return redirect("/admin/login");
-      console.log("not authenticated");
+      return redirect("/admin/login");
   },
 
   methods: {
