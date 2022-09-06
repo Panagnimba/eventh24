@@ -149,7 +149,9 @@ export default {
     };
   },
   async fetch() {
-    let resp = await this.$axios.get("/eventh24/getMenus");
+    let resp = await this.$axios.get("/eventh24/getMenus", {
+      headers: this.requestHeader,
+    });
     if (resp.data.success) this.menuList = resp.data.result;
     else {
       this.notif.show = true;
