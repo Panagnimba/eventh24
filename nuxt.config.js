@@ -13,8 +13,8 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // fontawesome link
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css', integrity:"sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==",crossorigin:"anonymous"},
-   
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css', integrity: "sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==", crossorigin: "anonymous" },
+
     ],
   },
 
@@ -42,7 +42,7 @@ export default {
   axios: {
     baseURL: 'https://serverticket.herokuapp.com/', // Used as fallback if no runtime config is provided
     // baseURL: 'http://localhost:9000', // Used as fallback if no runtime config is provided
-    credentials:true
+    credentials: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

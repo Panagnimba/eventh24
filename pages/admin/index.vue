@@ -80,9 +80,11 @@ export default {
     };
   },
   mounted() {
-    if (this.getCookie("x-auth-token") == null) {
-      // this.$router.push("/admin/login");
-      alert("No cookies");
+    if (
+      this.getCookie("x-auth-token") == null ||
+      this.getCookie("x-auth-token") == ""
+    ) {
+      this.$router.push("/admin/login");
     }
   },
   methods: {
