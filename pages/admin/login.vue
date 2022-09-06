@@ -67,8 +67,8 @@ export default {
   data() {
     return {
       admin: {
-        username: "",
-        password: "",
+        username: "josue",
+        password: "josuee",
       },
     };
   },
