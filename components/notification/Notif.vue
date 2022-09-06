@@ -39,7 +39,7 @@
       <div v-else class="flex flex-col justify-center items-center gap-4 p-2">
         <i
           v-if="this.notif.type == 'success'"
-          class="fa-solid fa-check text-5xl font-bold text-fourth"
+          class="fa-regular fa-circle-check text-5xl font-bold text-fourth"
         >
         </i>
         <i

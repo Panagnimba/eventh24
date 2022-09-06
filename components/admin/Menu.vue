@@ -181,11 +181,17 @@ export default {
     async createNewMenu() {
       let resp = await this.$axios.post("/eventh24/newMenu", this.menu);
       this.menu = {};
-      console.log(resp.data);
       // setup notification
       if (resp.data.success) {
         this.notif.show = true;
         this.notif.type = "success";
+        this.notif.message = resp.data.message;
+        //
+        this.conf.titleText = "Nouveau menu";
+        this.conf.submitText = "Ajouter";
+      } else {
+        this.notif.show = true;
+        this.notif.type = "error";
         this.notif.message = resp.data.message;
       }
     },
@@ -211,7 +217,6 @@ export default {
       //
       this.conf.titleText = "Modifier menu";
       this.conf.submitText = "Modifier";
-      console.log(this.menu);
     },
   },
 };

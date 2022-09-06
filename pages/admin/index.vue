@@ -48,6 +48,12 @@
             <i class="fa-solid fa-bars text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Menu</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="Slider">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-sliders text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Slider</div>
+          </div>
         </div>
 
         <!-- Settings -->
@@ -59,7 +65,7 @@
         </div>
       </div>
       <!-- Main content -->
-      <div class="w-full bg-white">
+      <div class="w-full h-screen bg-white overflow-auto no-scrollbar">
         <component :is="this.mainComponent" />
       </div>
     </div>
@@ -73,7 +79,21 @@ export default {
       mainComponent: "",
     };
   },
+  mounted() {
+    if (this.getCookie("x-auth-token") == null) {
+      this.$router.push("/admin/login");
+    }
+  },
   methods: {
+    getCookie(cookieName) {
+      let value = null;
+      document.cookie.split(";").forEach((e) => {
+        if (e.includes(cookieName)) {
+          value = e.split("=")[1];
+        }
+      });
+      return value;
+    },
     selectMenu(e) {
       let clickedMenu;
       if (e.target.classList.contains("menuItem")) clickedMenu = e.target;
@@ -90,6 +110,8 @@ export default {
     displayMainComponent(item) {
       if (item.title.toLowerCase().includes("menu"))
         this.mainComponent = "admin-menu";
+      else if (item.title.toLowerCase().includes("slider"))
+        this.mainComponent = "admin-banner";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
