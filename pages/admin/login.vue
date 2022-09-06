@@ -77,6 +77,7 @@ export default {
       let resp = await this.$axios.post("/adminLoggin", this.admin);
       this.admin = {};
       if (resp.data.success) {
+        alert(resp.data.message);
         this.setCookie("x-auth-token", resp.data.token, 1);
         this.$router.push("/admin");
       }
