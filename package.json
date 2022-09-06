@@ -2,6 +2,7 @@
   "name": "eventh24",
   "version": "1.0.0",
   "private": true,
+  "proxy": "https://serverticket.herokuapp.com",
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",

@@ -1,3 +1,4 @@
+let server_url = process.env.NODE_ENV !== 'production' ? 'http://localhost:9000' : 'https://serverticket.herokuapp.com';
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -40,8 +41,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/axios'],
   axios: {
-    baseURL: 'https://serverticket.herokuapp.com', // Used as fallback if no runtime config is provided
-    // baseURL: 'http://localhost:9000', // Used as fallback if no runtime config is provided
+    baseURL: server_url, // Used as fallback if no runtime config is provided
     credentials: true
   },
 
