@@ -79,24 +79,16 @@ export default {
       mainComponent: "",
     };
   },
-  mounted() {
+  middleware({ store, redirect }) {
+    // If the admin is not authenticated
     if (
-      this.getCookie("x-auth-token") == null ||
-      this.getCookie("x-auth-token") == ""
-    ) {
-      this.$router.push("/admin/login");
-    }
+      store.state.admin.isAuthenticated == false ||
+      store.state.admin.token == null
+    )
+      return redirect("/admin/login");
   },
+
   methods: {
-    getCookie(cookieName) {
-      let value = null;
-      document.cookie.split(";").forEach((e) => {
-        if (e.includes(cookieName)) {
-          value = e.split("=")[1];
-        }
-      });
-      return value;
-    },
     selectMenu(e) {
       let clickedMenu;
       if (e.target.classList.contains("menuItem")) clickedMenu = e.target;

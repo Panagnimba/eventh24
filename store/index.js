@@ -5,6 +5,10 @@ export const state = ()=>({
         lastName:"Josué",
         email:"panagnimba@gmail.com",
         phone:"+212645973449"
+    },
+    admin:{
+        isAuthenticated:false,
+        token:null
     }
 })
 
@@ -16,5 +20,8 @@ export const mutations={
     //when clicking on buy now button
     toggleEventPopup(state,val){
         state.showEventPopup = val
+    },
+    authenticateAdmin(state,val){
+        state.admin = val
     }
 }

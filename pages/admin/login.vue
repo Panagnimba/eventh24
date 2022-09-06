@@ -75,20 +75,16 @@ export default {
   methods: {
     async adminLogin() {
       let resp = await this.$axios.post("/adminLoggin", this.admin);
-
-      this.admin = {};
+      this.admin = {}; //remettre les form input a vide
       if (resp.data.success) {
-        this.setCookie("x-auth-token", resp.data.token, 1);
+        let auth = {
+          isAuthenticated: true,
+          token: resp.data.token,
+        };
+        //commit state to authenticate admin
+        this.$store.commit("authenticateAdmin", auth);
         this.$router.push("/admin");
       }
-    },
-    setCookie(name, value, days) {
-      var expires = "";
-      if (days) {
-        var date = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
-      }
-      document.cookie = name + "=" + (value || "") + expires + "; path=/";
     },
   },
 };

@@ -142,11 +142,22 @@ export default {
         titleText: "Nouveau Menu",
         submitText: "Ajouter",
       },
+      requestHeader: {
+        Authorization: `Bearer ${this.$store.state.admin.token}`,
+        "Content-Type": "application/json",
+      },
     };
   },
   async fetch() {
-    let resp = await this.$axios.get("/eventh24/getMenus");
-    this.menuList = resp.data.result;
+    let resp = await this.$axios.get("/eventh24/getMenus", {
+      headers: this.requestHeader,
+    });
+    if (resp.data.success) this.menuList = resp.data.result;
+    else {
+      this.notif.show = true;
+      this.notif.type = "error";
+      this.notif.message = resp.data.message;
+    }
   },
   methods: {
     selectMenu(e) {
@@ -179,7 +190,9 @@ export default {
       }
     },
     async createNewMenu() {
-      let resp = await this.$axios.post("/eventh24/newMenu", this.menu);
+      let resp = await this.$axios.post("/eventh24/newMenu", this.menu, {
+        headers: this.requestHeader,
+      });
       this.menu = {};
       // setup notification
       if (resp.data.success) {
@@ -197,7 +210,13 @@ export default {
     },
 
     async deleteMenu(id) {
-      let resp = await this.$axios.post("/eventh24/deleteMenu", { id: id });
+      let resp = await this.$axios.post(
+        "/eventh24/deleteMenu",
+        { id: id },
+        {
+          headers: this.requestHeader,
+        }
+      );
       console.log(resp.data);
       // setup notification
       if (resp.data.success) {
