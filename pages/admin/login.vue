@@ -74,8 +74,8 @@ export default {
   },
   methods: {
     async adminLogin() {
-      alert("request sendingggg");
       let resp = await this.$axios.post("/adminLoggin", this.admin);
+      alert(resp);
       this.admin = {};
       if (resp.data.success) {
         this.setCookie("x-auth-token", resp.data.token, 1);
