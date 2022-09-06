@@ -43,6 +43,7 @@
           </div>
           <div class="w-full">
             <input
+              @click="adminLogin"
               type="submit"
               value="SE CONNECTER"
               class="
