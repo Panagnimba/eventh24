@@ -40,8 +40,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ['@nuxtjs/axios'],
   axios: {
-    // baseURL: 'https://serverticket.herokuapp.com/', // Used as fallback if no runtime config is provided
-    baseURL: 'http://localhost:9000', // Used as fallback if no runtime config is provided
+    baseURL: 'https://serverticket.herokuapp.com/', // Used as fallback if no runtime config is provided
+    // baseURL: 'http://localhost:9000', // Used as fallback if no runtime config is provided
     credentials:true
   },
 
