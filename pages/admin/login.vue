@@ -43,8 +43,7 @@
           </div>
           <div class="w-full">
             <input
-              @click="adminLogin"
-              type="submity"
+              type="submit"
               value="SE CONNECTER"
               class="
                 bg-second
@@ -76,7 +75,12 @@ export default {
   methods: {
     async adminLogin() {
       let resp = await this.$axios.post("/adminLoggin", this.admin);
-      alert(resp.data);
+
+      this.admin = {};
+      if (resp.data.success) {
+        this.setCookie("x-auth-token", resp.data.token, 1);
+        this.$router.push("/admin");
+      }
     },
     setCookie(name, value, days) {
       var expires = "";
