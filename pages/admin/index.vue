@@ -81,7 +81,8 @@ export default {
   },
   mounted() {
     if (this.getCookie("x-auth-token") == null) {
-      this.$router.push("/admin/login");
+      // this.$router.push("/admin/login");
+      alert("No cookies");
     }
   },
   methods: {
