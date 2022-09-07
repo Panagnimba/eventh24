@@ -7,7 +7,10 @@
       <h1 class="font-bold text-xl">
         Event<span class="text-third">H24</span>
       </h1>
-      <div class="flex flex-col items-center gap-1">
+      <div
+        @click="deconnexion"
+        class="flex flex-col items-center gap-1 cursor-pointer"
+      >
         <i class="fa-solid fa-power-off"></i>
         <span class="text-xs">Deconnexion</span>
       </div>
@@ -112,6 +115,15 @@ export default {
     toggleRightSideWidth() {
       if (this.rightSideWidth == 16) this.rightSideWidth = 36;
       else this.rightSideWidth = 16;
+    },
+    deconnexion() {
+      let auth = {
+        isAuthenticated: false,
+        token: null,
+      };
+      //commit state to logout admin
+      this.$store.commit("authenticateAdmin", auth);
+      this.$router.push("/admin/login");
     },
   },
 };
