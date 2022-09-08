@@ -1,24 +1,17 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-screen">
     <form
       v-if="!this.isPending"
       @submit.prevent="saveBanner"
       method="post"
       enctype="multipart/form-data"
-      class="h-full flex flex-col items-center gap-6 p-6 relative"
+      class="h-full items-center gap-6 p-6 overflow-auto no-scrollbar"
     >
-      <!-- Save all changes button -->
-      <input
-        type="submit"
-        class="bg-fourth text-white font-bold p-2 px-4 rounded-md fixed right-6"
-        value="Enregistrer"
-      />
-
       <!-- Manage Background -->
       <div
         class="
           w-full
-          h-1/2
+          h-96
           flex flex-wrap
           justify-center
           items-center
@@ -52,11 +45,10 @@
             Or select file to upload
           </span>
         </div>
-        <!--  -->
       </div>
       <!--  -->
       <!-- Manage Carousel Image -->
-      <div class="w-full h-1/2 overflow-auto" id="items-container">
+      <div class="w-full mt-8" id="items-container">
         <div
           v-for="(item, idx) in this.banner.items"
           class="border grid grid-cols-4 items-center pr-2 mb-6 slide-item"
@@ -126,32 +118,32 @@
           </p>
         </div>
       </div>
-      <!-- Add New Caroussel Item Btn -->
-      <div
-        @click="addItem"
-        class="
-          w-full
-          border
-          flex
-          gap-4
-          justify-center
-          items-center
-          bg-second
-          text-white
-          rounded-xl
-          font-bold
-          cursor-pointer
-        "
-      >
-        <i class="fa-solid fa-plus text-2xl"></i>
-        <span class="text-lg">Ajouter</span>
+      <!-- Add New Caroussel Item Btn && Save all changes-->
+      <div class="flex justify-end gap-4">
+        <div
+          @click="addItem"
+          class="
+            bg-second
+            text-white
+            font-bold
+            rounded-md
+            flex
+            items-center
+            gap-2
+            p-2
+            px-4
+          "
+        >
+          <i class="fa-solid fa-plus text-xl"></i>
+          <span>Ajouter</span>
+        </div>
+        <!--  -->
+        <input
+          type="submit"
+          class="bg-fourth text-white font-bold p-2 px-4 rounded-md"
+          value="Enregistrer"
+        />
       </div>
-      <!-- Save all changes -->
-      <input
-        type="submit"
-        class="bg-fourth text-white font-bold p-2 px-4 rounded-md self-end"
-        value="Enregistrer"
-      />
       <!-- File choose input global for all input file -->
       <!-- when clicked to the specifique element that  -->
       <!-- have the uploadBtnClicked method, will be openned -->
@@ -222,6 +214,7 @@ export default {
           ".banner-wrapper"
         ).style.backgroundImage = `url(${this.banner.bgImage})`;
       }, 0);
+      //
     } else {
       this.notif.show = true;
       this.notif.type = "error";
@@ -268,6 +261,13 @@ export default {
         this.notif.show = true;
         this.notif.type = "success";
         this.notif.message = resp.data.message;
+        //
+        setTimeout(() => {
+          document.querySelector(
+            ".banner-wrapper"
+          ).style.backgroundImage = `url(${this.banner.bgImage})`;
+        }, 0);
+        //
       } else {
         this.notif.show = true;
         this.notif.type = "error";
