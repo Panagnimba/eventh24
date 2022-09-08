@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex flex-col gap-4 sm:flex-row">
+  <div class="h-screen flex flex-col gap-4 sm:flex-row">
     <div class="w-56 flex flex-col gap-2 p-4">
       <div class="font-bold text-second">Menu</div>
       <hr class="w-full" />
@@ -16,7 +16,7 @@
     </div>
     <div class="w-full flex justify-center items-center border">
       <!--  -->
-      <loader v-if="$fetchState.pending"></loader>
+      <loader v-if="this.isPending"></loader>
       <!--  -->
       <table
         v-else-if="this.manageMenu"
@@ -127,6 +127,7 @@ export default {
   components: { Loader },
   data() {
     return {
+      isPending: false, // loader controller
       manageMenu: true,
       notif: {
         show: false,
@@ -149,9 +150,11 @@ export default {
     };
   },
   async fetch() {
+    this.isPending = true;
     let resp = await this.$axios.get("/eventh24/getMenus", {
       headers: this.requestHeader,
     });
+    this.isPending = false;
     if (resp.data.success) this.menuList = resp.data.result;
     else {
       this.notif.show = true;
@@ -190,10 +193,12 @@ export default {
       }
     },
     async createNewMenu() {
+      this.isPending = true;
       let resp = await this.$axios.post("/eventh24/newMenu", this.menu, {
         headers: this.requestHeader,
       });
       this.menu = {};
+      this.isPending = false;
       // setup notification
       if (resp.data.success) {
         this.notif.show = true;
@@ -210,6 +215,7 @@ export default {
     },
 
     async deleteMenu(id) {
+      this.isPending = true;
       let resp = await this.$axios.post(
         "/eventh24/deleteMenu",
         { id: id },
@@ -217,7 +223,7 @@ export default {
           headers: this.requestHeader,
         }
       );
-      console.log(resp.data);
+      this.isPending = false;
       // setup notification
       if (resp.data.success) {
         this.menuList = this.menuList.filter((item) => item._id != id);

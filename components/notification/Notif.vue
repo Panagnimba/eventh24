@@ -29,7 +29,10 @@
             Retour
           </div>
           <div
-            @click="$emit('confirm_delete_btn', notif.id)"
+            @click="
+              $emit('closeNotif');
+              $emit('confirm_delete_btn', notif.id);
+            "
             class="bg-red-600 px-3 py-1 rounded-md cursor-pointer"
           >
             Supprimer

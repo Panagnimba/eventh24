@@ -1,7 +1,10 @@
 <template>
   <div class="overflow-hidden">
     <div class="w-full h-screen p-6 flex justify-center items-center">
-      <div class="border rounded-xl">
+      <!--  -->
+      <loader v-if="this.isPending"></loader>
+      <!--  -->
+      <div v-else class="border rounded-xl">
         <h1
           class="
             bg-second
@@ -19,6 +22,7 @@
         <form
           @submit.prevent="adminLogin"
           action=""
+          method="post"
           class="lg:w-80 xl:w-96 flex flex-col items-center gap-4 my-4 px-6"
         >
           <div class="w-full">
@@ -70,10 +74,12 @@ export default {
         username: "josue",
         password: "josuee",
       },
+      isPending: false,
     };
   },
   methods: {
     async adminLogin() {
+      this.isPending = true;
       let resp = await this.$axios.post("/adminLoggin", this.admin);
       this.admin = {}; //remettre les form input a vide
       if (resp.data.success) {
