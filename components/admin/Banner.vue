@@ -244,7 +244,6 @@ export default {
     //------------------------------------------------------//
 
     deleteItem(id) {
-      this.banner.items[id].order = 200;
       this.banner.items = this.banner.items.filter(
         (item) => item !== this.banner.items[id]
       );

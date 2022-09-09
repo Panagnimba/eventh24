@@ -5,16 +5,16 @@
       <hr class="w-full" />
       <div @click="selectMenu" class="small-menu-item selected" title="Manage">
         <i class="fa-solid fa-pen-to-square"></i>
-        <span>Manage Menu</span>
+        <span>Personnaliser</span>
       </div>
       <hr class="w-full" />
       <div @click="selectMenu" class="small-menu-item" title="Add">
         <i class="fa-solid fa-plus"></i>
-        <span for="bank">Add Menu</span>
+        <span for="bank">Nouveau</span>
       </div>
       <hr class="w-full" />
     </div>
-    <div class="w-full flex justify-center items-center border">
+    <div class="w-full h-full flex justify-center items-center border">
       <!--  -->
       <loader v-if="this.isPending"></loader>
       <!--  -->

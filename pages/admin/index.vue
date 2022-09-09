@@ -57,6 +57,12 @@
             <i class="fa-solid fa-sliders text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Slider</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="Event">
+            <span></span>
+            <span></span>
+            <i class="fa-regular fa-calendar-days text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Event</div>
+          </div>
         </div>
 
         <!-- Settings -->
@@ -110,6 +116,8 @@ export default {
         this.mainComponent = "admin-menu";
       else if (item.title.toLowerCase().includes("slider"))
         this.mainComponent = "admin-banner";
+      else if (item.title.toLowerCase().includes("event"))
+        this.mainComponent = "admin-event";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
