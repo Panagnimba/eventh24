@@ -19,12 +19,20 @@
     <div class="w-full h-full flex justify-center items-center border">
       <!--  -->
       <loader v-if="this.isPending"></loader>
-      <div class="w-full h-full overflow-auto no-scrollbar py-4">
+      <div
+        v-if="!this.isPending"
+        class="w-full h-full overflow-auto no-scrollbar py-4"
+      >
         <h3 class="text-second font-bold text-center">Ajout d'un évènement</h3>
-        <form action="" class="m-6 flex flex-col gap-6">
+        <form
+          method="post"
+          @submit.prevent="saveNewEvent"
+          class="m-6 flex flex-col gap-6"
+        >
           <!-- Manage Event image -->
           <fieldset
             class="
+              w-full
               h-96
               flex flex-wrap
               justify-center
@@ -61,8 +69,8 @@
               </span>
             </div>
           </fieldset>
-          <!-- Globals Intitule ,Categorie,Lieu -->
-          <fieldset class="border border-gray-300 p-2 pb-4">
+          <!-- Globals Categorie,Artiste,Intitulé -->
+          <fieldset class="w-full border border-gray-300 p-2 pb-4">
             <legend class="text-second font-bold text-center">Globals</legend>
             <div class="w-full h-full col gap-2">
               <div class="row gap-2 h-14">
@@ -78,8 +86,14 @@
                     required
                     class="w-full h-full border outline-none px-2 rounded-md"
                   >
-                    <option value="Concert" disabled selected>Catégorie</option>
-                    <option value="Concerts">Concerts</option>
+                    <option value="Concerts" disabled>Catégorie</option>
+                    <option
+                      :value="catg.name"
+                      v-for="(catg, i) in this.categories"
+                      :key="i"
+                    >
+                      {{ catg.name }}
+                    </option>
                   </select>
                 </div>
                 <!-- Artiste -->
@@ -129,9 +143,9 @@
             </div>
           </fieldset>
           <!-- Dates -->
-          <fieldset class="border border-gray-300 p-2">
+          <fieldset class="w-full border border-gray-300 p-2">
             <legend class="text-second font-bold text-center">Dates</legend>
-            <div class="row gap-2 h-14">
+            <div class="w-full row gap-2 flex-wrap sm:flex-nowrap">
               <div class="col w-full">
                 <span class="text-xs text-gray-400 self-start p-1"
                   >Date de l'évènement</span
@@ -161,7 +175,7 @@
             </div>
           </fieldset>
           <!-- Types et Prix -->
-          <fieldset class="border border-gray-300 p-2">
+          <fieldset class="w-full border border-gray-300 p-2">
             <legend class="text-second font-bold text-center">Prix</legend>
             <div class="w-full col gap-3">
               <div
@@ -176,7 +190,7 @@
                   required
                   class="w-full h-full border outline-none px-2 rounded-md"
                 >
-                  <option value="Normal" disabled selected>Normal</option>
+                  <option value="Normal" selected>Normal</option>
                   <option value="Moyen">Moyen</option>
                   <option value="Couple">Couple</option>
                   <option value="VIP">VIP</option>
@@ -221,7 +235,7 @@
             </div>
           </fieldset>
           <!-- Description of event -->
-          <fieldset class="border border-gray-300 p-2">
+          <fieldset class="w-full border border-gray-300 p-2">
             <legend class="text-second font-bold text-center">
               Description
             </legend>
@@ -260,6 +274,7 @@
             id="fileChooser"
             accept="image/*"
             hidden
+            required
             @change="uploadImage($event)"
           />
           <!--  -->
@@ -284,7 +299,6 @@
     <notification-notif
       v-if="this.notif.show"
       @closeNotif="notif.show = false"
-      @confirm_delete_btn="deleteMenu"
       :notif="this.notif"
     ></notification-notif>
   </div>
@@ -300,6 +314,7 @@ export default {
     return {
       isPending: false, // loader controller
       manageMenu: true,
+      categories: [],
       event: {
         img: null,
         categorie: "Concerts",
@@ -327,7 +342,19 @@ export default {
       },
     };
   },
-
+  async fetch() {
+    this.isPending = true;
+    let resp = await this.$axios.get("/eventh24/getMenus", {
+      headers: this.requestHeader,
+    });
+    this.isPending = false;
+    if (resp.data.success) this.categories = resp.data.result;
+    else {
+      this.notif.show = true;
+      this.notif.type = "error";
+      this.notif.message = resp.data.message;
+    }
+  },
   methods: {
     selectMenu(e) {
       let clickedMenu;
@@ -364,6 +391,26 @@ export default {
           ".image-wrapper"
         ).style.backgroundImage = `url(${base64})`;
         this.event.img = base64;
+      }
+    },
+    //------------------------------------------------------//
+    async saveNewEvent() {
+      this.isPending = true;
+      //
+      let resp = await this.$axios.post("/eventh24/saveNewEvent", this.event, {
+        headers: this.requestHeader,
+      });
+      this.event = {};
+      this.isPending = false;
+      //
+      if (resp.data.success) {
+        this.notif.show = true;
+        this.notif.type = "success";
+        this.notif.message = resp.data.message;
+      } else {
+        this.notif.show = true;
+        this.notif.type = "error";
+        this.notif.message = resp.data.message;
       }
     },
     //------------------------------------------------------//
