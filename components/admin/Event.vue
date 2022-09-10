@@ -19,8 +19,37 @@
     <div class="w-full h-full flex justify-center items-center border">
       <!--  -->
       <loader v-if="this.isPending"></loader>
+      <vue-good-table
+        class="w-full p-6"
+        max-height="600px"
+        v-if="this.manageEvent"
+        :columns="columns"
+        :rows="rows"
+        :fixed-header="true"
+        :select-options="{ enabled: true }"
+        :line-numbers="true"
+        :search-options="{
+          enabled: true,
+          skipDiacritics: true, // desactiver la recherche avec accent
+          placeholder: 'Rechercher un évènement',
+        }"
+        :sort-options="{
+          enabled: true,
+        }"
+        :pagination-options="{
+          enabled: true,
+          perPageDropdown: [10, 50, 100, 150, 200],
+        }"
+        compactMode
+      >
+        <div slot="selected-row-actions">
+          <button class="bg-third p-1 px-3 text-white">Supprimer</button>
+        </div>
+      </vue-good-table>
+
+      <!--  -->
       <div
-        v-if="!this.isPending"
+        v-if="!this.isPending && !this.manageEvent"
         class="w-full h-full overflow-auto no-scrollbar py-4"
       >
         <h3 class="text-second font-bold text-center">Ajout d'un évènement</h3>
@@ -312,8 +341,52 @@ export default {
 
   data() {
     return {
+      columns: [
+        {
+          label: "Publié",
+          field: "createAt",
+          type: "String",
+        },
+        {
+          label: "Image",
+          field: "img",
+          html: true,
+          width: "80px",
+          height: "50px",
+        },
+        {
+          label: "Intitule",
+          field: "intitule",
+          type: "String",
+        },
+        {
+          label: "Artiste",
+          field: "artiste",
+          type: "String",
+        },
+        {
+          label: "Lieu",
+          field: "lieu",
+          type: "String",
+        },
+        {
+          label: "Date",
+          field: "date",
+          type: "String",
+        },
+        {
+          label: "Action",
+          field: "action",
+          html: true,
+          width: "100px",
+          height: "50px",
+          sortable: false,
+        },
+      ],
+      rows: [],
+      //
       isPending: false, // loader controller
-      manageMenu: true,
+      manageEvent: true,
       categories: [],
       event: {
         img: null,
@@ -344,6 +417,33 @@ export default {
   },
   async fetch() {
     this.isPending = true;
+    //
+    let resp1 = await this.$axios.get("/eventh24/getEvents", {
+      headers: this.requestHeader,
+    });
+    if (resp1.data.success) {
+      resp1.data.result.forEach((event) => {
+        let item = {
+          createAt: event.publishDate,
+          img: `<img src=${event.img} alt="Image"/>`,
+          intitule: event.intitule,
+          artiste: event.artiste,
+          lieu: event.lieu,
+          date: event.date,
+          action: `<p class="flex justify-between">
+                    <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth" data-id=${event._id}></i>
+                    <i class="fa-solid fa-trash-can cursor-pointer text-third" data-id=${event._id}></i>
+              </p> `,
+          // identifiant mise à la fin
+          // qui ne va pas s'afficher
+          //mais permet de se referer
+          _id: event._id,
+        };
+        this.rows.push(item);
+      });
+    }
+    console.log(resp1.data.result);
+    //
     let resp = await this.$axios.get("/eventh24/getMenus", {
       headers: this.requestHeader,
     });
@@ -372,9 +472,9 @@ export default {
     },
     displayMainComponent(item) {
       if (item.title.toLowerCase().includes("manage")) {
-        this.manageMenu = true;
+        this.manageEvent = true;
       } else {
-        this.manageMenu = false;
+        this.manageEvent = false;
       }
     },
     // ---------- Gestion upload image -------------//
