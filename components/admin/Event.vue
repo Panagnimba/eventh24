@@ -20,7 +20,7 @@
       <!--  -->
       <loader v-if="this.isPending"></loader>
       <vue-good-table
-        class="w-full p-6"
+        class="w-full p-6 table-entire-wrapper"
         max-height="600px"
         v-if="this.manageEvent"
         :columns="columns"
@@ -52,7 +52,9 @@
         v-if="!this.isPending && !this.manageEvent"
         class="w-full h-full overflow-auto no-scrollbar py-4"
       >
-        <h3 class="text-second font-bold text-center">Ajout d'un évènement</h3>
+        <h3 class="text-second font-bold text-center">
+          {{ this.conf.titleText }}
+        </h3>
         <form
           method="post"
           @submit.prevent="saveNewEvent"
@@ -319,7 +321,7 @@
               rounded-md
               cursor-pointer
             "
-            value="Sauvegarder"
+            :value="this.conf.submitText"
           />
         </form>
       </div>
@@ -328,6 +330,7 @@
     <notification-notif
       v-if="this.notif.show"
       @closeNotif="notif.show = false"
+      @confirm_delete_btn="deleteEvent"
       :notif="this.notif"
     ></notification-notif>
   </div>
@@ -349,7 +352,7 @@ export default {
         },
         {
           label: "Image",
-          field: "img",
+          field: "image",
           html: true,
           width: "80px",
           height: "50px",
@@ -387,7 +390,7 @@ export default {
       //
       isPending: false, // loader controller
       manageEvent: true,
-      categories: [],
+      categories: [], // get the list of all menus
       event: {
         img: null,
         categorie: "Concerts",
@@ -409,6 +412,10 @@ export default {
         type: "",
         message: "",
       },
+      conf: {
+        titleText: "Ajout d'un nouveau évènement",
+        submitText: "Ajouter",
+      },
       requestHeader: {
         Authorization: `Bearer ${this.$store.state.admin.token}`,
         "Content-Type": "application/json",
@@ -422,27 +429,33 @@ export default {
       headers: this.requestHeader,
     });
     if (resp1.data.success) {
+      console.log(resp1.data.result);
       resp1.data.result.forEach((event) => {
         let item = {
           createAt: event.publishDate,
-          img: `<img src=${event.img} alt="Image"/>`,
+          image: `<img src=${event.img} alt="Image"/>`,
           intitule: event.intitule,
           artiste: event.artiste,
           lieu: event.lieu,
           date: event.date,
           action: `<p class="flex justify-between">
-                    <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth" data-id=${event._id}></i>
-                    <i class="fa-solid fa-trash-can cursor-pointer text-third" data-id=${event._id}></i>
+                    <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${event._id} ></i>
+                    <i class="fa-solid fa-trash-can cursor-pointer text-third deleteBtn" data-id=${event._id}></i>
               </p> `,
           // identifiant mise à la fin
           // qui ne va pas s'afficher
           //mais permet de se referer
           _id: event._id,
+          categorie: event.categorie,
+          openTime: event.openTime,
+          prices: event.prices,
+          description: event.description,
+          img: event.img,
         };
         this.rows.push(item);
       });
     }
-    console.log(resp1.data.result);
+
     //
     let resp = await this.$axios.get("/eventh24/getMenus", {
       headers: this.requestHeader,
@@ -455,6 +468,36 @@ export default {
       this.notif.message = resp.data.message;
     }
   },
+  mounted() {
+    document
+      .querySelector(".table-entire-wrapper")
+      .addEventListener("click", (e) => {
+        if (e.target.classList.contains("updateBtn")) {
+          let id = e.target.getAttribute("data-id");
+          //
+          this.manageEvent = false; //
+          this.event = this.rows.filter((item) => item._id == id)[0];
+          console.log(this.event);
+          //
+          this.conf.titleText = "Modifier l'évènement";
+          this.conf.submitText = "Modifier";
+          //
+          //
+          setTimeout(() => {
+            document.querySelector(
+              ".image-wrapper"
+            ).style.backgroundImage = `url(${this.event.img})`;
+          }, 0);
+        }
+        if (e.target.classList.contains("deleteBtn")) {
+          // Set confirm popup
+          this.notif.type = "confirm";
+          this.notif.show = true;
+          this.notif.id = e.target.getAttribute("data-id");
+        }
+      });
+  },
+
   methods: {
     selectMenu(e) {
       let clickedMenu;
@@ -475,6 +518,11 @@ export default {
         this.manageEvent = true;
       } else {
         this.manageEvent = false;
+        this.event = {};
+        this.conf = {
+          titleText: "Ajout d'un nouveau évènement",
+          submitText: "Ajouter",
+        };
       }
     },
     // ---------- Gestion upload image -------------//
@@ -513,6 +561,7 @@ export default {
         this.notif.message = resp.data.message;
       }
     },
+
     //------------------------------------------------------//
     addPrix() {
       let newPrix = {
