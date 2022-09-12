@@ -130,7 +130,7 @@
             flex
             items-center
             gap-2
-            p-2
+            p-1
             px-4
           "
         >
@@ -140,7 +140,7 @@
         <!--  -->
         <input
           type="submit"
-          class="bg-fourth text-white font-bold p-2 px-4 rounded-md"
+          class="bg-fourth text-white font-bold p-1 px-4 rounded-md"
           value="Enregistrer"
         />
       </div>
