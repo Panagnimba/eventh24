@@ -24,9 +24,6 @@
       }"
       compactMode
     >
-      <div slot="selected-row-actions">
-        <button class="bg-third p-1 px-3 text-white">Supprimer</button>
-      </div>
     </vue-good-table>
     <!--  -->
     <notification-notif

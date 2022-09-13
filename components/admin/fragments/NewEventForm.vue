@@ -271,6 +271,7 @@
           :value="this.conf.submitText"
         />
       </form>
+      {{ this.eventProp }}
     </div>
     <!--  -->
     <notification-notif
@@ -291,26 +292,17 @@ export default {
     conf: Object,
     eventProp: Object,
   },
+  watch: {
+    eventProp(propChange, old) {
+      this.event = propChange;
+    },
+  },
   data() {
     return {
       //
       isPending: false, // loader controller
-      event: {
-        img: null,
-        categorie: "Concerts",
-        intitule: "",
-        artiste: "",
-        date: "",
-        openTime: "",
-        lieu: "",
-        description: "",
-        prices: [
-          {
-            type: "Normal",
-            price: 100,
-          },
-        ],
-      },
+      // // affectation du props a event data
+      event: this.eventProp,
       //
       notif: {
         show: false,
@@ -339,9 +331,9 @@ export default {
     }
   },
   mounted() {
-    // affectation du props a event data
-    this.event = this.eventProp;
-    console.log(this.event);
+    // // affectation du props a event data
+    // this.event = this.eventProp;
+
     document.querySelector(
       ".image-wrapper"
     ).style.backgroundImage = `url(${this.event.img})`;
