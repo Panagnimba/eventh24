@@ -271,7 +271,6 @@
           :value="this.conf.submitText"
         />
       </form>
-      {{ this.eventProp }}
     </div>
     <!--  -->
     <notification-notif
