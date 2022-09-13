@@ -23,16 +23,9 @@
     <ul
       class="w-full flex flex-wra justify-evenly gap-4 py-2 px-2 overflow-auto"
     >
-      <li>Accueil</li>
-      <li>Concerts</li>
-      <li>Festivals</li>
-      <li>Cérémonies</li>
-      <li>Concerts</li>
-      <li>Festivals</li>
-      <li>Cérémonies</li>
-      <li>Concerts</li>
-      <li>Festivals</li>
-      <li>Cérémonies</li>
+      <li v-for="(menu, id) in this.menuList" :key="id" @click="selectMenu">
+        <nuxt-link to="" class="menu-items">{{ menu.name }}</nuxt-link>
+      </li>
     </ul>
     <!-- cart -->
     <nuxt-link
@@ -64,10 +57,38 @@
 
 <script>
 export default {
+  data() {
+    return {
+      menuList: [],
+    };
+  },
+  async fetch() {
+    let resp = await this.$axios.get("/getMenus");
+    if (resp.data.success) this.menuList = resp.data.result;
+  },
   methods: {
     toggleRightSideMenu() {
       this.$store.commit("toggleRightSideMenu");
     },
+
+    selectMenu(e) {
+      let clickedMenu;
+      if (e.target.classList.contains("menu-items")) clickedMenu = e.target;
+      else clickedMenu = e.target.parentNode;
+      //
+      let menus = document.querySelectorAll(".menu-items");
+      menus.forEach((item) => {
+        if (item == clickedMenu) {
+          clickedMenu.classList.add("current-menu");
+        } else item.classList.remove("current-menu");
+      });
+    },
   },
 };
 </script>
+
+<style scoped>
+.current-menu {
+  border-bottom: 2px solid red;
+}
+</style>

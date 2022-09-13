@@ -270,7 +270,7 @@
         xl:grid-cols-5
       "
     >
-      <event-item v-for="i in 5" :key="i"></event-item>
+      <!-- <event-item v-for="i in 5" :key="i"></event-item> -->
     </div>
     <footer-comp></footer-comp>
   </div>
@@ -328,7 +328,7 @@ export default {
   },
   mounted() {
     setInterval(() => {
-      this.countDown("2022/08/31 10:10:10");
+      this.countDown("2022/09/31 10:10:10");
     }, 1000);
   },
   methods: {

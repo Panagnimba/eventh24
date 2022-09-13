@@ -52,42 +52,46 @@
       <h2 class="font-bold px-4">Menu</h2>
       <!--  -->
       <ul class="text-md text-black">
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Concerts</li>
-        </nuxt-link>
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Festivals</li>
-        </nuxt-link>
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Musiques</li>
-        </nuxt-link>
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Sports</li>
+        <nuxt-link to="" v-for="(menu, id) in this.menuList" :key="id">
+          <li class="px-4 py-2 hover:bg-gray-100">{{ menu.name }}</li>
         </nuxt-link>
       </ul>
       <!--  -->
       <h2 class="font-bold px-4">Magazine</h2>
       <!--  -->
       <ul class="text-md text-black">
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Concerts</li>
-        </nuxt-link>
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Festivals</li>
-        </nuxt-link>
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Musiques</li>
-        </nuxt-link>
-        <nuxt-link to="">
-          <li class="px-4 py-2 hover:bg-gray-100">Sports</li>
+        <nuxt-link to="" v-for="(menu, id) in this.menuList" :key="id">
+          <li class="px-4 py-2 hover:bg-gray-100">{{ menu.name }}</li>
         </nuxt-link>
       </ul>
+      <!--  -->
+      <h2 class="font-bold px-4">Mon compte</h2>
+      <div
+        class="
+          px-4
+          py-2
+          flex
+          items-center
+          gap-4
+          text-md
+          cursor-pointer
+          hover:bg-gray-100
+        "
+      >
+        <i class="fa-solid fa-power-off"></i>
+        <span>Deconnexion</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  date() {
+    return {
+      menuList: [],
+    };
+  },
   computed: {
     showRightSideMenu() {
       return this.$store.state.showRightSideMenu;
@@ -97,6 +101,10 @@ export default {
     toggleRightSideMenu() {
       this.$store.commit("toggleRightSideMenu");
     },
+  },
+  async fetch() {
+    let resp = await this.$axios.get("/getMenus");
+    if (resp.data.success) this.menuList = resp.data.result;
   },
 };
 </script>

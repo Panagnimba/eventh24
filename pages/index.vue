@@ -16,7 +16,11 @@
         xl:grid-cols-5
       "
     >
-      <event-item v-for="i in 10" :key="i"></event-item>
+      <event-item
+        v-for="eventItem in this.eventList"
+        :key="eventItem._id"
+        :event="eventItem"
+      ></event-item>
     </div>
     <div class="pt-8">
       <paralax></paralax>
@@ -32,8 +36,33 @@
         xl:grid-cols-5
       "
     >
-      <event-item v-for="i in 5" :key="i"></event-item>
+      <event-item
+        v-for="(eventItem, i) in this.relatedEvent"
+        :key="i"
+        :event="eventItem"
+      ></event-item>
     </div>
     <footer-comp></footer-comp>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      eventList: [],
+    };
+  },
+  async fetch() {
+    let resp = await this.$axios.get("/getEvents");
+    if (resp.data.success) {
+      this.eventList = resp.data.result;
+      console.log(this.eventList);
+    }
+  },
+  computed: {
+    relatedEvent() {
+      return this.eventList.slice(0, 5);
+    },
+  },
+};
+</script>

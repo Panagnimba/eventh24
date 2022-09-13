@@ -3,7 +3,7 @@
     <div class="h-32 overflow-hidden">
       <nuxt-link to="/event/2">
         <img
-          src="/concert3.png"
+          :src="this.event.img"
           alt=""
           class="
             h-full
@@ -17,15 +17,15 @@
       </nuxt-link>
     </div>
     <h2 class="bg-second text-white text-center m-2 rounded-xl font-bold">
-      Concert Live
+      {{ this.event.categorie }}
     </h2>
     <h3 class="text-sm m-2 font-semibold text-second">
-      Concert Live des artistes Burkinabè
+      {{ this.event.intitule }}
     </h3>
     <!-- lieu -->
     <div class="flex m-2 items-center gap-2">
       <i class="fa-solid fa-location-dot text-lg text-second"></i>
-      <h6 class="text-sm italic">Ouagadougou , Stade municipal</h6>
+      <h6 class="text-sm italic">{{ this.event.lieu }}</h6>
     </div>
     <!-- time -->
     <div class="flex m-2 items-center gap-2">
@@ -42,7 +42,9 @@
     <div class="flex m-2 mt-4 justify-between items-center">
       <div class="flex flex-col gap-1 font-bold">
         <span>A partir de :</span>
-        <span class="text-third text-lg">200 <sup>fcfa</sup></span>
+        <span class="text-third text-lg">
+          {{ this.event.prices[0].price }} <sup>fcfa</sup>
+        </span>
       </div>
       <nuxt-link
         to="/event/2"
@@ -64,6 +66,9 @@
 
 <script>
 export default {
+  props: {
+    event: Object,
+  },
   data() {
     return {
       time: {
@@ -76,7 +81,7 @@ export default {
   },
   mounted() {
     setInterval(() => {
-      this.countDown("2022/08/31 10:10:10");
+      this.countDown(this.event.date);
     }, 1000);
   },
   methods: {

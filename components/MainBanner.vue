@@ -1,37 +1,13 @@
 <template>
   <div class="container banner-wrapper p-8 overflow-hidden">
-    <div class="swiper mySwiper h-24 sm:h-36 md:h-48 xl:h-72">
+    <div class="swiper mySwiper h-24 sm:h-36 md:h-48 xl:h-80">
       <div class="swiper-wrapper h-full">
-        <div class="swiper-slide h-full">
-          <img src="/concert1.png" alt="" class="h-full w-full" />
-          <div class="details">
-            <span>Détails</span>
-            <i class="fa-solid fa-angles-right"></i>
-          </div>
-        </div>
-        <div class="swiper-slide h-full">
-          <img src="/concert2.png" alt="" class="h-full w-full" />
-          <div class="details">
-            <span>Détails</span>
-            <i class="fa-solid fa-angles-right"></i>
-          </div>
-        </div>
-        <div class="swiper-slide h-full">
-          <img src="/concert3.png" alt="" class="h-full w-full" />
-          <div class="details">
-            <span>Détails</span>
-            <i class="fa-solid fa-angles-right"></i>
-          </div>
-        </div>
-        <div class="swiper-slide h-full">
-          <img src="/concert2.png" alt="" class="h-full w-full" />
-          <div class="details">
-            <span>Détails</span>
-            <i class="fa-solid fa-angles-right"></i>
-          </div>
-        </div>
-        <div class="swiper-slide h-full">
-          <img src="/concert1.png" alt="" class="h-full w-full" />
+        <div
+          class="swiper-slide h-full"
+          v-for="(item, i) in this.banner.items"
+          :key="i"
+        >
+          <img :src="item.img" alt="" class="h-full w-full" />
           <div class="details">
             <span>Détails</span>
             <i class="fa-solid fa-angles-right"></i>
@@ -49,9 +25,16 @@ export default {
       isSwiperLoaded: false,
       nbre: 4,
       swiper: {},
+      banner: {
+        bgImage: null,
+        items: [],
+      },
     };
   },
-
+  async fetch() {
+    let resp = await this.$axios.get("/getBanner");
+    if (resp.data.success) this.banner = resp.data.result;
+  },
   head() {
     return {
       link: [
@@ -75,6 +58,9 @@ export default {
   },
   mounted() {
     this.createSwiperInstance();
+    document.querySelector(
+      ".banner-wrapper"
+    ).style.backgroundImage = `url(${this.banner.bgImage})`;
   },
   watch: {
     isSwiperLoaded(newValue) {
@@ -113,7 +99,6 @@ export default {
 
 <style scoped>
 .banner-wrapper {
-  background-image: url("/paralax.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
