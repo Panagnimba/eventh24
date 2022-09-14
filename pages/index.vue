@@ -7,7 +7,8 @@
     <div
       class="
         container
-        grid grid-cols-2
+        grid
+        sm:grid-cols-2
         gap-6
         justify-items-ceter
         pt-8
@@ -28,7 +29,8 @@
     <div
       class="
         container
-        grid grid-cols-2
+        grid
+        sm:grid-cols-2
         gap-4
         pt-8
         md:grid-cols-3
