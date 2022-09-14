@@ -288,7 +288,7 @@ import Editor from "@tinymce/tinymce-vue";
 export default {
   components: { Editor },
   props: {
-    conf: Object,
+    confProp: Object,
     eventProp: Object,
   },
   watch: {
@@ -302,6 +302,7 @@ export default {
       isPending: false, // loader controller
       // // affectation du props a event data
       event: this.eventProp,
+      conf: this.confProp,
       //
       notif: {
         show: false,
@@ -400,6 +401,10 @@ export default {
             price: 100,
           },
         ],
+      };
+      this.conf = {
+        titleText: "Ajouter un nouveau évènement",
+        submitText: "Ajouter",
       };
       //
       if (resp.data.success) {

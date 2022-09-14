@@ -26,7 +26,7 @@
       <!--  -->
       <admin-fragments-newEventForm
         v-else
-        :conf="this.config"
+        :confProp="this.config"
         :eventProp="this.eventContent"
       ></admin-fragments-newEventForm>
       <!--  -->
