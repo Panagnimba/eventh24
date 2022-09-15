@@ -10,7 +10,7 @@
         grid
         sm:grid-cols-2
         gap-6
-        justify-items-ceter
+        justify-items-center
         pt-8
         md:grid-cols-3
         lg:grid-cols-4

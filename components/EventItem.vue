@@ -1,5 +1,5 @@
 <template>
-  <div class="border rounded-xl bg-white overflow-hidden max-w-md">
+  <div class="border rounded-xl bg-white overflow-hidden max-w-sm">
     <div class="h-32 overflow-hidden">
       <nuxt-link to="/event/2">
         <img
