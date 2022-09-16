@@ -13,92 +13,96 @@
         sm:flex-row
       "
     >
+      <!-- Left -->
       <div class="w-full bg-white border flex flex-col px-4">
         <h3 class="text-xl font-bold text-second py-2">Mon panier</h3>
-        <panier-item
+        <!-- <panier-item
           v-for="(panierItem, k) in this.panierList"
           :panierItemProp="panierItem"
           :key="k"
-        ></panier-item>
+          @removeToCart="removeToCartHandle"
+        ></panier-item> -->
+        <div
+          v-for="(panierItem, k) in this.panierList"
+          :key="k"
+          class="
+            w-full
+            flex flex-wrap
+            justify-between
+            items-center
+            gap-2
+            relative
+            py-6
+            pr-6
+            border-t
+          "
+        >
+          <!-- remove from cart btn -->
+          <span
+            class="text-xl absolute top-0 right-0 px-2 cursor-pointer"
+            @click="removeToCart(panierItem._id)"
+          >
+            &times;
+          </span>
+          <!--  -->
+          <img
+            :src="panierItem.img"
+            alt="Event Image"
+            class="sm:h-24 sm:w-24 w-full h-36"
+          />
+          <h1 class="text-md text-second text-center font-bold">
+            {{ panierItem.intitule }}
+          </h1>
+
+          <!-- qte -->
+          <div class="flex">
+            <span
+              class="
+                w-6
+                bg-third
+                text-white text-center
+                font-bold
+                flex
+                justify-center
+                items-center
+                cursor-pointer
+              "
+              @click="decreaseQte(panierItem._id)"
+              >-</span
+            >
+            <input
+              type="numbre"
+              :value="panierItem.qte"
+              @change="qteInputHandle($event, panierItem._id)"
+              min="1"
+              class="w-16 outline-none border px-2 py-1 text-center"
+            />
+            <span
+              class="
+                w-6
+                bg-third
+                text-white
+                font-bold
+                flex
+                justify-center
+                items-center
+                cursor-pointer
+              "
+              @click="increaseQte(panierItem._id)"
+              >+</span
+            >
+          </div>
+          <!-- price -->
+          <div class="flex flex-col gap-2">
+            <span>{{ panierItem.qte }} x {{ panierItem.price }} fcfa</span>
+            <span>{{ panierItem.qte * panierItem.price }} fcfa</span>
+          </div>
+        </div>
       </div>
       <!-- RIGHT -->
       <div class="w-full flex flex-col gap-4">
-        <!-- total -->
-        <div class="w-full h-full border flex flex-col gap-4 p-4 bg-white">
-          <div class="font-bold text-second">TOTAL</div>
-          <hr class="w-full" />
-          <div class="flex justify-between gap-2">
-            <span>Nombre d'articles</span>
-            <span>{{ this.panierList.length }} </span>
-          </div>
-          <hr class="w-full" />
-          <div class="flex justify-between gap-2">
-            <span>Total des articles</span>
-            <span>{{ this.getTotal }} fcfa</span>
-          </div>
-          <div class="flex justify-between gap-2">
-            <span>Frais</span>
-            <span>00 fcfa</span>
-          </div>
-          <hr class="w-full" />
-          <div class="flex justify-between gap-2 font-semibold">
-            <span>Total à payer</span>
-            <span>{{ this.getTotal }} fcfa</span>
-          </div>
-        </div>
-        <!-- methodes de payement -->
-        <div
-          v-if="this.panierList.length > 0"
-          class="w-full h-full border flex flex-col gap-4 p-4 bg-white"
-        >
-          <div class="font-bold text-second">Mode de payement</div>
-          <hr class="w-full" />
-          <div class="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="paymentMethod"
-              @change="getPaymentMethod"
-              checked
-              id="bank"
-              class="w-4 h-4"
-            />
-            <label for="bank">Carte Bancaire</label>
-          </div>
-          <div class="flex items-center gap-2">
-            <input
-              type="radio"
-              name="paymentMethod"
-              @change="getPaymentMethod"
-              id="orange"
-              class="w-4 h-4"
-            />
-            <label for="orange">Orange Money</label>
-          </div>
-          <div class="flex items-center gap-2">
-            <input
-              type="radio"
-              name="paymentMethod"
-              @change="getPaymentMethod"
-              id="sank"
-              class="w-4 h-4"
-            />
-            <label for="sank">Sank Pay</label>
-          </div>
-          <hr class="w-full" />
-          <p class="text-xs text-second">
-            Payement sécuriser via l'API
-            <span class="font-semibold">{{ this.paymentMethod }}</span> d'une
-            somme de
-            <span class="font-semibold">{{ this.getTotal }} fcfa</span>
-          </p>
-          <hr class="w-full" />
-          <nuxt-link
-            :to="this.redirect"
-            class="bg-third text-white font-bold p-2 text-center rounded-md"
-          >
-            Passer la commande
-          </nuxt-link>
-        </div>
+        <panier-total-panier></panier-total-panier>
+        <panier-payment-method></panier-payment-method>
       </div>
     </div>
     <footer-comp></footer-comp>
@@ -108,30 +112,25 @@
 export default {
   data() {
     return {
-      redirect: "", // redirect eather to login or to final commande page
-      //depending on the login status
-
       panierList: this.$store.state.panier,
-      paymentMethod: "bank",
     };
   },
   methods: {
-    getPaymentMethod(e) {
-      this.paymentMethod = e.target.id;
+    decreaseQte(itemId) {
+      this.$store.commit("decreaseQte", itemId);
     },
-  },
-  computed: {
-    getTotal() {
-      let total = 0;
-      this.panierList.forEach((elmt) => {
-        total += elmt.qte * elmt.price;
+    increaseQte(itemId) {
+      this.$store.commit("increaseQte", itemId);
+    },
+    qteInputHandle(e, itemId) {
+      this.$store.commit("modifyQte", {
+        id: itemId,
+        qte: e.target.value,
       });
-      return total;
     },
-  },
-  mounted() {
-    if (!this.$store.state.user.lastName) this.redirect = "/login";
-    else this.redirect = "/commande";
+    removeToCart(itemId) {
+      this.$store.commit("removeToCart", itemId);
+    },
   },
 };
 </script>

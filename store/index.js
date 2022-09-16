@@ -49,11 +49,28 @@ export const mutations={
         })
     }
     ,
-    ModifyQte(state,panier){
+    increaseQte(state,itemId){
         state.panier.forEach(item=>{
-            if(item._id == panier.id){
-                item.qte = panier.qte
+            if(item._id == itemId){
+                item.qte++;
             }
         })
-    }
+    },
+    decreaseQte(state,itemId){
+        state.panier.forEach(item=>{
+            if(item._id == itemId && item.qte >= 2){
+                item.qte--;
+            }
+        })
+    },
+    modifyQte(state,panierItem){
+        state.panier.forEach(item=>{
+            if(item._id == panierItem.id){
+                if( panierItem.qte > 0)
+                    item.qte = panierItem.qte
+                else
+                    item.qte = 1
+            }
+        })
+    },
 }

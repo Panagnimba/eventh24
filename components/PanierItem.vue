@@ -15,7 +15,7 @@
     <!-- remove from cart btn -->
     <span
       class="text-xl absolute top-0 right-0 px-2 cursor-pointer"
-      @click="removeToCart"
+      @click="removeToCart(panierItem._id)"
     >
       &times;
     </span>
@@ -42,13 +42,13 @@
           items-center
           cursor-pointer
         "
-        @click="decreaseQte"
+        @click="decreaseQte(panierItem._id)"
         >-</span
       >
       <input
         type="numbre"
         v-model="qte"
-        @change="qteInputHandle"
+        @change="qteInputHandle(panierItem._id)"
         min="1"
         class="w-16 outline-none border px-2 py-1 text-center"
       />
@@ -63,7 +63,7 @@
           items-center
           cursor-pointer
         "
-        @click="increaseQte"
+        @click="increaseQte(panierItem._id)"
         >+</span
       >
     </div>
@@ -87,32 +87,34 @@ export default {
     };
   },
   methods: {
-    decreaseQte() {
+    decreaseQte(itemId) {
       if (this.qte >= 2) {
         this.qte--;
         this.$store.commit("ModifyQte", {
-          id: this.panierItem._id,
+          id: itemId,
           qte: this.qte,
         });
       }
     },
-    increaseQte() {
+    increaseQte(itemId) {
       this.qte++;
       this.$store.commit("ModifyQte", {
-        id: this.panierItem._id,
+        id: itemId,
         qte: this.qte,
       });
     },
-    qteInputHandle() {
+    qteInputHandle(itemId) {
       this.qte = this.qte <= 0 ? 1 : this.qte;
       //
       this.$store.commit("ModifyQte", {
-        id: this.panierItem._id,
+        id: itemId,
         qte: this.qte,
       });
     },
-    removeToCart() {
-      this.$store.commit("removeToCart", this.panierItem._id);
+    removeToCart(itemId) {
+      // this.$store.commit("removeToCart", itemId);
+      this.$emit("removeToCart", itemId);
+      // console.log(this.$store.state.panier);
     },
   },
 };
