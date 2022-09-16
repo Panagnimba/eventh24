@@ -1,26 +1,28 @@
 <template>
   <div class="h-full w-full bg-general overflow-hidden">
     <header-top></header-top>
-    <menu-items></menu-items>
+    <menu-items @filter="filterHandle"></menu-items>
     <main-banner></main-banner>
-    <!-- <loader></loader> -->
-    <div
-      class="
-        container
-        grid
-        sm:grid-cols-2
-        gap-6
-        pt-8
-        md:grid-cols-3
-        lg:grid-cols-4
-        xl:grid-cols-5
-      "
-    >
-      <event-item
-        v-for="eventItem in this.eventList"
-        :key="eventItem._id"
-        :event="eventItem"
-      ></event-item>
+    <div class="w-full h-full mt-8">
+      <loader v-if="this.isPending"></loader>
+      <div
+        v-else
+        class="
+          container
+          grid
+          sm:grid-cols-2
+          gap-6
+          md:grid-cols-3
+          lg:grid-cols-4
+          xl:grid-cols-5
+        "
+      >
+        <event-item
+          v-for="eventItem in this.eventList"
+          :key="eventItem._id"
+          :event="eventItem"
+        ></event-item>
+      </div>
     </div>
     <div class="pt-8">
       <paralax></paralax>
@@ -50,15 +52,31 @@
 export default {
   data() {
     return {
+      //
+      isPending: false,
       eventList: this.$store.state.eventList,
     };
   },
   async fetch() {
+    this.isPending = true;
     let resp = await this.$axios.get("/getEvents");
+    this.isPending = false;
     if (resp.data.success) {
       this.eventList = resp.data.result;
       this.$store.commit("fillEventList", resp.data.result);
     }
+  },
+  methods: {
+    filterHandle(filterText) {
+      this.isPending = true;
+      if (filterText == "Accueil") this.eventList = this.$store.state.eventList;
+      else
+        this.eventList = this.$store.state.eventList.filter((evt) => {
+          return evt.categorie.includes(filterText);
+        });
+      console.log("Search Text ---->", filterText);
+      setTimeout(() => (this.isPending = false), 100);
+    },
   },
   computed: {
     relatedEvent() {

@@ -58,9 +58,6 @@ export default {
   },
   mounted() {
     this.createSwiperInstance();
-    document.querySelector(
-      ".banner-wrapper"
-    ).style.backgroundImage = `url(${this.banner.bgImage})`;
   },
   watch: {
     isSwiperLoaded(newValue) {
@@ -92,6 +89,10 @@ export default {
             },
           },
         });
+      // Set the banner background image
+      document.querySelector(
+        ".banner-wrapper"
+      ).style.backgroundImage = `url(${this.banner.bgImage})`;
     },
   },
 };

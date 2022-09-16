@@ -31,12 +31,29 @@ export const mutations={
     },
     fillEPanier(state,event){
         let isPresent = false
-        state.panier.forEach(item => {
+        state.panier.forEach((item ,i)=> {
             if(item._id == event._id){
                 isPresent = true
+                state.panier.splice(i,1) // delete and repush the new
+                state.panier.push(event)
             }
         });
         if(!isPresent) //not present
         state.panier.push(event)
+    },
+    removeToCart(state,itemId){
+        state.panier.forEach((item,i)=>{
+            if(item._id == itemId){
+                state.panier.splice(i,1) // delete to the cart list
+            }
+        })
+    }
+    ,
+    ModifyQte(state,panier){
+        state.panier.forEach(item=>{
+            if(item._id == panier.id){
+                item.qte = panier.qte
+            }
+        })
     }
 }

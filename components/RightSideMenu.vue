@@ -77,6 +77,7 @@
           cursor-pointer
           hover:bg-gray-100
         "
+        @click="deconnexion"
       >
         <i class="fa-solid fa-power-off"></i>
         <span>Deconnexion</span>
@@ -100,6 +101,9 @@ export default {
   methods: {
     toggleRightSideMenu() {
       this.$store.commit("toggleRightSideMenu");
+    },
+    deconnexion() {
+      this.$router.push("/login");
     },
   },
   async fetch() {

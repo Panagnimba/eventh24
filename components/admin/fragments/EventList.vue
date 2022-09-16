@@ -72,7 +72,7 @@ export default {
         },
         {
           label: "Date",
-          field: "date",
+          field: "dateC",
           type: "String",
         },
         {
@@ -113,7 +113,7 @@ export default {
           intitule: event.intitule,
           artiste: event.artiste,
           lieu: event.lieu,
-          date: new Date(event.date).toLocaleString(),
+          dateC: new Date(event.date).toLocaleString(),
           action: `<p class="flex justify-between">
                     <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${event._id} ></i>
                     <i class="fa-solid fa-trash-can cursor-pointer text-third deleteBtn" data-id=${event._id}></i>
@@ -127,6 +127,7 @@ export default {
           prices: event.prices,
           description: event.description,
           img: event.img,
+          date: event.date,
         };
         this.rows.push(item);
       });

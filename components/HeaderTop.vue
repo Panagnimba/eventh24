@@ -39,11 +39,14 @@
           "
           @change="chooseCategorie"
         >
-          <option value="All" id="select" class="text-black">All</option>
-          <option value="Music" class="text-black">Music</option>
-          <option value="Musicoppp" class="text-black">Music oppp</option>
-          <option value="Musicopppoppphhh" class="text-black">
-            Music oppp oppp hhh
+          <option
+            id="select"
+            class="text-black"
+            v-for="(elmt, k) in this.menuList"
+            :key="k"
+            :value="elmt.name"
+          >
+            {{ elmt.name }}
           </option>
         </select>
       </div>
@@ -89,7 +92,12 @@ export default {
   data() {
     return {
       categorie: "All",
+      menuList: [],
     };
+  },
+  async fetch() {
+    let resp = await this.$axios.get("/getMenus");
+    if (resp.data.success) this.menuList = resp.data.result;
   },
   methods: {
     chooseCategorie(e) {

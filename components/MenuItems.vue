@@ -23,6 +23,10 @@
     <ul
       class="w-full flex flex-wra justify-evenly gap-4 py-2 px-2 overflow-auto"
     >
+      <li @click="selectMenu">
+        <nuxt-link to="/" class="menu-items current-menu">Accueil</nuxt-link>
+      </li>
+      <!--  -->
       <li v-for="(menu, id) in this.menuList" :key="id" @click="selectMenu">
         <nuxt-link to="" class="menu-items">{{ menu.name }}</nuxt-link>
       </li>
@@ -49,8 +53,8 @@
           justify-center
           items-center
         "
-        >3</span
-      >
+        >{{ this.$store.state.panier.length }}
+      </span>
     </nuxt-link>
   </nav>
 </template>
@@ -80,6 +84,8 @@ export default {
       menus.forEach((item) => {
         if (item == clickedMenu) {
           clickedMenu.classList.add("current-menu");
+          // Filter based on the categorie of menu
+          this.$emit("filter", clickedMenu.textContent);
         } else item.classList.remove("current-menu");
       });
     },

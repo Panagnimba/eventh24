@@ -325,7 +325,9 @@ export default {
     this.isPending = false;
     if (resp.data.success) {
       this.event = resp.data.result;
-      this.relatedEvent.push(resp.data.result);
+      this.relatedEvent = this.$store.state.eventList.filter(
+        (item) => item.categorie == this.event.categorie
+      );
       //
       this.type = this.event.prices[0].type;
       this.price = this.event.prices[0].price;
@@ -449,12 +451,17 @@ export default {
     // ACHETER MAINTENANT
     buyNow() {
       // push to the cart if not exist will be pushed
-      this.event.qte = this.qte;
-      this.event.price = this.price;
+      let panierItem = {
+        _id: this.event._id,
+        img: this.event.img,
+        intitule: this.event.intitule,
+        qte: this.qte,
+        price: this.price,
+        type: this.type,
+      };
       //
-      this.$store.commit("fillEPanier", this.event);
-      this.$router.push(`/commande/${this.event._id}`);
-      console.log(this.event);
+      this.$store.commit("fillEPanier", panierItem);
+      this.$router.push("/panier");
     },
     toggleEventPopup() {
       this.$store.commit("toggleEventPopup", true);

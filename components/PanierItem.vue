@@ -12,8 +12,11 @@
       border-t
     "
   >
-    <!-- close btn -->
-    <span class="text-xl absolute top-0 right-0 px-2 cursor-pointer">
+    <!-- remove from cart btn -->
+    <span
+      class="text-xl absolute top-0 right-0 px-2 cursor-pointer"
+      @click="removeToCart"
+    >
       &times;
     </span>
     <!--  -->
@@ -37,13 +40,15 @@
           flex
           justify-center
           items-center
+          cursor-pointer
         "
+        @click="decreaseQte"
         >-</span
       >
       <input
         type="numbre"
-        v-model="panierItem.qte"
-        @change="panierItem.qte = panierItem.qte <= 0 ? 1 : panierItem.qte"
+        v-model="qte"
+        @change="qteInputHandle"
         min="1"
         class="w-16 outline-none border px-2 py-1 text-center"
       />
@@ -56,14 +61,16 @@
           flex
           justify-center
           items-center
+          cursor-pointer
         "
+        @click="increaseQte"
         >+</span
       >
     </div>
     <!-- price -->
     <div class="flex flex-col gap-2">
-      <span>2 x 200 fcfa</span>
-      <span>400 fcfa</span>
+      <span>{{ this.qte }} x {{ this.price }} fcfa</span>
+      <span>{{ this.qte * this.price }} fcfa</span>
     </div>
   </div>
 </template>
@@ -75,7 +82,38 @@ export default {
   data() {
     return {
       panierItem: this.panierItemProp,
+      qte: this.panierItemProp.qte,
+      price: this.panierItemProp.price,
     };
+  },
+  methods: {
+    decreaseQte() {
+      if (this.qte >= 2) {
+        this.qte--;
+        this.$store.commit("ModifyQte", {
+          id: this.panierItem._id,
+          qte: this.qte,
+        });
+      }
+    },
+    increaseQte() {
+      this.qte++;
+      this.$store.commit("ModifyQte", {
+        id: this.panierItem._id,
+        qte: this.qte,
+      });
+    },
+    qteInputHandle() {
+      this.qte = this.qte <= 0 ? 1 : this.qte;
+      //
+      this.$store.commit("ModifyQte", {
+        id: this.panierItem._id,
+        qte: this.qte,
+      });
+    },
+    removeToCart() {
+      this.$store.commit("removeToCart", this.panierItem._id);
+    },
   },
 };
 </script>
