@@ -10,7 +10,6 @@
         grid
         sm:grid-cols-2
         gap-6
-        justify-items-center
         pt-8
         md:grid-cols-3
         lg:grid-cols-4
@@ -51,14 +50,14 @@
 export default {
   data() {
     return {
-      eventList: [],
+      eventList: this.$store.state.eventList,
     };
   },
   async fetch() {
     let resp = await this.$axios.get("/getEvents");
     if (resp.data.success) {
       this.eventList = resp.data.result;
-      console.log(this.eventList);
+      this.$store.commit("fillEventList", resp.data.result);
     }
   },
   computed: {

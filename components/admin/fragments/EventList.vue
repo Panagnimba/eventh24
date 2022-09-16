@@ -108,12 +108,12 @@ export default {
       console.log(resp1.data.result);
       resp1.data.result.forEach((event) => {
         let item = {
-          createAt: event.publishDate,
+          createAt: new Date(event.publishDate).toLocaleString(),
           image: `<img src=${event.img} alt="Image"/>`,
           intitule: event.intitule,
           artiste: event.artiste,
           lieu: event.lieu,
-          date: event.date,
+          date: new Date(event.date).toLocaleString(),
           action: `<p class="flex justify-between">
                     <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${event._id} ></i>
                     <i class="fa-solid fa-trash-can cursor-pointer text-third deleteBtn" data-id=${event._id}></i>

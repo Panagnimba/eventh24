@@ -2,9 +2,14 @@
   <div class="w-full overflow-hidden h-full">
     <header-top></header-top>
     <menu-items></menu-items>
-    <div class="w-full">
+    <!--  -->
+    <div class="h-screen" v-show="this.isPending">
+      <loader></loader>
+    </div>
+    <!--  -->
+    <div v-show="!this.isPending" class="w-full">
       <h1 class="text-2xl text-second text-center m-6 font-bold">
-        Kundé des artistes Burkinabè
+        {{ this.event.intitule }}
       </h1>
       <div
         class="
@@ -21,7 +26,11 @@
         <!-- Left part -->
         <div class="w-full gap-2 flex flex-col gap-3">
           <div class="w-full">
-            <img src="/concert3.png" alt="" class="w-full h-full rounded-xl" />
+            <img
+              :src="this.event.img"
+              alt=""
+              class="w-full h-full rounded-xl"
+            />
           </div>
           <!-- Artistes invités -->
           <div class="flex flex-col gap-2">
@@ -56,8 +65,8 @@
           <div>
             <h3 class="text-xl text-center font-bold m-2">Stade Municipal</h3>
             <div class="flex justify-between m-2 text-xs sm:text-md">
-              <span>Samedi 25 octobre 2022</span>
-              <span>Ouverture des portes à 20h30mn</span>
+              <span>{{ this.event.dateC }}</span>
+              <span>Ouverture des portes à {{ this.event.openTime }} mn</span>
             </div>
           </div>
           <!--  -->
@@ -91,13 +100,17 @@
                   font-bold
                 "
               >
-                <option class="bg-general text-black" value="Normal">
+                <option class="bg-general text-black" selected disabled>
                   Type
                 </option>
-                <option class="bg-general text-black" value="Normal">
-                  Normal
+                <option
+                  class="bg-general text-black"
+                  v-for="(price, i) in this.event.prices"
+                  :key="i"
+                  :value="price.type"
+                >
+                  {{ price.type }}
                 </option>
-                <option class="bg-general text-black" value="VIP">VIP</option>
               </select>
             </div>
             <div class="flex mt-6 gap-4">
@@ -106,6 +119,7 @@
                   type="number"
                   min="1"
                   v-model="qte"
+                  @change="qte = qte <= 0 ? 1 : qte"
                   class="w-full h-full px-4 rounded-xl outline-none font-bold"
                 />
                 <span class="flex flex-col absolute right-2 top-0.5">
@@ -131,7 +145,7 @@
                   text-center
                   cursor-pointer
                 "
-                @click="toggleEventPopup"
+                @click="buyNow"
               >
                 Acheter maintenant
               </div>
@@ -248,11 +262,15 @@
             </div>
           </div>
           <!--  -->
-          <div class="text-center text-xs mt-12">Publié le 23/08/2022</div>
+          <div class="text-center text-xs mt-12">
+            Publié le {{ this.event.publishDate }}
+          </div>
         </div>
       </div>
       <!-- Description part -->
-      <div class="h-48 border m-6 p-5 overflow-auto">Description</div>
+      <div class="h-48 border m-6 p-5 overflow-auto">
+        <p v-html="this.event.description"></p>
+      </div>
     </div>
     <!-- Related events -->
     <h1 class="text-2xl text-second text-center m-6 font-bold">
@@ -270,7 +288,11 @@
         xl:grid-cols-5
       "
     >
-      <!-- <event-item v-for="i in 5" :key="i"></event-item> -->
+      <event-item
+        v-for="(related, k) in this.relatedEvent"
+        :key="k"
+        :event="related"
+      ></event-item>
     </div>
     <footer-comp></footer-comp>
   </div>
@@ -279,9 +301,12 @@
 export default {
   data() {
     return {
+      isPending: false,
+      event: {},
+      relatedEvent: [],
       type: "Normal",
       qte: 1,
-      price: 200,
+      price: 0,
       //
       time: {
         days: "00",
@@ -292,6 +317,25 @@ export default {
       //
       showEventPopup: false,
     };
+  },
+  async fetch() {
+    this.isPending = true;
+    let idEvent = this.$route.params.slug;
+    let resp = await this.$axios.get(`/getEvent/${idEvent}`);
+    this.isPending = false;
+    if (resp.data.success) {
+      this.event = resp.data.result;
+      this.relatedEvent.push(resp.data.result);
+      //
+      this.type = this.event.prices[0].type;
+      this.price = this.event.prices[0].price;
+      //concert date to be lisible
+      this.event.dateC = new Date(this.event.date).toLocaleString();
+      this.event.publishDate = new Date(
+        this.event.publishDate
+      ).toLocaleString();
+      console.log(resp.data.result);
+    }
   },
   watch: {
     "time.secondes": {
@@ -321,14 +365,16 @@ export default {
   },
   computed: {
     getTotal() {
-      if (this.type == "VIP") this.price = 300;
-      else this.price = 200;
-      return this.qte * this.price;
+      if (this.event.prices) {
+        let prix = this.event.prices.filter((prix) => prix.type == this.type);
+        this.price = prix[0] && prix[0].price;
+        return this.qte * this.price;
+      }
     },
   },
   mounted() {
     setInterval(() => {
-      this.countDown("2022/09/31 10:10:10");
+      this.countDown(this.event.date);
     }, 1000);
   },
   methods: {
@@ -399,6 +445,16 @@ export default {
       ctx.textBaseline = "middle";
       ctx.fillStyle = "white";
       ctx.fillText(time, centerX, centerY);
+    },
+    // ACHETER MAINTENANT
+    buyNow() {
+      // push to the cart if not exist will be pushed
+      this.event.qte = this.qte;
+      this.event.price = this.price;
+      //
+      this.$store.commit("fillEPanier", this.event);
+      this.$router.push(`/commande/${this.event._id}`);
+      console.log(this.event);
     },
     toggleEventPopup() {
       this.$store.commit("toggleEventPopup", true);

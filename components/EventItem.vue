@@ -1,7 +1,7 @@
 <template>
   <div class="border rounded-xl bg-white overflow-hidden max-w-md">
     <div class="h-32 overflow-hidden">
-      <nuxt-link to="/event/2">
+      <nuxt-link :to="`/event/${event._id}`">
         <img
           :src="this.event.img"
           alt=""
@@ -47,7 +47,7 @@
         </span>
       </div>
       <nuxt-link
-        to="/event/2"
+        :to="`/event/${event._id}`"
         class="
           bg-third
           text-white text-sm

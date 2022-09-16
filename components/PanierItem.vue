@@ -18,12 +18,12 @@
     </span>
     <!--  -->
     <img
-      src="/concert1.png"
+      :src="panierItem.img"
       alt="Event Image"
       class="sm:h-24 sm:w-24 w-full h-36"
     />
     <h1 class="text-md text-second text-center font-bold">
-      Kundé des artistes Burkinabè
+      {{ this.panierItem.intitule }}
     </h1>
 
     <!-- qte -->
@@ -42,7 +42,8 @@
       >
       <input
         type="numbre"
-        value="1"
+        v-model="panierItem.qte"
+        @change="panierItem.qte = panierItem.qte <= 0 ? 1 : panierItem.qte"
         min="1"
         class="w-16 outline-none border px-2 py-1 text-center"
       />
@@ -66,3 +67,15 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  props: {
+    panierItemProp: { Object },
+  },
+  data() {
+    return {
+      panierItem: this.panierItemProp,
+    };
+  },
+};
+</script>

@@ -9,7 +9,9 @@ export const state = ()=>({
     admin:{
         isAuthenticated:false,
         token:null
-    }
+    },
+    eventList:[],
+    panier:[]
 })
 
 export const mutations={
@@ -23,5 +25,18 @@ export const mutations={
     },
     authenticateAdmin(state,val){
         state.admin = val
+    },
+    fillEventList(state,list){
+        state.eventList = list
+    },
+    fillEPanier(state,event){
+        let isPresent = false
+        state.panier.forEach(item => {
+            if(item._id == event._id){
+                isPresent = true
+            }
+        });
+        if(!isPresent) //not present
+        state.panier.push(event)
     }
 }

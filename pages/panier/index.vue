@@ -15,9 +15,11 @@
     >
       <div class="w-full bg-white border flex flex-col px-4">
         <h3 class="text-xl font-bold text-second py-2">Mon panier</h3>
-        <panier-item></panier-item>
-        <panier-item></panier-item>
-        <panier-item></panier-item>
+        <panier-item
+          v-for="(panierItem, k) in this.panierList"
+          :panierItemProp="panierItem"
+          :key="k"
+        ></panier-item>
       </div>
       <!-- RIGHT -->
       <div class="w-full flex flex-col gap-4">
@@ -101,6 +103,11 @@ export default {
       redirect: "", // redirect eather to login or to final commande page
       //depending on the login status
     };
+  },
+  computed: {
+    panierList() {
+      return this.$store.state.panier;
+    },
   },
   mounted() {
     if (!this.$store.state.user.lastName) this.redirect = "/login";
