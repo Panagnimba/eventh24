@@ -21,7 +21,15 @@
     </div>
     <!-- menu items -->
     <ul
-      class="w-full flex flex-wra justify-evenly gap-4 py-2 px-2 overflow-auto"
+      class="
+        w-full
+        flex
+        gap-4
+        p-2
+        overflow-auto
+        justify-start
+        md:justify-evenly
+      "
     >
       <li @click="selectMenu">
         <nuxt-link to="/" class="menu-items current-menu">Accueil</nuxt-link>
