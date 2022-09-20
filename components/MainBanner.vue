@@ -33,6 +33,13 @@ export default {
       },
     };
   },
+  async mounted() {
+    // Set the banner background image
+    await this.$nextTick();
+    document.querySelector(
+      ".banner-wrapper"
+    ).style.backgroundImage = `url(${this.banner.bgImage})`;
+  },
   async fetch() {
     let resp = await this.$axios.get("/getBanner");
     if (resp.data.success) {
@@ -60,10 +67,6 @@ export default {
           },
         },
       });
-      // Set the banner background image
-      document.querySelector(
-        ".banner-wrapper"
-      ).style.backgroundImage = `url(${this.banner.bgImage})`;
     }
   },
 };
