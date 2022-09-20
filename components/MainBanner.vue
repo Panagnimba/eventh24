@@ -31,6 +31,7 @@ export default {
         bgImage: null,
         items: [],
       },
+      slidesPerView: 3,
     };
   },
   watch: {
@@ -41,7 +42,11 @@ export default {
       // deep: true,
     },
   },
-
+  mounted() {
+    if (window.innerWidth >= 200 && window.innerWidth <= 600) {
+      this.slidesPerView = 2;
+    }
+  },
   async fetch() {
     let resp = await this.$axios.get("/getBanner");
     if (resp.data.success) {
@@ -50,7 +55,7 @@ export default {
       await this.$nextTick();
       // Create nuxt instance
       new Swiper(this.$refs.swiper, {
-        slidesPerView: 3,
+        slidesPerView: this.slidesPerView,
         spaceBetween: 40,
         slidesPerGroup: 1,
         loop: true,
