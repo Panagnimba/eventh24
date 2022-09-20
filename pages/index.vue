@@ -1,7 +1,10 @@
 <template>
   <div class="h-full w-full bg-general overflow-hidden">
-    <header-top></header-top>
+    <!--// Filter based on the search input -->
+    <header-top @filter="filterSearchHandle"></header-top>
+    <!--// Filter based on the event categorie -->
     <menu-items @filter="filterHandle"></menu-items>
+    <!--  -->
     <main-banner></main-banner>
     <div class="w-full h-full mt-8">
       <loader v-if="this.isPending"></loader>
@@ -76,6 +79,29 @@ export default {
         });
       console.log("Search Text ---->", filterText);
       setTimeout(() => (this.isPending = false), 100);
+    },
+
+    filterSearchHandle(filterObjt) {
+      this.isPending = true;
+      //
+      if (filterObjt.categorie == "All") {
+        this.eventList = this.$store.state.eventList.filter((evt) => {
+          return evt.intitule
+            .toLowerCase()
+            .includes(filterObjt.searchText.toLowerCase());
+        });
+      } else
+        this.eventList = this.$store.state.eventList.filter((evt) => {
+          return (
+            evt.categorie.includes(filterObjt.categorie) &&
+            evt.intitule
+              .toLowerCase()
+              .includes(filterObjt.searchText.toLowerCase())
+          );
+        });
+      //
+      setTimeout(() => (this.isPending = false), 100);
+      console.log(filterObjt);
     },
   },
   computed: {
