@@ -30,8 +30,12 @@ export default {
       banner: {
         bgImage: null,
         items: [],
+        isPending: false,
       },
     };
+  },
+  watch: {
+    isPending() {},
   },
   async mounted() {
     // Set the banner background image
@@ -44,6 +48,8 @@ export default {
     let resp = await this.$axios.get("/getBanner");
     if (resp.data.success) {
       this.banner = resp.data.result;
+      await this.$nextTick();
+      this.isPending = true;
       await this.$nextTick();
       // Create nuxt instance
       new Swiper(this.$refs.swiper, {
@@ -67,6 +73,10 @@ export default {
           },
         },
       });
+      //
+      document.querySelector(
+        ".banner-wrapper"
+      ).style.backgroundImage = `url(${this.banner.bgImage})`;
     }
   },
 };
