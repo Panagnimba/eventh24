@@ -1,6 +1,6 @@
 <template>
   <client-only>
-    <div class="banner-wrapper overflow-hidden p-5 py-8">
+    <div class="banner-wrapper overflow-hidden p-5 py-8" ref="bannerWrapper">
       <div class="swiper mySwiper h-36 sm:h-48 md:h-48 xl:h-96" ref="swiper">
         <div class="swiper-wrapper h-full">
           <div
@@ -30,26 +30,23 @@ export default {
       banner: {
         bgImage: null,
         items: [],
-        isPending: false,
       },
     };
   },
   watch: {
-    isPending() {},
+    "banner.bgImage": {
+      handler(newVal) {
+        this.$refs.bannerWrapper.style.backgroundImage = `url(${this.banner.bgImage})`;
+      },
+      // deep: true,
+    },
   },
-  async mounted() {
-    // Set the banner background image
-    await this.$nextTick();
-    document.querySelector(
-      ".banner-wrapper"
-    ).style.backgroundImage = `url(${this.banner.bgImage})`;
-  },
+
   async fetch() {
     let resp = await this.$axios.get("/getBanner");
     if (resp.data.success) {
       this.banner = resp.data.result;
-      await this.$nextTick();
-      this.isPending = true;
+
       await this.$nextTick();
       // Create nuxt instance
       new Swiper(this.$refs.swiper, {
@@ -73,10 +70,6 @@ export default {
           },
         },
       });
-      //
-      document.querySelector(
-        ".banner-wrapper"
-      ).style.backgroundImage = `url(${this.banner.bgImage})`;
     }
   },
 };
