@@ -134,6 +134,7 @@ export default {
         searchText: this.searchText,
       });
       this.searchText = "";
+      this.$router.push("/");
     },
   },
 };

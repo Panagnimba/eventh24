@@ -1,7 +1,11 @@
 <template>
   <div class="border rounded-xl bg-white overflow-hidden max-w-md">
     <div class="h-32 overflow-hidden">
-      <nuxt-link :to="`/event/${event._id}`">
+      <nuxt-link
+        :to="
+          this.isTimePass == true ? '/event/timePass' : `/event/${event._id}`
+        "
+      >
         <img
           :src="this.event.img"
           alt=""
@@ -46,7 +50,9 @@
           {{ this.event.prices[0].price }} <sup>fcfa</sup>
         </span>
       </div>
+      <!-- Event always available (time not pass) -->
       <nuxt-link
+        v-if="!this.isTimePass"
         :to="`/event/${event._id}`"
         class="
           bg-third
@@ -60,6 +66,22 @@
       >
         Acheter
       </nuxt-link>
+      <!-- Event not available (time pass) -->
+      <nuxt-link
+        v-else
+        to=""
+        class="
+          bg-gray-500
+          text-white text-sm
+          font-bold
+          py-1
+          px-3
+          rounded-xl
+          cursor-pointer
+        "
+      >
+        Guichet Fermé
+      </nuxt-link>
     </div>
   </div>
 </template>
@@ -71,6 +93,7 @@ export default {
   },
   data() {
     return {
+      isTimePass: false, // to know if the event is still evailable or already pass
       time: {
         days: "00",
         hours: "00",
@@ -89,25 +112,33 @@ export default {
       let eventDate = new Date(date).getTime();
       let actualDate = new Date().getTime();
       let gap = eventDate - actualDate;
+
+      if (gap < 0) {
+        this.isTimePass = true;
+      }
       //
-      let sec = 1000;
-      let mn = sec * 60;
-      let hour = mn * 60;
-      let day = hour * 24;
-      //
-      this.time.days = Math.floor(gap / day);
-      this.time.hours = Math.floor((gap % day) / hour);
-      this.time.minutes = Math.floor((gap % hour) / mn);
-      this.time.secondes = Math.floor((gap % mn) / sec);
-      //
-      this.time.days =
-        this.time.days < 10 ? "0" + this.time.days : this.time.days;
-      this.time.hours =
-        this.time.hours < 10 ? "0" + this.time.hours : this.time.hours;
-      this.time.minutes =
-        this.time.minutes < 10 ? "0" + this.time.minutes : this.time.minutes;
-      this.time.secondes =
-        this.time.secondes < 10 ? "0" + this.time.secondes : this.time.secondes;
+      else {
+        let sec = 1000;
+        let mn = sec * 60;
+        let hour = mn * 60;
+        let day = hour * 24;
+        //
+        this.time.days = Math.floor(gap / day);
+        this.time.hours = Math.floor((gap % day) / hour);
+        this.time.minutes = Math.floor((gap % hour) / mn);
+        this.time.secondes = Math.floor((gap % mn) / sec);
+        //
+        this.time.days =
+          this.time.days < 10 ? "0" + this.time.days : this.time.days;
+        this.time.hours =
+          this.time.hours < 10 ? "0" + this.time.hours : this.time.hours;
+        this.time.minutes =
+          this.time.minutes < 10 ? "0" + this.time.minutes : this.time.minutes;
+        this.time.secondes =
+          this.time.secondes < 10
+            ? "0" + this.time.secondes
+            : this.time.secondes;
+      }
     },
   },
 };

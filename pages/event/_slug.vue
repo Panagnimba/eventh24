@@ -7,7 +7,7 @@
       <loader></loader>
     </div>
     <!--  -->
-    <div v-show="!this.isPending" class="w-full">
+    <div v-show="!this.notFound" class="w-full">
       <h1 class="text-2xl text-second text-center m-6 font-bold">
         {{ this.event.intitule }}
       </h1>
@@ -32,7 +32,7 @@
               class="w-full h-full rounded-xl"
             />
           </div>
-          <!-- Artistes invités -->
+          <!-- Artistes invités or Parrains-->
           <div class="flex flex-col gap-2">
             <h3 class="text-second font-semibold">
               Artistes invités / Parrains
@@ -63,7 +63,9 @@
         >
           <!--  -->
           <div>
-            <h3 class="text-xl text-center font-bold m-2">Stade Municipal</h3>
+            <h3 class="text-xl text-center font-bold m-2">
+              {{ this.event.lieu }}
+            </h3>
             <div class="flex justify-between m-2 text-xs sm:text-md">
               <span>{{ this.event.dateC }}</span>
               <span>Ouverture des portes à {{ this.event.openTime }} mn</span>
@@ -100,7 +102,12 @@
                   font-bold
                 "
               >
-                <option class="bg-general text-black" selected disabled>
+                <option
+                  class="bg-general text-black"
+                  selected
+                  disabled
+                  value="Normal"
+                >
                   Type
                 </option>
                 <option
@@ -133,7 +140,10 @@
                   ></i>
                 </span>
               </div>
+              <!-- Buy now -->
+              <!-- Event always available (time not pass) -->
               <div
+                v-if="!this.isTimePass"
                 class="
                   w-full
                   bg-third
@@ -148,6 +158,23 @@
                 @click="buyNow"
               >
                 Acheter maintenant
+              </div>
+              <!-- Event not available (time pass) -->
+              <div
+                v-else
+                class="
+                  w-full
+                  bg-gray-500
+                  text-white
+                  font-bold
+                  px-3
+                  py-1.5
+                  rounded-xl
+                  text-center
+                  cursor-pointer
+                "
+              >
+                Guichet Fermé
               </div>
             </div>
           </form>
@@ -269,7 +296,19 @@
       </div>
       <!-- Description part -->
       <div class="h-48 border m-6 p-5 overflow-auto">
-        <p v-html="this.event.description"></p>
+        <div v-html="this.event.description"></div>
+      </div>
+    </div>
+    <!-- Event not found -->
+    <div
+      v-if="this.notFound"
+      class="w-full h-screen mt-8 flex justify-center items-center"
+    >
+      <div>
+        <p class="text-xl text-third font-bold">
+          Aucun résultat ne correspond à votre requête
+        </p>
+        <div class="text-center text-second mt-4">Merci de rééssayer</div>
       </div>
     </div>
     <!-- Related events -->
@@ -303,10 +342,12 @@ export default {
     return {
       isPending: false,
       event: {},
+      notFound: false, //
+      isTimePass: false, // to know if the event is still evailable or already pass
       relatedEvent: [],
       type: "Normal",
       qte: 1,
-      price: 0,
+      price: 100,
       //
       time: {
         days: "00",
@@ -319,24 +360,32 @@ export default {
     };
   },
   async fetch() {
-    this.isPending = true;
     let idEvent = this.$route.params.slug;
-    let resp = await this.$axios.get(`/getEvent/${idEvent}`);
-    this.isPending = false;
-    if (resp.data.success) {
-      this.event = resp.data.result;
-      this.relatedEvent = this.$store.state.eventList.filter(
-        (item) => item.categorie == this.event.categorie
-      );
-      //
-      this.type = this.event.prices[0].type;
-      this.price = this.event.prices[0].price;
-      //concert date to be lisible
-      this.event.dateC = new Date(this.event.date).toLocaleString();
-      this.event.publishDate = new Date(
-        this.event.publishDate
-      ).toLocaleString();
-      console.log(resp.data.result);
+    if (idEvent == undefined || idEvent == null) {
+      this.notFound = true;
+    } else {
+      this.isPending = true;
+      let resp = await this.$axios.get(`/getEvent/${idEvent}`);
+      this.isPending = false;
+      if (resp.data.success) {
+        this.event = resp.data.result;
+        this.relatedEvent = this.$store.state.eventList.filter(
+          (item) => item.categorie == this.event.categorie
+        );
+        //
+        this.type = this.event.prices[0].type;
+        this.price = this.event.prices[0].price;
+        //concert date to be lisible
+        this.event.dateC = new Date(this.event.date).toLocaleString();
+        this.event.publishDate = new Date(
+          this.event.publishDate
+        ).toLocaleString();
+      }
+      // When error occurs
+      else {
+        this.notFound = true;
+        console.log("errrrrrrrrrorrr-----------", resp.data.message);
+      }
     }
   },
   watch: {
@@ -390,25 +439,33 @@ export default {
       let eventDate = new Date(date).getTime();
       let actualDate = new Date().getTime();
       let gap = eventDate - actualDate;
+
+      if (gap < 0) {
+        this.isTimePass = true;
+      }
       //
-      let sec = 1000;
-      let mn = sec * 60;
-      let hour = mn * 60;
-      let day = hour * 24;
-      //
-      this.time.days = Math.floor(gap / day);
-      this.time.hours = Math.floor((gap % day) / hour);
-      this.time.minutes = Math.floor((gap % hour) / mn);
-      this.time.secondes = Math.floor((gap % mn) / sec);
-      //
-      this.time.days =
-        this.time.days < 10 ? "0" + this.time.days : this.time.days;
-      this.time.hours =
-        this.time.hours < 10 ? "0" + this.time.hours : this.time.hours;
-      this.time.minutes =
-        this.time.minutes < 10 ? "0" + this.time.minutes : this.time.minutes;
-      this.time.secondes =
-        this.time.secondes < 10 ? "0" + this.time.secondes : this.time.secondes;
+      else {
+        let sec = 1000;
+        let mn = sec * 60;
+        let hour = mn * 60;
+        let day = hour * 24;
+        //
+        this.time.days = Math.floor(gap / day);
+        this.time.hours = Math.floor((gap % day) / hour);
+        this.time.minutes = Math.floor((gap % hour) / mn);
+        this.time.secondes = Math.floor((gap % mn) / sec);
+        //
+        this.time.days =
+          this.time.days < 10 ? "0" + this.time.days : this.time.days;
+        this.time.hours =
+          this.time.hours < 10 ? "0" + this.time.hours : this.time.hours;
+        this.time.minutes =
+          this.time.minutes < 10 ? "0" + this.time.minutes : this.time.minutes;
+        this.time.secondes =
+          this.time.secondes < 10
+            ? "0" + this.time.secondes
+            : this.time.secondes;
+      }
     },
     drawTimeCircle(canvas, time, completeCircleValue) {
       const ctx = canvas.getContext("2d");

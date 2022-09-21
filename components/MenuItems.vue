@@ -36,7 +36,7 @@
       </li>
       <!--  -->
       <li v-for="(menu, id) in this.menuList" :key="id" @click="selectMenu">
-        <nuxt-link to="" class="menu-items">{{ menu.name }}</nuxt-link>
+        <nuxt-link to="/" class="menu-items">{{ menu.name }}</nuxt-link>
       </li>
     </ul>
     <!-- cart -->
