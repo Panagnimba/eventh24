@@ -7,7 +7,7 @@
       <loader></loader>
     </div>
     <!--  -->
-    <div v-show="!this.notFound" class="w-full">
+    <div v-show="!this.isPending && !this.notFound" class="w-full">
       <h1 class="text-2xl text-second text-center m-6 font-bold">
         {{ this.event.intitule }}
       </h1>

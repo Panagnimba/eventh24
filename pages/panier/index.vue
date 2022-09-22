@@ -16,12 +16,6 @@
       <!-- Left -->
       <div class="w-full bg-white border flex flex-col px-4">
         <h3 class="text-xl font-bold text-second py-2">Mon panier</h3>
-        <!-- <panier-item
-          v-for="(panierItem, k) in this.panierList"
-          :panierItemProp="panierItem"
-          :key="k"
-          @removeToCart="removeToCartHandle"
-        ></panier-item> -->
         <div
           v-for="(panierItem, k) in this.panierList"
           :key="k"
@@ -97,6 +91,48 @@
             <span>{{ panierItem.qte }} x {{ panierItem.price }} fcfa</span>
             <span>{{ panierItem.qte * panierItem.price }} fcfa</span>
           </div>
+          <!-- Beneficiaires -->
+          <div class="w-full flex flex-col gap-2 mt-2 pt-2">
+            <!-- useSameNameInfo Selector-->
+            <div class="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="sameNameInfo"
+                class="w-4 h-4"
+                v-model="useSameNameInfo"
+              />
+              <label for="sameNameInfo" class="text-sm text-second">
+                Je désire utiliser le même nom
+              </label>
+            </div>
+            <!-- useSameNameInfo unique form -->
+            <div v-if="useSameNameInfo" class="flex flex-col gap-1">
+              <label class="text-sm text-second font-semibold">
+                Bénéficiaire
+              </label>
+              <input
+                type="text"
+                placeholder="Nom du Bénéficiaire"
+                class="w-full outline-none border px-2 py-1"
+              />
+            </div>
+            <!-- loop for all the bénéficiaires -->
+            <div
+              v-else
+              v-for="(benef, k) in panierItem.qte"
+              :key="k"
+              class="flex flex-col gap-1"
+            >
+              <label class="text-sm text-second font-semibold">
+                Bénéficiaire {{ k + 1 }}
+              </label>
+              <input
+                type="text"
+                :placeholder="`Nom du Bénéficiaire ${k + 1}`"
+                class="w-full outline-none border px-2 py-1"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <!-- RIGHT -->
@@ -113,6 +149,7 @@ export default {
   data() {
     return {
       panierList: this.$store.state.panier,
+      useSameNameInfo: false,
     };
   },
   methods: {

@@ -45,7 +45,7 @@
     </p>
     <hr class="w-full" />
     <nuxt-link
-      to=""
+      to="/commande"
       class="bg-third text-white font-bold p-2 text-center rounded-md"
     >
       Passer la commande
