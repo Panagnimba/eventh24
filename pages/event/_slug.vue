@@ -515,6 +515,9 @@ export default {
         qte: this.qte,
         price: this.price,
         type: this.type,
+        //
+        beneficiairesNames: [],
+        useSameNameInfo: false,
       };
       //
       this.$store.commit("fillEPanier", panierItem);

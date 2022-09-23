@@ -97,26 +97,31 @@
             <div class="flex items-center gap-2">
               <input
                 type="checkbox"
-                id="sameNameInfo"
                 class="w-4 h-4"
-                v-model="useSameNameInfo"
+                :id="`sameNameInfo- ${k}`"
+                :checked="panierItem.useSameNameInfo"
+                @change="useSameNameInfoHandle($event)"
+                :itemid="panierItem._id"
               />
-              <label for="sameNameInfo" class="text-sm text-second">
+              <label :for="`sameNameInfo- ${k}`" class="text-sm text-second">
                 Je désire utiliser le même nom
               </label>
             </div>
             <!-- useSameNameInfo unique form -->
-            <div v-if="useSameNameInfo" class="flex flex-col gap-1">
+            <div v-if="panierItem.useSameNameInfo" class="flex flex-col gap-1">
               <label class="text-sm text-second font-semibold">
                 Bénéficiaire
               </label>
               <input
                 type="text"
+                @change="beneficiaireNamesHandle($event)"
+                :itemid="panierItem._id"
+                :rang="0"
                 placeholder="Nom du Bénéficiaire"
                 class="w-full outline-none border px-2 py-1"
               />
             </div>
-            <!-- loop for all the bénéficiaires -->
+            <!-- else loop for all the bénéficiaires -->
             <div
               v-else
               v-for="(benef, k) in panierItem.qte"
@@ -128,6 +133,9 @@
               </label>
               <input
                 type="text"
+                @change="beneficiaireNamesHandle($event)"
+                :itemid="panierItem._id"
+                :rang="k"
                 :placeholder="`Nom du Bénéficiaire ${k + 1}`"
                 class="w-full outline-none border px-2 py-1"
               />
@@ -149,7 +157,6 @@ export default {
   data() {
     return {
       panierList: this.$store.state.panier,
-      useSameNameInfo: false,
     };
   },
   methods: {
@@ -167,6 +174,27 @@ export default {
     },
     removeToCart(itemId) {
       this.$store.commit("removeToCart", itemId);
+    },
+    //
+    useSameNameInfoHandle(e) {
+      this.$store.commit("useSameNameInfoHandle", {
+        _id: e.target.getAttribute("itemId"),
+        valueOfuseSameNameInfo: e.target.checked,
+      });
+    },
+    beneficiaireNamesHandle(e) {
+      console.log(
+        e.target.getAttribute("itemId"),
+        "rang--->",
+        e.target.getAttribute("rang"),
+        "---->",
+        e.target.value
+      );
+      this.$store.commit("setPanierBeneficiairesNames", {
+        _id: e.target.getAttribute("itemId"),
+        rang: e.target.getAttribute("rang"),
+        value: e.target.value,
+      });
     },
   },
 };

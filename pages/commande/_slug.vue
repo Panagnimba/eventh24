@@ -3,8 +3,10 @@
     <header-top></header-top>
     <menu-items></menu-items>
     <div class="w-full h-screen p-6 flex justify-center items-center">
-      {{ $route.params }}
-      {{ this.event }}
+      <div v-for="(ct, i) in this.panierContent" :key="i">
+        <br />
+        <div>{{ ct }}</div>
+      </div>
     </div>
     <footer-comp></footer-comp>
   </div>
@@ -14,12 +16,11 @@
 export default {
   data() {
     return {
-      event: {},
+      panierContent: {},
     };
   },
   async fetch() {
-    let idEvent = this.$route.params.slug;
-    this.event = this.$store.state.panier.filter((item) => item._id == idEvent);
+    this.panierContent = this.$store.state.panier;
   },
 };
 </script>
