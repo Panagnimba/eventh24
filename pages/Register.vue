@@ -3,7 +3,9 @@
     <header-top></header-top>
     <menu-items></menu-items>
     <div class="w-full p-6 flex justify-center items-center">
-      <div class="border rounded-xl">
+      <loader v-if="this.isPending"></loader>
+      <!--  -->
+      <div v-else class="border rounded-xl">
         <h1
           class="
             bg-second
@@ -19,19 +21,22 @@
           CREER MON COMPTE
         </h1>
         <form
-          action=""
+          @submit.prevent="registerUser"
+          method="post"
           class="lg:w-80 xl:w-96 flex flex-col items-center gap-4 my-4 px-6"
         >
           <div class="w-full flex gap-3">
             <input
               type="text"
-              name="name"
+              v-model="user.nom"
+              required
               placeholder="Votre nom"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
             <input
               type="text"
-              name="prenom"
+              v-model="user.prenom"
+              required
               placeholder="Votre prenom"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
@@ -39,7 +44,7 @@
           <div class="w-full">
             <input
               type="email"
-              name="email"
+              v-model="user.email"
               placeholder="Votre adresse email"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
@@ -47,13 +52,15 @@
           <div class="w-full flex gap-3">
             <input
               type="tel"
-              name="phone"
+              required
+              v-model="user.tel"
               placeholder="Telephone"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
             <input
               type="password"
-              name="password"
+              required
+              v-model="user.password"
               placeholder="Mot de passe"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
@@ -82,7 +89,81 @@
           >
         </form>
       </div>
+      <!--  -->
+      <notification-notif
+        v-if="this.notif.show"
+        @closeNotif="notif.show = false"
+        :notif="this.notif"
+      ></notification-notif>
     </div>
     <footer-comp></footer-comp>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      isPending: false, // loader controller
+      notif: {
+        show: false,
+        type: "",
+        message: "",
+      },
+      user: {
+        nom: "",
+        prenom: "",
+        email: "",
+        tel: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    async registerUser() {
+      this.isPending = true;
+      let resp = await this.$axios.post("/userRegister", this.user);
+      this.isPending = false;
+      // Remise à zero des champs
+      this.user = {
+        nom: "",
+        prenom: "",
+        email: "",
+        tel: "",
+        password: "",
+      };
+      // setup notification
+      if (resp.data.success) {
+        this.notif.show = true;
+        this.notif.type = "success";
+        this.notif.message = resp.data.message;
+        //
+        let authUser = {
+          _id: resp.data.user._id,
+          prenom: resp.data.user.prenom,
+          tel: resp.data.user.tel,
+          token: resp.data.token,
+        };
+        this.$store.commit("authenticateUser", authUser);
+        //
+        // Reading cookie and goes to the redirect url
+        setTimeout(() => {
+          // reading redirect_url cookie to determine the next page to show
+          document.cookie.split(";").forEach((e) => {
+            if (e.includes("redirect_url")) {
+              let url = e.split("=")[1];
+              this.$router.push(url);
+            } else {
+              this.$router.push("/");
+            }
+          });
+        }, 700);
+      } else {
+        this.notif.show = true;
+        this.notif.type = "warning";
+        this.notif.message = resp.data.message;
+      }
+    },
+  },
+};
+</script>

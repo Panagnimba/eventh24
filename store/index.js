@@ -2,9 +2,10 @@ export const state = ()=>({
     showRightSideMenu:false,
     showEventPopup:false,
     user:{
-        lastName:"Josué",
-        email:"panagnimba@gmail.com",
-        phone:"+212645973449"
+        _id:"",
+        prenom:"",
+        tel:"",
+        token:null
     },
     admin:{
         isAuthenticated:false,
@@ -25,6 +26,9 @@ export const mutations={
     },
     authenticateAdmin(state,val){
         state.admin = val
+    },
+    authenticateUser(state,val){
+        state.user = val
     },
     fillEventList(state,list){
         state.eventList = list
@@ -50,6 +54,10 @@ export const mutations={
             }
         })
 
+    },
+    setPaymentMethod(state,method){
+        if(state.panier.length > 0)
+            state.panier[0].paymentMethod = method
     },
     useSameNameInfoHandle(state,cartItem){
         state.panier.forEach((item)=>{

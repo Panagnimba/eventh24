@@ -32,6 +32,16 @@
         type="radio"
         name="paymentMethod"
         @change="getPaymentMethod"
+        id="coris"
+        class="w-4 h-4"
+      />
+      <label for="coris">Coris Money</label>
+    </div>
+    <div class="flex items-center gap-2">
+      <input
+        type="radio"
+        name="paymentMethod"
+        @change="getPaymentMethod"
         id="sank"
         class="w-4 h-4"
       />
@@ -44,12 +54,12 @@
       <span class="font-semibold">{{ this.getTotal }} fcfa</span>
     </p>
     <hr class="w-full" />
-    <nuxt-link
-      to="/commande"
+    <div
+      @click="$emit('commandeBtnClicked')"
       class="bg-third text-white font-bold p-2 text-center rounded-md"
     >
       Passer la commande
-    </nuxt-link>
+    </div>
   </div>
 </template>
 <script>
@@ -59,6 +69,9 @@ export default {
       panierList: this.$store.state.panier,
       paymentMethod: "bank",
     };
+  },
+  mounted() {
+    this.$store.commit("setPaymentMethod", this.paymentMethod);
   },
   computed: {
     getTotal() {
@@ -72,6 +85,7 @@ export default {
   methods: {
     getPaymentMethod(e) {
       this.paymentMethod = e.target.id;
+      this.$store.commit("setPaymentMethod", this.paymentMethod);
     },
   },
 };

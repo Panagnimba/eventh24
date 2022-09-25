@@ -91,12 +91,13 @@
     </form>
     <!--  -->
     <div class="w-1/4 flex justify-end text-white">
-      <nuxt-link to="/login">
-        <div class="flex flex-col items-center">
-          <i class="fa-solid fa-user text-xl"></i>
-          <span class="text-xs">Connexion</span>
-        </div>
-      </nuxt-link>
+      <div
+        class="flex flex-col items-center cursor-pointer"
+        @click.prevent="connexionUrl"
+      >
+        <i class="fa-solid fa-user text-xl"></i>
+        <span class="text-xs">Connexion</span>
+      </div>
     </div>
   </div>
 </template>
@@ -135,6 +136,16 @@ export default {
       });
       this.searchText = "";
       this.$router.push("/");
+    },
+    //
+    connexionUrl() {
+      // set redirect_url cookie
+      var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+      let expires = "; expires=" + date.toUTCString();
+      document.cookie =
+        "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
+      //
+      this.$router.push("/login");
     },
   },
 };

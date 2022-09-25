@@ -16,8 +16,18 @@
 export default {
   data() {
     return {
-      panierContent: {},
+      panierContent: this.$store.state.panier,
     };
+  },
+  middleware({ store, redirect }) {
+    // if no products in the cart or products exists in the cart
+    // user not authenticated
+    if (
+      store.state.panier.length == 0 ||
+      store.state.user.token == null ||
+      store.state.user.prenom.length == 0
+    )
+      return redirect("/");
   },
   async fetch() {
     this.panierContent = this.$store.state.panier;

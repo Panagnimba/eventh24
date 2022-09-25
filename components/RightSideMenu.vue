@@ -37,7 +37,12 @@
               <i class="fa-solid fa-user"></i>
             </span>
             <span class="text-white text-sm font-semibold text-center">
-              Bonjour, Identifiez-vous
+              Bonjour,
+              {{
+                this.$store.state.user.prenom.length > 0
+                  ? this.$store.state.user.prenom
+                  : "Identifiez-vous"
+              }}
             </span>
           </p>
         </nuxt-link>
@@ -103,6 +108,19 @@ export default {
       this.$store.commit("toggleRightSideMenu");
     },
     deconnexion() {
+      let notAuthUser = {
+        _id: "",
+        prenom: "",
+        tel: "",
+        token: null,
+      };
+      this.$store.commit("authenticateUser", notAuthUser);
+      // set redirect_url cookie
+      var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+      let expires = "; expires=" + date.toUTCString();
+      document.cookie =
+        "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
+      //
       this.$router.push("/login");
     },
   },
