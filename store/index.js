@@ -1,6 +1,6 @@
 export const state = ()=>({
     showRightSideMenu:false,
-    showEventPopup:false,
+    showLoginPopup:false,
     user:{
         _id:"",
         prenom:"",
@@ -21,8 +21,8 @@ export const mutations={
     },
     //the popup display on the event description page
     //when clicking on buy now button
-    toggleEventPopup(state,val){
-        state.showEventPopup = val
+    toggleLoginPopup(state,val){
+        state.showLoginPopup = val
     },
     authenticateAdmin(state,val){
         state.admin = val

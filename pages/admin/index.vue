@@ -88,14 +88,7 @@ export default {
       mainComponent: "",
     };
   },
-  middleware({ store, redirect }) {
-    // If the admin is not authenticated
-    if (
-      store.state.admin.isAuthenticated == false ||
-      store.state.admin.token == null
-    )
-      return redirect("/admin/login");
-  },
+  
 
   methods: {
     selectMenu(e) {

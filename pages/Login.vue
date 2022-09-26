@@ -2,7 +2,7 @@
   <div class="overflow-hidden">
     <header-top></header-top>
     <menu-items></menu-items>
-    <div class="w-full p-6 flex justify-center items-center">
+    <div class="w-full h-screen p-6 flex justify-center items-center">
       <loader v-if="this.isPending"></loader>
       <!--  -->
       <div v-else class="border rounded-xl">
