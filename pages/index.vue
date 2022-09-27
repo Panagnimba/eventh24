@@ -65,7 +65,7 @@ export default {
     let resp = await this.$axios.get("/getEvents");
     this.isPending = false;
     if (resp.data.success) {
-      this.eventList = resp.data.result;
+      this.eventList = resp.data.result.reverse();
       this.$store.commit("fillEventList", resp.data.result);
     }
   },

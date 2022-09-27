@@ -1,7 +1,7 @@
 <template>
   <!-- methodes de payement -->
   <div
-    v-if="this.panierList.length > 0"
+    v-show="this.panierList.length > 0"
     class="w-full h-full border flex flex-col gap-4 p-4 bg-white"
   >
     <div class="font-bold text-second">Mode de payement</div>
