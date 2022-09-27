@@ -16,6 +16,7 @@
             transform
             hover:scale-110
             duration-500
+            object-cover
           "
         />
       </nuxt-link>
@@ -26,6 +27,11 @@
     <h3 class="text-sm m-2 font-semibold text-second">
       {{ this.event.intitule }}
     </h3>
+    <!-- Artiste -->
+    <div class="flex m-2 items-center gap-2">
+      <i class="fa-solid fa-microphone text-lg text-second"></i>
+      <h6 class="text-sm italic">{{ this.event.artiste }}</h6>
+    </div>
     <!-- lieu -->
     <div class="flex m-2 items-center gap-2">
       <i class="fa-solid fa-location-dot text-lg text-second"></i>

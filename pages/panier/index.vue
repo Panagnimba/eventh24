@@ -174,10 +174,11 @@
 </template>
 <script>
 export default {
-  data() {
-    return {
-      panierList: this.$store.state.panier,
-    };
+  computed: {
+    panierList() {
+      let list = [...this.$store.state.panier];
+      return list.reverse();
+    },
   },
   methods: {
     commandeBtnClicked() {

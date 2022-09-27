@@ -8,7 +8,7 @@
             v-for="(item, i) in this.banner.items"
             :key="i"
           >
-            <img :src="item.img" alt="" class="h-full w-full" />
+            <img :src="item.img" alt="" class="h-full w-full object-cover" />
             <div class="details">
               <span>Détails</span>
               <i class="fa-solid fa-angles-right"></i>
