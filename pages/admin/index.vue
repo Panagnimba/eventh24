@@ -63,6 +63,12 @@
             <i class="fa-regular fa-calendar-days text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Event</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="Paralax">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-align-center text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Paralax</div>
+          </div>
         </div>
 
         <!-- Settings -->
@@ -88,7 +94,6 @@ export default {
       mainComponent: "",
     };
   },
-  
 
   methods: {
     selectMenu(e) {
@@ -111,6 +116,8 @@ export default {
         this.mainComponent = "admin-banner";
       else if (item.title.toLowerCase().includes("event"))
         this.mainComponent = "admin-event";
+      else if (item.title.toLowerCase().includes("paralax"))
+        this.mainComponent = "admin-paralax";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
