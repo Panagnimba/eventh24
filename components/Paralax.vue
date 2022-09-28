@@ -1,18 +1,23 @@
 <template>
-  <div
-    class="
-      container
-      paralax-wrapper
-      w-full
-      h-96
-      text-white text-3xl text-center
-      font-bold
-      flex
-      justify-center
-      items-center
-    "
-  >
-    <div id="typed" class="w-full h-2/3 flex flex-col"></div>
+  <div class="container relative">
+    <img
+      :src="this.paralax.bgImage"
+      alt=""
+      class="w-full Paralax-image object-cover"
+    />
+    <div
+      id="typed"
+      class="
+        h-1/3
+        w-full
+        text-white
+        absolute
+        left-0
+        top-0
+        sm:top-0 sm:top-1/3 sm:text-3xl
+        p-4
+      "
+    ></div>
   </div>
 </template>
 <script>
@@ -59,12 +64,6 @@ export default {
       }
     },
     "paralax.bgImage"() {
-      //
-
-      document.querySelector(
-        ".paralax-wrapper"
-      ).style.backgroundImage = `url(${this.paralax.bgImage})`;
-
       if (this.isTypedLodded) {
         new Typed("#typed", {
           strings: [this.paralax.textContent],
@@ -84,5 +83,9 @@ export default {
 .paralax-wrapper {
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  height: 50vh;
+}
+.Paralax-image {
+  max-height: 90vh;
 }
 </style>
