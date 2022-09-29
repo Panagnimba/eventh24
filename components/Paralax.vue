@@ -1,5 +1,5 @@
 <template>
-  <div class="container relative">
+  <div class="container relative overflow-hidden">
     <img
       :src="this.paralax.bgImage"
       alt=""
