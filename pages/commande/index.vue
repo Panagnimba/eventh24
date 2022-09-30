@@ -72,6 +72,9 @@ export default {
         this.notif.show = true;
         this.notif.type = "success";
         this.notif.message = resp.data.message;
+        //
+        this.$router.push("/commande/mescommandes");
+        //
       } else if (resp.data.isNotAuth) {
         // set redirect_url cookie
         var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn

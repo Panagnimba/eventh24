@@ -13,7 +13,7 @@
         </div>
         <!-- liste des commandes -->
         <vue-good-table
-          v-show="!this.isPending"
+          v-if="!this.isPending && this.rows.length > 0"
           class="w-full p-6 table-entire-wrapper"
           :columns="columns"
           :rows="rows"
@@ -110,7 +110,8 @@ export default {
       };
     },
   },
-  async fetch() {
+
+  async mounted() {
     this.isPending = true;
     let clientId = this.$store.state.user._id;
     let resp = await this.$axios.get(`user/mesCommandes/${clientId}`, {
@@ -124,13 +125,25 @@ export default {
           date: new Date(cmmde.commandeDate).toLocaleString(),
           image: `<img src=${cmmde.img} alt="Image"/>`,
           intitule: cmmde.intitule,
-          prix: cmmde.price,
+          prix: cmmde.price + " fcfa",
           beneficiaire: cmmde.beneficiaireName,
           ticket: `<img src=${cmmde.qrcode} alt="Ticket"/>`,
           print: `<div class="text-center"><a href=${cmmde.qrcode} download=${cmmde.intitule}><i class="fa-solid fa-print text-fourth"></i></a></div>`,
         };
         this.rows.push(item);
       });
+      // vider le panier
+      this.$store.commit("viderPanier");
+      //
+    } else if (resp.data.isNotAuth) {
+      // set redirect_url cookie
+      var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+      let expires = "; expires=" + date.toUTCString();
+      document.cookie =
+        "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
+      //
+      // this.$router.push("/login");
+      this.$store.commit("toggleLoginPopup", true);
     } else {
       this.notif.show = true;
       this.notif.type = "error";

@@ -33,6 +33,7 @@ export const mutations={
     fillEventList(state,list){
         state.eventList = list
     },
+   
     fillEPanier(state,event){
         let isPresent = false
         state.panier.forEach((item ,i)=> {
@@ -44,6 +45,9 @@ export const mutations={
         });
         if(!isPresent) //not present
         state.panier.push(event)
+    },
+    viderPanier(state){
+        state.panier = []
     },
     setPanierBeneficiairesNames(state,nameInfo){
         state.panier.forEach((item)=>{
