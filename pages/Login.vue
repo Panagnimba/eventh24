@@ -30,6 +30,7 @@
               type="text"
               v-model="user.tel"
               required
+              autofocus
               placeholder="Numéro de téléphone"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />

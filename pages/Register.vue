@@ -30,6 +30,7 @@
               type="text"
               v-model="user.nom"
               required
+              autofocus
               placeholder="Votre nom"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />

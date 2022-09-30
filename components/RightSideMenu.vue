@@ -71,6 +71,22 @@
       </ul>
       <!--  -->
       <h2 class="font-bold px-4">Mon compte</h2>
+      <nuxt-link
+        to="/commande/mescommandes"
+        class="
+          px-4
+          py-2
+          flex
+          items-center
+          gap-4
+          text-md
+          cursor-pointer
+          hover:bg-gray-100
+        "
+      >
+        <i class="fa-solid fa-file-invoice"></i>
+        <span>Mes commandes</span>
+      </nuxt-link>
       <div
         class="
           px-4
