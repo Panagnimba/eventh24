@@ -1,30 +1,34 @@
 <template>
   <div class="w-full h-full overflow-auto no-scrollbar py-4">
     <loader v-show="this.isPending"></loader>
-    <vue-good-table
-      v-show="!this.isPending"
-      class="w-full p-6 table-entire-wrapper"
-      max-height="600px"
-      :columns="columns"
-      :rows="rows"
-      :fixed-header="true"
-      :select-options="{ enabled: true }"
-      :line-numbers="true"
-      :search-options="{
-        enabled: true,
-        skipDiacritics: true, // desactiver la recherche avec accent
-        placeholder: 'Rechercher un évènement',
-      }"
-      :sort-options="{
-        enabled: true,
-      }"
-      :pagination-options="{
-        enabled: true,
-        perPageDropdown: [100, 150, 200, 300],
-      }"
-      compactMode
+    <div
+      v-show="!this.isPending && this.rows.length > 0"
+      class="w-full flex justify-center overflow-hidden"
     >
-    </vue-good-table>
+      <vue-good-table
+        class="w-full table-entire-wrapper"
+        max-height="600px"
+        :columns="columns"
+        :rows="rows"
+        :fixed-header="true"
+        :select-options="{ enabled: true }"
+        :line-numbers="true"
+        :search-options="{
+          enabled: true,
+          skipDiacritics: true, // desactiver la recherche avec accent
+          placeholder: 'Rechercher un évènement',
+        }"
+        :sort-options="{
+          enabled: true,
+        }"
+        :pagination-options="{
+          enabled: true,
+          perPageDropdown: [100, 150, 200, 300],
+        }"
+        compactMode
+      >
+      </vue-good-table>
+    </div>
     <!--  -->
     <notification-notif
       v-if="this.notif.show"

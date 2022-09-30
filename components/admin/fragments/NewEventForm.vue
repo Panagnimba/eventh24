@@ -216,7 +216,16 @@
           </div>
         </fieldset>
         <!-- Description of event -->
-        <fieldset class="w-full border border-gray-300 p-2">
+        <fieldset
+          class="
+            w-full
+            border border-gray-300
+            p-2
+            flex
+            justify-center
+            overflow-hidden
+          "
+        >
           <legend class="text-second font-bold text-center">Description</legend>
           <Editor
             v-model="event.description"

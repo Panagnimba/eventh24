@@ -4,7 +4,7 @@
     <menu-items></menu-items>
     <div class="w-full min-h-screen">
       <div class="h-full border flex flex-col px-4">
-        <h3 class="text-xl font-bold text-second text-center pt-4">
+        <h3 class="text-xl font-bold text-second text-center p-4">
           Mes commandes
         </h3>
         <!-- loader -->
@@ -12,28 +12,32 @@
           <loader></loader>
         </div>
         <!-- liste des commandes -->
-        <vue-good-table
+        <div
           v-if="!this.isPending && this.rows.length > 0"
-          class="w-full p-6 table-entire-wrapper"
-          :columns="columns"
-          :rows="rows"
-          :fixed-header="true"
-          :line-numbers="true"
-          :search-options="{
-            enabled: true,
-            skipDiacritics: true, // desactiver la recherche avec accent
-            placeholder: 'Rechercher un ticket',
-          }"
-          :sort-options="{
-            enabled: true,
-          }"
-          :pagination-options="{
-            enabled: true,
-            perPageDropdown: [100, 150, 200, 300],
-          }"
-          compactMode
+          class="w-full flex justify-center overflow-hidden"
         >
-        </vue-good-table>
+          <vue-good-table
+            class="w-full"
+            :columns="columns"
+            :rows="rows"
+            :fixed-header="true"
+            :line-numbers="true"
+            :search-options="{
+              enabled: true,
+              skipDiacritics: true, // desactiver la recherche avec accent
+              placeholder: 'Rechercher un ticket',
+            }"
+            :sort-options="{
+              enabled: true,
+            }"
+            :pagination-options="{
+              enabled: true,
+              perPageDropdown: [100, 150, 200, 300],
+            }"
+            compactMode
+          >
+          </vue-good-table>
+        </div>
       </div>
 
       <notification-notif
