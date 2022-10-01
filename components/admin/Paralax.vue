@@ -17,7 +17,7 @@
         "
       >
         <div
-          class="paralax-wrapper p-2"
+          class="paralax-wrapper p-2 object-cover"
           :class="this.paralax.bgImage != null ? 'w-full h-full' : 'w-0 h-0'"
         ></div>
         <!-- upload form -->

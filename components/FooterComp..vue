@@ -96,7 +96,7 @@
       </div>
     </div>
     <div class="text-xs text-center pt-8 text-gray-400">
-      &copy; Tous droits reservés EventH24 2022
+      &copy; Tous droits reservés VinoTicket 2022
     </div>
   </div>
 </template>

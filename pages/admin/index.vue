@@ -4,9 +4,10 @@
     <div
       class="flex justify-between items-center bg-primary text-white px-4 py-1"
     >
-      <h1 class="font-bold text-xl">
-        Event<span class="text-third">H24</span>
-      </h1>
+      <nuxt-link to="/" class="font-bold text-xl">
+        Vino<span class="text-third">Ticket</span>
+        <!-- <img src="/logo.png" class="w-12" /> -->
+      </nuxt-link>
       <div
         @click="deconnexion"
         class="flex flex-col items-center gap-1 cursor-pointer"
@@ -91,7 +92,7 @@ export default {
   data() {
     return {
       rightSideWidth: 16,
-      mainComponent: "",
+      mainComponent: "admin-iframe",
     };
   },
 
@@ -110,7 +111,9 @@ export default {
       });
     },
     displayMainComponent(item) {
-      if (item.title.toLowerCase().includes("menu"))
+      if (item.title.toLowerCase().includes("home"))
+        this.mainComponent = "admin-iframe";
+      else if (item.title.toLowerCase().includes("menu"))
         this.mainComponent = "admin-menu";
       else if (item.title.toLowerCase().includes("slider"))
         this.mainComponent = "admin-banner";

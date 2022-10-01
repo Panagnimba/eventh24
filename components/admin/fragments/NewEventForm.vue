@@ -28,7 +28,7 @@
           "
         >
           <div
-            class="image-wrapper p-2"
+            class="image-wrapper p-2 object-cover"
             :class="this.event.img != null ? 'w-full h-full' : 'w-0 h-0 hidden'"
           ></div>
           <!-- upload form -->
@@ -229,6 +229,7 @@
           <legend class="text-second font-bold text-center">Description</legend>
           <Editor
             v-model="event.description"
+            class="w-full"
             api-key="kcjxbyyy3jp0zijxy5or1619nxx6le3lnlblhcba7lio3nnz"
             :init="{
               height: 300,

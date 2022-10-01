@@ -1,10 +1,9 @@
 <template>
   <div class="container bg-second flex gap-2 justify-between items-center py-1">
     <div class="w-1/4 flex justify-start gap-2 items-center text-white">
-      <nuxt-link to="/">
-        <h1 class="font-bold text-md xl:text-xl">
-          Event<span class="text-third">H24</span>
-        </h1>
+       <nuxt-link to="/" class="font-bold text-xl">
+        Vino<span class="text-third">Ticket</span>
+        <!-- <img src="/logo.png" class="w-12" /> -->
       </nuxt-link>
     </div>
     <!--  -->
