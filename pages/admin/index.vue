@@ -70,6 +70,12 @@
             <i class="fa-solid fa-align-center text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Paralax</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="camera">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-camera text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">camera</div>
+          </div>
         </div>
 
         <!-- Settings -->
@@ -121,6 +127,8 @@ export default {
         this.mainComponent = "admin-event";
       else if (item.title.toLowerCase().includes("paralax"))
         this.mainComponent = "admin-paralax";
+      else if (item.title.toLowerCase().includes("camera"))
+        this.mainComponent = "admin-qrScanner";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
