@@ -2,7 +2,7 @@
   <div class="h-screen flex justify-center items-center">
     <div class="flex flex-col gap-2">
       <div class="w-56 relative">
-        <video class="border w-full h-36" ref="video"></video>
+        <video class="border w-56 h-56" ref="video"></video>
         <div class="w-full absolute top-0 scannerbar"></div>
       </div>
       <div class="flex justify-between">
