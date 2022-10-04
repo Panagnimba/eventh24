@@ -1,6 +1,7 @@
 <template>
-  <div class="h-screen flex justify-center items-center scanwrapper">
-    <div class="flex flex-col gap-2">
+  <div class="h-screen flex flex-col scanwrapper sm:flex-row">
+    <div class="w-full h-full flex flex-col gap-2 justify-center items-center">
+      <!-- scanner -->
       <div class="scan w-72 h-72">
         <div class="qrcode w-full h-full">
           <video ref="video" class="w-full h-full"></video>
@@ -8,7 +9,8 @@
         <h3>Qr Code Scanning...</h3>
         <div class="scanborder"></div>
       </div>
-      <div class="flex justify-between">
+      <!--  -->
+      <div class="w-72 flex justify-between">
         <button
           @click="startScanner"
           class="bg-fourth text-white px-8 font-semibold p-1 rounded-xl"
@@ -22,7 +24,26 @@
           Stop
         </button>
       </div>
-      <div class="border h-8 text-white">{{ this.result }}</div>
+      <!--  -->
+
+      <audio id="success_audio" src="/Scanner/beep_success.wav" />
+    </div>
+    <!-- result -->
+    <div class="bg-general h-1/2 w-full p-2">
+      <div class="flex gap-1">
+        <span class="font-bold text-second text-sm">Result of scan:</span>
+        <div class="text-third">{{ this.result }}</div>
+      </div>
+      <!-- loader -->
+      <div class="h-full" v-if="this.isPending">
+        <loader></loader>
+      </div>
+      <!--  -->
+      <notification-notif
+        v-if="this.notif.show"
+        @closeNotif="notif.show = false"
+        :notif="this.notif"
+      ></notification-notif>
     </div>
   </div>
 </template>
@@ -31,25 +52,60 @@ import QrScanner from "qr-scanner";
 export default {
   data() {
     return {
+      isPending: false, //loader
       qrScanner: null,
       result: "",
+      //
+      notif: {
+        show: false,
+        type: "",
+        message: "",
+      },
     };
   },
+  computed: {
+    requestHeader() {
+      return {
+        Authorization: `Bearer ${this.$store.state.admin.token}`,
+        "Content-Type": "application/json",
+      };
+    },
+  },
   mounted() {
-    this.qrScanner = new QrScanner(this.$refs.video, (result) => {
+    this.qrScanner = new QrScanner(this.$refs.video, async (result) => {
       this.result = result;
-      document.querySelector(".scannerbar").classList.remove("scannerbarA");
+      this.qrScanner.stop();
+      //
+      this.isPending = true;
+      let resp = await this.$axios.post(
+        `/eventh24/deleteCommandes/${this.result}`,
+        {
+          headers: this.requestHeader,
+        }
+      );
+      this.isPending = false;
+      if (resp.data.success) {
+        // restart scannning process
+        document.querySelector("#success_audio").play();
+        this.result = "";
+        this.qrScanner.start();
+        this.notif.show = true;
+        this.notif.type = "success";
+        this.notif.message = resp.data.message;
+      } else {
+        this.notif.show = true;
+        this.notif.type = "error";
+        this.notif.message = resp.data.message;
+      }
     });
   },
   methods: {
     startScanner() {
       this.result = "";
       this.qrScanner.start();
-      // document.querySelector(".scannerbar").classList.add("scannerbarA");
     },
     stopScanner() {
       this.qrScanner.stop();
-      // document.querySelector(".scannerbar").classList.remove("scannerbarA");
     },
   },
 };

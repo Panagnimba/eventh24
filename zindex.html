@@ -12,6 +12,12 @@
         <h3>Qr Code Scanning...</h3>
         <div class="border"></div>
     </div>
+    <script>
+        const barcodeDetector = new BarcodeDetector({
+  formats: ["code_39", "codabar", "ean_13"],
+});
+console.log(barcodeDetector)
+    </script>
 </body>
 </html>
 <style>
