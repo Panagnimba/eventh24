@@ -39,11 +39,19 @@
         <loader></loader>
       </div>
       <!--  -->
-      <notification-notif
-        v-if="this.notif.show"
-        @closeNotif="notif.show = false"
-        :notif="this.notif"
-      ></notification-notif>
+      <div
+        v-else
+        class="
+          text-third
+          font-bold
+          h-full
+          flex flex-col
+          justify-center
+          items-center
+        "
+      >
+        {{ this.error }}
+      </div>
     </div>
   </div>
 </template>
@@ -55,22 +63,16 @@ export default {
       isPending: false, //loader
       qrScanner: null,
       result: "",
+      error: "",
+
       //
-      notif: {
-        show: false,
-        type: "",
-        message: "",
+      requestHeader: {
+        Authorization: `Bearer ${this.$store.state.admin.token}`,
+        "Content-Type": "application/json",
       },
     };
   },
-  computed: {
-    requestHeader() {
-      return {
-        Authorization: `Bearer ${this.$store.state.admin.token}`,
-        "Content-Type": "application/json",
-      };
-    },
-  },
+
   mounted() {
     this.qrScanner = new QrScanner(this.$refs.video, async (result) => {
       this.result = result;
@@ -78,7 +80,8 @@ export default {
       //
       this.isPending = true;
       let resp = await this.$axios.post(
-        `/eventh24/deleteCommandes/${this.result}`,
+        `/eventh24/deleteCommande`,
+        { id: this.result },
         {
           headers: this.requestHeader,
         }
@@ -89,13 +92,8 @@ export default {
         document.querySelector("#success_audio").play();
         this.result = "";
         this.qrScanner.start();
-        this.notif.show = true;
-        this.notif.type = "success";
-        this.notif.message = resp.data.message;
       } else {
-        this.notif.show = true;
-        this.notif.type = "error";
-        this.notif.message = resp.data.message;
+        this.error = resp.data.message;
       }
     });
   },
