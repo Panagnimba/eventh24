@@ -39,34 +39,33 @@
       <audio id="error_audio" src="/Scanner/beep_error.mp3" />
     </div>
     <!-- result -->
-    <div class="bg-general h-1/2 w-full p-2">
-      <div class="flex justify-between">
-        <div class="w-full flex gap-1">
-          <span class="font-bold text-second text-sm">Result of scan:</span>
-          <div class="text-third">{{ this.result }}</div>
+    <div class="w-full flex flex-col gap-3 bg-general h-1/2 p-2">
+      <div class="w-full flex flex-col gap-3 p-2">
+        <div class="font-bold text-second text-sm">
+          CMDID:
+          <span class="text-third px-2">{{ this.scanResult.cmmdeId }}</span>
         </div>
-        <div class="w-full flex gap-1">
-          <span class="font-bold text-second text-sm">Event:</span>
-          <div class="text-third">{{ this.eventId }}</div>
+        <div class="font-bold text-second text-sm">
+          EVTID:
+          <span class="text-third px-2">{{ this.scanResult.eventId }}</span>
+        </div>
+
+        <!-- event -->
+        <div class="font-bold text-second text-sm">
+          EVENT:
+          <span class="text-third px-2">{{ this.eventId }}</span>
+        </div>
+        <div class="font-bold text-second text-sm">
+          EVENT:
+          <span class="text-third px-2">{{ this.eventId }}</span>
         </div>
       </div>
-
       <!-- loader -->
-      <div class="h-full" v-if="this.isPending">
+      <div class="w-full" v-if="this.isPending">
         <loader></loader>
       </div>
       <!--  -->
-      <div
-        v-else
-        class="
-          text-third
-          font-bold
-          h-full
-          flex flex-col
-          justify-center
-          items-center
-        "
-      >
+      <div v-else class="text-third font-bold text-center">
         {{ this.error }}
       </div>
     </div>
@@ -80,7 +79,10 @@ export default {
       isPending: false, //loader
       qrScanner: null,
       //
-      result: "",
+      scanResult: {
+        eventId: "null",
+        cmmdeId: "null",
+      },
       error: "",
       //
       eventId: null,
@@ -108,39 +110,55 @@ export default {
       });
     }
   },
-  mounted() {
-    this.qrScanner = new QrScanner(this.$refs.video, async (result) => {
-      this.result = result;
+  async mounted() {
+    this.qrScanner = await new QrScanner(this.$refs.video, async (result) => {
+      this.scanResult.cmmdeId = result.split("|")[0];
+      this.scanResult.eventId = result.split("|")[1];
       this.qrScanner.stop();
       //
-      this.isPending = true;
-      let resp = await this.$axios.post(
-        `/eventh24/deleteCommande`,
-        { commandeId: this.result, eventId: this.eventId },
-        {
-          headers: this.requestHeader,
+      if (this.scanResult.eventId == this.eventId) {
+        this.isPending = true;
+        let resp = await this.$axios.post(
+          `/eventh24/deleteCommande`,
+          { commandeId: this.scanResult.cmmdeId, eventId: this.eventId },
+          {
+            headers: this.requestHeader,
+          }
+        );
+        this.isPending = false;
+        if (resp.data.success) {
+          // restart scannning process
+          document.querySelector("#success_audio").play();
+          (this.scanResult = {
+            eventId: "null",
+            cmmdeId: "null",
+          }),
+            this.qrScanner.start();
+        } else {
+          document.querySelector("#error_audio").play();
+          this.error = resp.data.message;
         }
-      );
-      this.isPending = false;
-      if (resp.data.success) {
-        // restart scannning process
-        document.querySelector("#success_audio").play();
-        this.result = "";
-        this.qrScanner.start();
       } else {
         document.querySelector("#error_audio").play();
-        this.error = resp.data.message;
+        this.error = "Evènement non disponible actuellement";
       }
     });
   },
   methods: {
     startScanner() {
-      this.result = "";
-      this.error = "";
       this.qrScanner.start();
+      this.error = "";
+      this.scanResult = {
+        eventId: "null",
+        cmmdeId: "null",
+      };
     },
     stopScanner() {
       this.qrScanner.stop();
+      this.scanResult = {
+        eventId: "null",
+        cmmdeId: "null",
+      };
     },
   },
 };
