@@ -71,8 +71,8 @@
       </ul>
       <!--  -->
       <h2 class="font-bold px-4">Mon compte</h2>
-      <nuxt-link
-        to="/commande/mescommandes"
+      <div
+        @click="getMyCommandes"
         class="
           px-4
           py-2
@@ -86,7 +86,7 @@
       >
         <i class="fa-solid fa-file-invoice"></i>
         <span>Mes commandes</span>
-      </nuxt-link>
+      </div>
       <div
         class="
           px-4
@@ -138,6 +138,23 @@ export default {
         "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
       //
       this.$router.push("/login");
+    },
+    getMyCommandes() {
+      if (this.$store.state.user.token) {
+        this.$router.push("/commande/mescommandes");
+      } else {
+        // set redirect_url cookie
+        var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+        let expires = "; expires=" + date.toUTCString();
+        document.cookie =
+          "redirect_url" +
+          "=" +
+          ("/commande/mescommandes" || "/") +
+          expires +
+          "; path=/";
+        //
+        this.$store.commit("toggleLoginPopup", true);
+      }
     },
   },
   async fetch() {

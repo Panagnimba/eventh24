@@ -1,6 +1,15 @@
 <template>
   <div class="h-screen flex flex-col scanwrapper sm:flex-row">
     <div class="w-full h-full flex flex-col gap-2 justify-center items-center">
+      <!-- Select event -->
+
+      <select class="w-72 p-2" v-model="eventId">
+        <option :value="null" disabled>Selectionner l'évènement</option>
+        <option v-for="(evt, k) in this.events" :key="k" :value="evt._id">
+          {{ evt.intitule }}
+        </option>
+      </select>
+
       <!-- scanner -->
       <div class="scan w-72 h-72">
         <div class="qrcode w-full h-full">
@@ -10,7 +19,7 @@
         <div class="scanborder"></div>
       </div>
       <!--  -->
-      <div class="w-72 flex justify-between">
+      <div class="w-72 flex justify-between" v-if="this.eventId">
         <button
           @click="startScanner"
           class="bg-fourth text-white px-8 font-semibold p-1 rounded-xl"
@@ -27,13 +36,21 @@
       <!--  -->
 
       <audio id="success_audio" src="/Scanner/beep_success.wav" />
+      <audio id="error_audio" src="/Scanner/beep_error.mp3" />
     </div>
     <!-- result -->
     <div class="bg-general h-1/2 w-full p-2">
-      <div class="flex gap-1">
-        <span class="font-bold text-second text-sm">Result of scan:</span>
-        <div class="text-third">{{ this.result }}</div>
+      <div class="flex justify-between">
+        <div class="w-full flex gap-1">
+          <span class="font-bold text-second text-sm">Result of scan:</span>
+          <div class="text-third">{{ this.result }}</div>
+        </div>
+        <div class="w-full flex gap-1">
+          <span class="font-bold text-second text-sm">Event:</span>
+          <div class="text-third">{{ this.eventId }}</div>
+        </div>
       </div>
+
       <!-- loader -->
       <div class="h-full" v-if="this.isPending">
         <loader></loader>
@@ -62,8 +79,12 @@ export default {
     return {
       isPending: false, //loader
       qrScanner: null,
+      //
       result: "",
       error: "",
+      //
+      eventId: null,
+      events: [],
 
       //
       requestHeader: {
@@ -72,7 +93,21 @@ export default {
       },
     };
   },
-
+  async fetch() {
+    this.isPending = true;
+    let resp1 = await this.$axios.get("/eventh24/getEvents", {
+      headers: this.requestHeader,
+    });
+    this.isPending = false;
+    if (resp1.data.success) {
+      this.events = resp1.data.result.filter((evnt) => {
+        let evtTime = new Date(evnt.date).getTime();
+        // au moins un jour avant le spectacle
+        let openTime = Date.now() + 24 * 60 * 60 * 60 * 1000;
+        return openTime >= evtTime;
+      });
+    }
+  },
   mounted() {
     this.qrScanner = new QrScanner(this.$refs.video, async (result) => {
       this.result = result;
@@ -81,7 +116,7 @@ export default {
       this.isPending = true;
       let resp = await this.$axios.post(
         `/eventh24/deleteCommande`,
-        { id: this.result },
+        { commandeId: this.result, eventId: this.eventId },
         {
           headers: this.requestHeader,
         }
@@ -93,6 +128,7 @@ export default {
         this.result = "";
         this.qrScanner.start();
       } else {
+        document.querySelector("#error_audio").play();
         this.error = resp.data.message;
       }
     });
@@ -100,6 +136,7 @@ export default {
   methods: {
     startScanner() {
       this.result = "";
+      this.error = "";
       this.qrScanner.start();
     },
     stopScanner() {

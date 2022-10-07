@@ -144,10 +144,14 @@ export default {
       var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
       let expires = "; expires=" + date.toUTCString();
       document.cookie =
-        "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
+        "redirect_url" +
+        "=" +
+        ("/commande/mescommandes" || "/") +
+        expires +
+        "; path=/";
       //
-      // this.$router.push("/login");
-      this.$store.commit("toggleLoginPopup", true);
+      this.$router.push("/login");
+      // this.$store.commit("toggleLoginPopup", true);
     } else {
       this.notif.show = true;
       this.notif.type = "error";
