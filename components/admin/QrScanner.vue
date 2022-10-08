@@ -103,10 +103,13 @@ export default {
     this.isPending = false;
     if (resp1.data.success) {
       this.events = resp1.data.result.filter((evnt) => {
-        let evtTime = new Date(evnt.date).getTime();
-        // au moins un jour avant le spectacle
-        let openTime = Date.now() + 24 * 60 * 60 * 60 * 1000;
-        return openTime >= evtTime;
+        let eventDate = new Date(evnt.date).getTime();
+        let actualDate = new Date().getTime();
+        // au moins un jour avant le spectacle et 5h apres
+        return (
+          actualDate > eventDate - 24 * 60 * 60 * 1000 &&
+          actualDate < eventDate + 5 * 60 * 60 * 1000
+        );
       });
     }
   },
