@@ -160,6 +160,7 @@ export default {
       }, 0);
       //
       if (resp.data.success) {
+        this.$fetch();
         this.notif.show = true;
         this.notif.type = "success";
         this.notif.message = resp.data.message;

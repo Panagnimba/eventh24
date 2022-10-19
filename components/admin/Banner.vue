@@ -257,6 +257,7 @@ export default {
       this.isPending = false;
       //
       if (resp.data.success) {
+        this.$fetch();
         this.notif.show = true;
         this.notif.type = "success";
         this.notif.message = resp.data.message;

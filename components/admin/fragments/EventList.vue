@@ -109,8 +109,7 @@ export default {
     });
     this.isPending = false;
     if (resp1.data.success) {
-      console.log(resp1.data.result);
-      resp1.data.result.forEach((event) => {
+      resp1.data.result.reverse().forEach((event) => {
         let item = {
           createAt: new Date(event.publishDate).toLocaleString(),
           image: `<img src=${event.img} alt="Image"/>`,

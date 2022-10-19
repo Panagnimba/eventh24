@@ -7,105 +7,56 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="scan">
-        <div class="qrcode"></div>
-        <h3>Qr Code Scanning...</h3>
-        <div class="border"></div>
-    </div>
+    <button id="login">Login</button>
+    <button id="logout">Logout</button>
+    <div id="profiles">Profile</div>
+    
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.20/auth0-spa-js.production.js"></script>
     <script>
-        const barcodeDetector = new BarcodeDetector({
-  formats: ["code_39", "codabar", "ean_13"],
+        createAuth0Client({
+          domain: 'dev-50q3gfy3.us.auth0.com',
+    client_id: 'pRXBJfhMCTzyQciObExO1pSOOvnNsR8m',
+  redirect_uri: "http://localhost:5500/zindex.html",
+}).then(async (auth0) => {
+  // Assumes a button with id "login" in the DOM
+  const loginButton = document.getElementById("login");
+
+  loginButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    auth0.loginWithRedirect();
+  });
+
+  if (location.search.includes("state=") && 
+      (location.search.includes("code=") || 
+      location.search.includes("error="))) {
+    await auth0.handleRedirectCallback();
+    window.history.replaceState({}, document.title, "/");
+  }
+
+  // Assumes a button with id "logout" in the DOM
+  const logoutButton = document.getElementById("logout");
+
+  logoutButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    auth0.logout();
+  });
+
+  const isAuthenticated = await auth0.isAuthenticated();
+  const userProfile = await auth0.getUser();
+
+  // Assumes an element with id "profile" in the DOM
+  const profileElement = document.getElementById("profile");
+
+  if (isAuthenticated) {
+    profileElement.style.display = "block";
+    profileElement.innerHTML = `
+            <p>${userProfile.name}</p>
+            <img src="${userProfile.picture}" />
+          `;
+  } else {
+    profileElement.style.display = "none";
+  }
 });
-console.log(barcodeDetector)
     </script>
 </body>
 </html>
-<style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing: border-box;
-    }
-    body{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #111;
-    }
-    .scan{
-        position: relative;
-        display: flex;
-        flex-direction:column;
-        align-items: center;
-    }
-    .scan .qrcode{
-        position:relative;
-        width: 400px;
-        height: 400px;
-       
-        background:url('/static/Scanner/QR_Code01.png');
-        background-size:400px;
-   }
-   .scan .qrcode::before{
-    content: '';
-    position: absolute;
-    top:0;
-    left:0;
-    width: 100%;
-   
-    background: url("/static/Scanner/QR_Code02.png");
-    background-size:400px;
-    animation:animate 4s linear infinite;
-   }
-   .scan .qrcode::after{
-    content: "";
-    position: absolute;
-    inset: 20px;
-    width: calc(100% - 40px);
-    height:2px;
-    background-color: #35fd5c;
-    filter: drop-shadow(0 0 20px #35fd5c) drop-shadow(0 0 60px #35fd5c);
-    animation: animateLine 4s linear infinite;
-}
-@keyframes animateLine{
-    0%,100%{
-        top:20px;
-    }
-    50%{
-        top:calc(100% - 20px);
-    }
-}
-   @keyframes animate{
-    0%,100%{
-        height: 0%;
-    }
-    50%{
-        height: calc(100% - 20px);
-    }
-   }
-   .border{
-    position:absolute;
-    inset:0;
-    background: url("/static/Scanner/border.png");
-   background-size: 400px;
-   background-repeat: no-repeat;
-   animation:animateText 1.2s linear infinite;
-   
-   }
-   .scan h3{
-    text-transform:uppercase;
-    font-size: 2em;
-    color: white;
-    filter:drop-shadow(0 0 20px #fff) drop-shadow(0 0 60px #fff);
-    animation:animateText 0.5s steps(1) infinite;
-   }
-   @keyframes animateText {
-    0%{
-        opacity:0
-    }
-    50%{
-        opacity:1
-    }
-   }
-</style>

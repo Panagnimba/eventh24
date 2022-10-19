@@ -101,7 +101,7 @@ export default {
       this.isPending = false;
       // Remise à zero des champs
       this.user = {
-        tel: "",
+        username: "",
         password: "",
       };
       // setup notification
