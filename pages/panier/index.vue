@@ -135,7 +135,7 @@
                 <!-- else loop for all the bénéficiaires -->
                 <div
                   v-else
-                  v-for="(benef, k) in panierItem.qte"
+                  v-for="(benef, k) in parseInt(panierItem.qte)"
                   :key="k"
                   class="flex flex-col gap-1"
                 >
