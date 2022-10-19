@@ -2,16 +2,19 @@
   <div class="overflow-hidden">
     <header-top></header-top>
     <menu-items></menu-items>
-    <div class="w-full h-screen p-6 flex justify-center items-center">
-      <div v-for="(ct, i) in this.panierContent" :key="i">
-        <br />
-        <div>{{ ct }}</div>
-      </div>
-      <div
-        @click="sendCommande"
-        class="bg-third otext-white font-bold p-2 text-center rounded-md"
-      >
-        Passer la commande
+    <div class="h-screen">
+      <loader v-if="isPending"></loader>
+      <div v-else class="w-full h-screen p-6 flex justify-evenly items-center">
+        <div v-for="(ct, i) in this.panierContent" :key="i">
+          <br />
+          <div>{{ ct }}</div>
+        </div>
+        <div
+          @click="sendCommande"
+          class="bg-third text-white font-bold p-2 text-center rounded-md"
+        >
+          Passer la commande
+        </div>
       </div>
       <notification-notif
         v-if="this.notif.show"
@@ -27,6 +30,8 @@
 export default {
   data() {
     return {
+      //
+      isPending: false,
       notif: {
         show: false,
         type: "",
@@ -64,9 +69,11 @@ export default {
         client: this.$store.state.user,
         items: [...panier],
       };
+      this.isPending = true;
       let resp = await this.$axios.post("/user/saveCommande", commande, {
         headers: this.requestHeader,
       });
+      this.isPending = false;
       //
       if (resp.data.success) {
         this.notif.show = true;

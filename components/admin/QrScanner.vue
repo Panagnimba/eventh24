@@ -149,7 +149,8 @@ export default {
   },
   methods: {
     startScanner() {
-      this.qrScanner.start();
+      if (QrScanner.hasCamera()) this.qrScanner.start();
+      else console.log("Cet appareil ne dispose pas de camera");
       this.error = "";
       this.scanResult = {
         eventId: "null",
