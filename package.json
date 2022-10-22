@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "proxy": "https://serverticket.herokuapp.com",
+  "engines": {
+    "node": "15.10.0"
+  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
