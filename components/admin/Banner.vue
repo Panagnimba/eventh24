@@ -208,12 +208,13 @@ export default {
           bgImage: null,
           items: [],
         };
-
-      setTimeout(() => {
-        document.querySelector(
-          ".banner-wrapper"
-        ).style.backgroundImage = `url(${this.banner.bgImage})`;
-      }, 0);
+      if (this.banner) {
+        setTimeout(() => {
+          document.querySelector(
+            ".banner-wrapper"
+          ).style.backgroundImage = `url(${this.banner.bgImage})`;
+        }, 0);
+      }
       //
     } else {
       this.notif.show = true;

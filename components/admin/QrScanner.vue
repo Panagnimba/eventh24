@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex flex-col scanwrapper sm:flex-row">
+  <div class="h-screen flex flex-col scanwrapper sm:flex-row p-4">
     <div class="w-full h-full flex flex-col gap-2 justify-center items-center">
       <!-- Select event -->
 
@@ -13,7 +13,7 @@
       <!-- scanner -->
       <div class="scan w-72 h-72">
         <div class="qrcode w-full h-full">
-          <video ref="video" class="w-full h-full"></video>
+          <video ref="video" class="w-full h-full object-cover"></video>
         </div>
         <h3>Qr Code Scanning...</h3>
         <div class="scanborder"></div>

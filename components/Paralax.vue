@@ -5,19 +5,7 @@
       alt=""
       class="w-full Paralax-image object-cover"
     />
-    <div
-      id="typed"
-      class="
-        h-1/3
-        w-full
-        text-white
-        absolute
-        left-0
-        top-0
-        sm:top-0 sm:top-1/3 sm:text-3xl
-        p-4
-      "
-    ></div>
+    <div id="typed" class="h-1/3 w-full text-white sm:text-3xl p-4"></div>
   </div>
 </template>
 <script>
@@ -87,5 +75,12 @@ export default {
 }
 .Paralax-image {
   max-height: 90vh;
+}
+#typed {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5px;
 }
 </style>
