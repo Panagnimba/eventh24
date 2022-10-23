@@ -1,7 +1,10 @@
 <template>
   <div class="container bg-second flex gap-2 justify-between items-center py-1">
-    <div class="w-1/4 flex justify-start gap-2 items-center text-white">
-       <nuxt-link to="/" class="font-bold text-xl">
+    <div
+      v-if="this.bigScreen || (!this.bigScreen && !this.showSearchBox)"
+      class="flex justify-start gap-2 items-center text-white"
+    >
+      <nuxt-link to="/" class="font-bold text-lg">
         Vino<span class="text-third">Ticket</span>
         <!-- <img src="/logo.png" class="w-12" /> -->
       </nuxt-link>
@@ -89,13 +92,23 @@
       </div>
     </form>
     <!--  -->
-    <div class="w-1/4 flex justify-end text-white">
+    <div
+      v-if="this.bigScreen || (!this.bigScreen && !this.showSearchBox)"
+      class="flex justify-end text-white gap-3"
+    >
       <div
         class="flex flex-col items-center cursor-pointer"
         @click.prevent="connexionUrl"
       >
         <i class="fa-solid fa-user text-xl"></i>
         <span class="text-xs">Connexion</span>
+      </div>
+      <div
+        class="flex flex-col items-center cursor-pointer"
+        @click="getMyCommandes"
+      >
+        <i class="fa-solid fa-arrow-right-to-bracket text-xl"></i>
+        <span class="text-xs">MonTicket</span>
       </div>
     </div>
   </div>
@@ -108,11 +121,16 @@ export default {
       searchText: "",
       menuList: [],
       showSearchBox: true,
+      bigScreen: true,
     };
   },
   mounted() {
     if (window.innerWidth >= 200 && window.innerWidth <= 600) {
       this.showSearchBox = false;
+      this.bigScreen = false;
+    } else {
+      this.showSearchBox = true;
+      this.bigScreen = true;
     }
   },
   async fetch() {
@@ -145,6 +163,24 @@ export default {
         "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
       //
       this.$router.push("/login");
+    },
+    //
+    getMyCommandes() {
+      if (this.$store.state.user.token) {
+        this.$router.push("/commande/mescommandes");
+      } else {
+        // set redirect_url cookie
+        var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+        let expires = "; expires=" + date.toUTCString();
+        document.cookie =
+          "redirect_url" +
+          "=" +
+          ("/commande/mescommandes" || "/") +
+          expires +
+          "; path=/";
+        //
+        this.$store.commit("toggleLoginPopup", true);
+      }
     },
   },
 };
