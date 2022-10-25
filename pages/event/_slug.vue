@@ -381,7 +381,7 @@ export default {
           this.event.publishDate
         ).toLocaleString();
       }
-      // When error occurs
+      // When error occurs or event indisponible
       else {
         this.notFound = true;
         console.log("errrrrrrrrrorrr-----------", resp.data.message);

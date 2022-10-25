@@ -11,7 +11,7 @@
     >
       <!--  col 1-->
       <div class="flex flex-col gap-3 items-center">
-        <h1 class="text-xl font-bold text-gray-300">EVENT H24</h1>
+        <h1 class="text-xl font-bold text-gray-300">Vino Ticket</h1>
         <p class="text-justify text-gray-500">
           Un site de billetterie nouvelle génération vous offrant la possibilité
           d’acheter en ligne des tickets pour les événements de votre choix. Sa
