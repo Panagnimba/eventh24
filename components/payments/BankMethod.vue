@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-screen flex flex-col justify-center items-center">
+  <div class="w-full flex flex-col justify-center items-center">
     <loader v-if="isPending"></loader>
     <div
       v-show="!isPending"
@@ -110,7 +110,8 @@
         <div
           @click="sendCommande"
           class="
-            bg-third
+            bg-green-900
+            hover:bg-green-800
             text-white
             font-bold
             p-2
@@ -119,7 +120,7 @@
             cursor-pointer
           "
         >
-          Passer la commande
+          Valider ma commande
         </div>
       </div>
     </div>

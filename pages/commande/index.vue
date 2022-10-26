@@ -1,8 +1,8 @@
 <template>
-  <div class="h-full">
+  <div class="h-screen overflow-auto bg-general">
     <header-top></header-top>
     <menu-items></menu-items>
-    <div class="h-full">
+    <div>
       <loader v-if="isPending"></loader>
       <div v-else class="w-full h-full p-6 flex justify-evenly items-center">
         <payments-bank-method></payments-bank-method>
