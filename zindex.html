@@ -1,62 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .credit-card {
+  color: white;
+  font-family: Arial;
+  position: relative;
+}
+
+.credit-card .front,
+.credit-card .back {
+  background-color: hsl(200, 80%, 30%);
+  border: 1px solid hsl(200, 80%, 10%);
+  border-radius: .5rem;
+  width: 325px;
+  height: 150px;
+  padding: .75rem 1rem;
+  padding-bottom: 1.25rem;
+}
+
+.credit-card .front {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.credit-card .card-data-row {
+  display: flex;
+  margin-bottom: auto;
+}
+
+.credit-card .logo {
+  height: 40px;
+  width: 50px;
+  flex-grow: 0;
+}
+
+.credit-card .brand-name {
+  flex-grow: 1;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.credit-card .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.credit-card fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.credit-card fieldset legend {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  position: absolute;
+  top: -200vh;
+}
+
+.credit-card .horizontal-input-stack {
+  display: flex;
+  gap: .5rem;
+}
+
+.credit-card .cc-inputs input {
+  width: 4ch;
+  font-family: monospace;
+}
+
+.credit-card input,
+.credit-card select {
+  padding: .25em .5em;
+  border: none;
+  border-radius: .25em;
+  appearance: none;
+}
+
+.credit-card label {
+  font-size: .65rem;
+  text-transform: uppercase;
+}
+
+.credit-card .input-row {
+  display: flex;
+  gap: 2rem;
+}
+
+.credit-card .name-group {
+  flex-grow: 1;
+}
+
+.credit-card .front::before {
+  content: "";
+  position: absolute;
+  height: 400px;
+  width: 400px;
+  border-radius: 100%;
+  background-color: hsl(0, 0%, 100%, .15);
+  top: -250px;
+  left: -150px;
+  z-index: -1;
+}
+
+.credit-card .front::after {
+  content: "";
+  position: absolute;
+  height: 600px;
+  width: 600px;
+  border-radius: 100%;
+  background-color: hsl(0, 0%, 100%, .075);
+  bottom: -475px;
+  left: -150px;
+  z-index: -1;
+}
+
+.credit-card .back {
+  position: absolute;
+  top: 2rem;
+  left: 3.25rem;
+}
+
+.credit-card .stripe {
+  background-color: hsl(200, 80%, 10%);
+  height: 35px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.5rem;
+}
+
+.credit-card .cvc-group {
+  position: absolute;
+  bottom: 3.25rem;
+  right: .5rem;
+}
+
+.credit-card .cvc-input {
+  width: 3ch;
+  font-family: monospace;
+}
+  </style>
+  <script src="script.js" defer></script>
+  <title>Document</title>
 </head>
 <body>
-    <button id="login">Login</button>
-    <button id="logout">Logout</button>
-    <div id="profiles">Profile</div>
-    
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.20/auth0-spa-js.production.js"></script>
-    <script>
-        createAuth0Client({
-          domain: 'dev-50q3gfy3.us.auth0.com',
-    client_id: 'pRXBJfhMCTzyQciObExO1pSOOvnNsR8m',
-  redirect_uri: "http://localhost:5500/zindex.html",
-}).then(async (auth0) => {
-  // Assumes a button with id "login" in the DOM
-  const loginButton = document.getElementById("login");
-
-  loginButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    auth0.loginWithRedirect();
-  });
-
-  if (location.search.includes("state=") && 
-      (location.search.includes("code=") || 
-      location.search.includes("error="))) {
-    await auth0.handleRedirectCallback();
-    window.history.replaceState({}, document.title, "/");
-  }
-
-  // Assumes a button with id "logout" in the DOM
-  const logoutButton = document.getElementById("logout");
-
-  logoutButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    auth0.logout();
-  });
-
-  const isAuthenticated = await auth0.isAuthenticated();
-  const userProfile = await auth0.getUser();
-
-  // Assumes an element with id "profile" in the DOM
-  const profileElement = document.getElementById("profile");
-
-  if (isAuthenticated) {
-    profileElement.style.display = "block";
-    profileElement.innerHTML = `
-            <p>${userProfile.name}</p>
-            <img src="${userProfile.picture}" />
-          `;
-  } else {
-    profileElement.style.display = "none";
-  }
-});
-    </script>
+  <form class="credit-card">
+    <div class="front">
+      <div class="card-data-row">
+        <div class="brand-name">WDS Bank</div>
+        <img data-logo src="visa.svg" class="logo">
+      </div>
+      <fieldset class="form-group">
+        <legend>Card Number</legend>
+        <label for="cc-1">Card Number</label>
+        <div data-connected-inputs class="cc-inputs horizontal-input-stack">
+          <input type="tel" maxlength="4" aria-label="Credit Card First 4 Digits" id="cc-1" required pattern="[0-9]{4}" />
+          <input type="tel" maxlength="4" aria-label="Credit Card Second 4 Digits" required pattern="[0-9]{4}" />
+          <input type="tel" maxlength="4" aria-label="Credit Card Third 4 Digits" required pattern="[0-9]{4}" />
+          <input type="tel" maxlength="4" aria-label="Credit Card Last 4 Digits" required pattern="[0-9]{4}" />
+        </div>
+      </fieldset>
+      <div class="input-row">
+        <div class="form-group name-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" required>
+        </div>
+        <fieldset class="form-group">
+          <legend>Expiration</legend>
+          <label for="expiration-month">Expiration</label>
+          <div class="horizontal-input-stack">
+            <select id="expiration-month" aria-label="Expiration Month" required>
+              <option>01</option>
+              <option>02</option>
+              <option>03</option>
+              <option>04</option>
+              <option>05</option>
+              <option>06</option>
+              <option>07</option>
+              <option>08</option>
+              <option>09</option>
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+            </select>
+            <select id="expiration-year" aria-label="Expiration Year" required data-expiration-year></select>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="back">
+      <div class="stripe"></div>
+      <div class="form-group cvc-group">
+        <label for="cvc">CVC</label>
+        <input class="cvc-input" type="tel" maxlength="3" id="cvc" required />
+      </div>
+    </div>
+  </form>
 </body>
+<script>
+  const expirationSelect = document.querySelector("[data-expiration-year]")
+const logo = document.querySelector("[data-logo]")
+
+const currentYear = new Date().getFullYear()
+for (let i = currentYear; i < currentYear + 10; i++) {
+  const option = document.createElement("option")
+  option.value = i
+  option.innerText = i
+  expirationSelect.append(option)
+}
+
+document.addEventListener("keydown", e => {
+  const input = e.target
+  const key = e.key
+  if (!isConnectedInput(input)) return
+
+  switch (key) {
+    case "ArrowLeft": {
+      if (input.selectionStart === 0 && input.selectionEnd === 0) {
+        const prev = input.previousElementSibling
+        prev.focus()
+        prev.selectionStart = prev.value.length - 1
+        prev.selectionEnd = prev.value.length - 1
+        e.preventDefault()
+      }
+      break
+    }
+    case "ArrowRight": {
+      if (
+        input.selectionStart === input.value.length &&
+        input.selectionEnd === input.value.length
+      ) {
+        const next = input.nextElementSibling
+        next.focus()
+        next.selectionStart = 1
+        next.selectionEnd = 1
+        e.preventDefault()
+      }
+      break
+    }
+    case "Delete": {
+      if (
+        input.selectionStart === input.value.length &&
+        input.selectionEnd === input.value.length
+      ) {
+        const next = input.nextElementSibling
+        next.value = next.value.substring(1, next.value.length)
+        next.focus()
+        next.selectionStart = 0
+        next.selectionEnd = 0
+        e.preventDefault()
+      }
+      break
+    }
+    case "Backspace": {
+      if (input.selectionStart === 0 && input.selectionEnd === 0) {
+        const prev = input.previousElementSibling
+        prev.value = prev.value.substring(0, prev.value.length - 1)
+        prev.focus()
+        prev.selectionStart = prev.value.length
+        prev.selectionEnd = prev.value.length
+        e.preventDefault()
+      }
+      break
+    }
+    default: {
+      if (e.ctrlKey || e.altKey) return
+      if (key.length > 1) return
+      if (key.match(/^[^0-9]$/)) return e.preventDefault()
+
+      e.preventDefault()
+      onInputChange(input, key)
+    }
+  }
+})
+
+document.addEventListener("paste", e => {
+  const input = e.target
+  const data = e.clipboardData.getData("text")
+
+  if (!isConnectedInput(input)) return
+  if (!data.match(/^[0-9]+$/)) return e.preventDefault()
+
+  e.preventDefault()
+  onInputChange(input, data)
+})
+
+function onInputChange(input, newValue) {
+  const start = input.selectionStart
+  const end = input.selectionEnd
+  updateInputValue(input, newValue, start, end)
+  focusInput(input, newValue.length + start)
+  const firstFour = input
+    .closest("[data-connected-inputs]")
+    .querySelector("input").value
+
+  if (firstFour.startsWith("4")) {
+    logo.src = "visa.svg"
+  } else if (firstFour.startsWith("5")) {
+    logo.src = "mastercard.svg"
+  }
+}
+
+function updateInputValue(input, extraValue, start = 0, end = 0) {
+  const newValue = `${input.value.substring(
+    0,
+    start
+  )}${extraValue}${input.value.substring(end, 4)}`
+  input.value = newValue.substring(0, 4)
+  if (newValue > 4) {
+    const next = input.nextElementSibling
+    if (next == null) return
+    updateInputValue(next, newValue.substring(4))
+  }
+}
+
+function focusInput(input, dataLength) {
+  let addedChars = dataLength
+  let currentInput = input
+  while (addedChars > 4 && currentInput.nextElementSibling != null) {
+    addedChars -= 4
+    currentInput = currentInput.nextElementSibling
+  }
+  if (addedChars > 4) addedChars = 4
+
+  currentInput.focus()
+  currentInput.selectionStart = addedChars
+  currentInput.selectionEnd = addedChars
+}
+
+function isConnectedInput(input) {
+  const parent = input.closest("[data-connected-inputs]")
+  return input.matches("input") && parent != null
+}
+</script>
 </html>
