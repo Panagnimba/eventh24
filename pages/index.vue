@@ -4,6 +4,21 @@
     <header-top @filter="filterSearchHandle"></header-top>
     <!--// Filter based on the event categorie -->
     <menu-items @filter="filterHandle"></menu-items>
+    <a
+      href="http://www.alsacreations.com/css/img/picto-quiz.png"
+      download="newname.pdf"
+      target="_self"
+    >
+    </a>
+    <a
+      href="http://www.alsacreations.com/css/img/picto-quiz.png"
+      download="name-of-image"
+    >
+      <img
+        src="http://www.alsacreations.com/css/img/picto-quiz.png"
+        alt="your-image"
+      />
+    </a>
     <!--  -->
     <main-banner></main-banner>
     <div class="w-full h-full mt-8">

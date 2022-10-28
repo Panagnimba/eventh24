@@ -2,7 +2,7 @@
   <div class="w-screen h-full">
     <header-top></header-top>
     <menu-items></menu-items>
-    <div class="w-full min-h-screen">
+    <div class="w-full min-h-screen table-entire-wrapper">
       <div class="h-full border flex flex-col px-4">
         <h3 class="text-xl font-bold text-second text-center p-4">
           Mes commandes
@@ -132,7 +132,10 @@ export default {
           prix: cmmde.price + " fcfa",
           beneficiaire: cmmde.beneficiaireName,
           ticket: `<img src=${cmmde.qrcode} alt="Ticket"/>`,
-          print: `<div class="text-center"><a href=${cmmde.qrcode} download=${cmmde.intitule}><i class="fa-solid fa-print text-fourth"></i></a></div>`,
+          print: `<div class="text-center"><i class="fa-solid fa-print text-fourth printIcon cursor-pointer" 
+          data-url=${cmmde.qrcode} 
+          data-name=${cmmde.intitule.replace(/\s/g, "_")}></i>
+          </div>`,
         };
         this.rows.push(item);
       });
@@ -157,6 +160,29 @@ export default {
       this.notif.type = "error";
       this.notif.message = resp.data.message;
     }
+    //
+    document
+      .querySelector(".table-entire-wrapper")
+      .addEventListener("click", (e) => {
+        if (e.target.classList.contains("printIcon")) {
+          let url = e.target.getAttribute("data-url");
+          let ticketName = e.target.getAttribute("data-name");
+          //
+          fetch(url)
+            .then((resp) => resp.blob())
+            .then((blobobject) => {
+              const blob = window.URL.createObjectURL(blobobject);
+              const anchor = document.createElement("a");
+              anchor.style.display = "none";
+              anchor.href = blob;
+              anchor.download = ticketName;
+              document.body.appendChild(anchor);
+              anchor.click();
+              window.URL.revokeObjectURL(blob);
+            })
+            .catch(() => console.log("An error in downloading the file sorry"));
+        }
+      });
   },
 };
 </script>

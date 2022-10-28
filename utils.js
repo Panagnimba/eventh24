@@ -126,4 +126,17 @@ function getCookie(cookieName) {
 // 
 
 
+fetch(url)
+.then(resp => resp.blob())
+.then(blobobject => {
+    const blob = window.URL.createObjectURL(blobobject);
+    const anchor = document.createElement('a');
+    anchor.style.display = 'none';
+    anchor.href = blob;
+    anchor.download = "name.png";
+    document.body.appendChild(anchor);
+    anchor.click();
+    window.URL.revokeObjectURL(blob);
+})
+.catch(() => console.log('An error in downloadin gthe file sorry'));
 
