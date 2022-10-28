@@ -68,7 +68,7 @@
             </h3>
             <div class="flex justify-between m-2 text-xs sm:text-md">
               <span>{{ this.event.dateC }}</span>
-              <span>Ouverture des portes à {{ this.event.openTime }} mn</span>
+              <span>Ouverture des portes à {{ this.event.openTime }}mn</span>
             </div>
           </div>
           <!--  -->

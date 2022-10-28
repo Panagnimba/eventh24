@@ -9,10 +9,10 @@
             :key="i"
           >
             <img :src="item.img" alt="" class="h-full w-full object-cover" />
-            <div class="details">
+            <nuxt-link :to="`/event/${item.title}`" class="details">
               <span>Détails</span>
               <i class="fa-solid fa-angles-right"></i>
-            </div>
+            </nuxt-link>
           </div>
         </div>
       </div>

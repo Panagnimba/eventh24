@@ -89,15 +89,13 @@
           >
             <img :src="banner.items[idx].img" alt="" class="w-20 h-16" />
           </div>
-          <!-- title -->
-          <input
-            type="text"
-            name="itemtitles"
-            placeholder="Le Titre ici"
-            required
-            v-model="item.title"
-            class="h-full outline-none"
-          />
+          <!-- Banner item url -->
+          <select v-model="item.title" class="h-full border outline-none px-1">
+            <option disabled selected value="">Selectionner l'évènement</option>
+            <option v-for="(evt, i) in eventList" :key="i" :value="evt._id">
+              {{ evt.intitule }}
+            </option>
+          </select>
           <!-- Save and Remove btns -->
           <p class="justify-self-end flex items-center gap-2">
             <!-- save -->
@@ -181,6 +179,7 @@ export default {
           },
         ],
       },
+      eventList: [],
       requestHeader: {
         Authorization: `Bearer ${this.$store.state.admin.token}`,
         "Content-Type": "application/json",
@@ -220,6 +219,11 @@ export default {
       this.notif.show = true;
       this.notif.type = "error";
       this.notif.message = resp.data.message;
+    }
+    // list of event to link in details button
+    let resp1 = await this.$axios.get("/getEvents");
+    if (resp1.data.success) {
+      this.eventList = resp1.data.result;
     }
   },
 
