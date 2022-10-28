@@ -67,7 +67,7 @@ export default {
     if (resp.data.success) {
       this.eventList = resp.data.result.reverse();
       this.$store.commit("fillEventList", resp.data.result);
-      console.log(resp)
+      console.log(resp);
     }
   },
   methods: {
@@ -87,17 +87,39 @@ export default {
       //
       if (filterObjt.categorie == "All") {
         this.eventList = this.$store.state.eventList.filter((evt) => {
-          return evt.intitule
-            .toLowerCase()
-            .includes(filterObjt.searchText.toLowerCase());
+          return (
+            evt.intitule
+              .toLowerCase()
+              .includes(filterObjt.searchText.toLowerCase()) ||
+            evt.artiste
+              .toLowerCase()
+              .includes(filterObjt.searchText.toLowerCase()) ||
+            evt.lieu
+              .toLowerCase()
+              .includes(filterObjt.searchText.toLowerCase()) ||
+            evt.prices[0].price
+              .toString()
+              .toLowerCase()
+              .includes(filterObjt.searchText.toLowerCase())
+          );
         });
       } else
         this.eventList = this.$store.state.eventList.filter((evt) => {
           return (
             evt.categorie.includes(filterObjt.categorie) &&
-            evt.intitule
+            (evt.intitule
               .toLowerCase()
-              .includes(filterObjt.searchText.toLowerCase())
+              .includes(filterObjt.searchText.toLowerCase()) ||
+              evt.artiste
+                .toLowerCase()
+                .includes(filterObjt.searchText.toLowerCase()) ||
+              evt.lieu
+                .toLowerCase()
+                .includes(filterObjt.searchText.toLowerCase()) ||
+              evt.prices[0].price
+                .toString()
+                .toLowerCase()
+                .includes(filterObjt.searchText.toLowerCase()))
           );
         });
       //

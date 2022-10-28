@@ -37,6 +37,7 @@
         <span><i class="fa-solid fa-caret-down text-sm"></i></span>
         <select
           name="categorie"
+          @change="searchHandle"
           class="
             absolute
             left-0
@@ -64,7 +65,7 @@
       <div class="w-full" v-if="this.showSearchBox">
         <input
           type="search"
-          name="searchInput"
+          @input="searchHandle"
           required
           placeholder="Rechercher un évènement"
           class="px-2 border w-full h-full outline-none"
@@ -151,7 +152,7 @@ export default {
         categorie: this.categorie,
         searchText: this.searchText,
       });
-      this.searchText = "";
+      // this.searchText = "";
       this.$router.push("/");
     },
     //
