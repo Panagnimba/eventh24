@@ -56,7 +56,15 @@
     <hr class="w-full" />
     <div
       @click="$emit('commandeBtnClicked')"
-      class="bg-third text-white font-bold p-2 text-center rounded-md"
+      class="
+        bg-third
+        text-white
+        font-bold
+        p-2
+        text-center
+        rounded-md
+        cursor-pointer
+      "
     >
       Passer la commande
     </div>

@@ -4,8 +4,13 @@
     <menu-items></menu-items>
     <div>
       <loader v-if="isPending"></loader>
-      <div v-else class="w-full h-full p-6 flex justify-evenly items-center">
-        <payments-bank-method></payments-bank-method>
+      <div
+        v-else
+        class="w-full min-h-screen p-6 flex justify-evenly items-center"
+      >
+        <payments-bank-method
+          v-if="this.panierContent[0].paymentMethod == 'bank'"
+        ></payments-bank-method>
       </div>
     </div>
     <footer-comp></footer-comp>

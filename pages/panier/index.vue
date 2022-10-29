@@ -45,7 +45,7 @@
               <img
                 :src="panierItem.img"
                 alt="Event Image"
-                class="sm:h-24 sm:w-24 w-full h-36"
+                class="sm:h-24 sm:w-24 w-full h-36 object-cover"
               />
               <h1 class="text-md text-second text-center font-bold">
                 {{ panierItem.intitule }}

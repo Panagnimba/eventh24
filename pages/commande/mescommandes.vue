@@ -39,12 +39,31 @@
           </vue-good-table>
         </div>
       </div>
-
       <notification-notif
         v-if="this.notif.show"
         @closeNotif="notif.show = false"
         :notif="this.notif"
       ></notification-notif>
+      <!--  popup de telechargement -->
+      <div
+        v-if="isDownloading"
+        class="
+          w-full
+          h-full
+          flex flex-col
+          justify-center
+          items-center
+          gap-4
+          fixed
+          top-0
+          z-50
+          text-white
+          eventPopup
+        "
+      >
+        <i class="fa-solid fa-spinner text-5xl animate-spin"></i>
+        <div class="text-xl">Téléchargement en cours...</div>
+      </div>
     </div>
     <footer-comp></footer-comp>
   </div>
@@ -54,6 +73,7 @@ export default {
   data() {
     return {
       isPending: false,
+      isDownloading: false,
       columns: [
         {
           label: "Date",
@@ -90,10 +110,10 @@ export default {
           height: "50px",
         },
         {
-          label: "Imprimer",
+          label: "Télécharger",
           field: "print",
           html: true,
-          width: "100px",
+          width: "80px",
           height: "50px",
           sortable: false,
         },
@@ -163,12 +183,13 @@ export default {
     //
     document
       .querySelector(".table-entire-wrapper")
-      .addEventListener("click", (e) => {
+      .addEventListener("click", async (e) => {
         if (e.target.classList.contains("printIcon")) {
           let url = e.target.getAttribute("data-url");
           let ticketName = e.target.getAttribute("data-name");
           //
-          fetch(url)
+          this.isDownloading = true;
+          await fetch(url)
             .then((resp) => resp.blob())
             .then((blobobject) => {
               const blob = window.URL.createObjectURL(blobobject);
@@ -179,10 +200,18 @@ export default {
               document.body.appendChild(anchor);
               anchor.click();
               window.URL.revokeObjectURL(blob);
+              this.isDownloading = false;
             })
             .catch(() => console.log("An error in downloading the file sorry"));
+          this.isDownloading = false;
         }
       });
   },
 };
 </script>
+<style scoped>
+.eventPopup {
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+}
+</style>

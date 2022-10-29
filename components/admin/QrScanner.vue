@@ -115,9 +115,9 @@ export default {
   },
   async mounted() {
     this.qrScanner = await new QrScanner(this.$refs.video, async (result) => {
+      this.qrScanner.stop();
       this.scanResult.cmmdeId = result.split("|")[0];
       this.scanResult.eventId = result.split("|")[1];
-      this.qrScanner.stop();
       //
       if (this.scanResult.eventId == this.eventId) {
         this.isPending = true;
@@ -146,6 +146,7 @@ export default {
         this.error = "Evènement non disponible actuellement";
       }
     });
+    this.qrScanner.setInversionMode("both");
   },
   methods: {
     startScanner() {
