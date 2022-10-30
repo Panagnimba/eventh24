@@ -357,6 +357,7 @@ export default {
       },
       //
       showEventPopup: false,
+      setInterval: null, // will be used for clearInterval
     };
   },
   async fetch() {
@@ -424,8 +425,17 @@ export default {
     },
   },
   mounted() {
-    setInterval(() => {
-      this.countDown(this.event.date);
+    this.setInterval = setInterval(() => {
+      let eventDate = new Date(this.event.date).getTime();
+      let actualDate = new Date(this.event.gmtDate).getTime(); //gmtDate is get from the server
+      let gap = eventDate - actualDate;
+      if (gap > 0) {
+        this.countDown(gap); // function call to countdown
+        this.event.gmtDate += 1000; // moins 1 seconde à chaque seconde
+      } else {
+        this.isTimePass = true;
+        window.clearInterval(this.setInterval);
+      }
     }, 1000);
   },
   methods: {
@@ -435,37 +445,25 @@ export default {
     decreaseQte() {
       if (this.qte >= 2) this.qte--;
     },
-    countDown(date) {
-      let eventDate = new Date(date).getTime();
-      let actualDate = new Date().getTime();
-      let gap = eventDate - actualDate;
-
-      if (gap < 0) {
-        this.isTimePass = true;
-      }
+    countDown(gap) {
+      let sec = 1000;
+      let mn = sec * 60;
+      let hour = mn * 60;
+      let day = hour * 24;
       //
-      else {
-        let sec = 1000;
-        let mn = sec * 60;
-        let hour = mn * 60;
-        let day = hour * 24;
-        //
-        this.time.days = Math.floor(gap / day);
-        this.time.hours = Math.floor((gap % day) / hour);
-        this.time.minutes = Math.floor((gap % hour) / mn);
-        this.time.secondes = Math.floor((gap % mn) / sec);
-        //
-        this.time.days =
-          this.time.days < 10 ? "0" + this.time.days : this.time.days;
-        this.time.hours =
-          this.time.hours < 10 ? "0" + this.time.hours : this.time.hours;
-        this.time.minutes =
-          this.time.minutes < 10 ? "0" + this.time.minutes : this.time.minutes;
-        this.time.secondes =
-          this.time.secondes < 10
-            ? "0" + this.time.secondes
-            : this.time.secondes;
-      }
+      this.time.days = Math.floor(gap / day);
+      this.time.hours = Math.floor((gap % day) / hour);
+      this.time.minutes = Math.floor((gap % hour) / mn);
+      this.time.secondes = Math.floor((gap % mn) / sec);
+      //
+      this.time.days =
+        this.time.days < 10 ? "0" + this.time.days : this.time.days;
+      this.time.hours =
+        this.time.hours < 10 ? "0" + this.time.hours : this.time.hours;
+      this.time.minutes =
+        this.time.minutes < 10 ? "0" + this.time.minutes : this.time.minutes;
+      this.time.secondes =
+        this.time.secondes < 10 ? "0" + this.time.secondes : this.time.secondes;
     },
     drawTimeCircle(canvas, time, completeCircleValue) {
       const ctx = canvas.getContext("2d");
