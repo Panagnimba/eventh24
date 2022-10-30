@@ -119,7 +119,7 @@ export default {
       let eventDate = new Date(date).getTime();
       let actualDate = new Date(this.gmtDate).getTime(); //gmtDate is get from the server
       let gap = eventDate - actualDate;
-      this.gmtDate -= 1000; // moins 1 seconde à chaque seconde
+      this.gmtDate += 1000; // moins 1 seconde à chaque seconde
       if (gap < 0) {
         this.isTimePass = true;
       }
