@@ -98,6 +98,11 @@ export default {
           type: "String",
         },
         {
+          label: "Catégorie",
+          field: "catégorie",
+          type: "String",
+        },
+        {
           label: "Beneficiaire",
           field: "beneficiaire",
           type: "String",
@@ -113,8 +118,7 @@ export default {
           label: "Télécharger",
           field: "print",
           html: true,
-          width: "80px",
-          height: "50px",
+
           sortable: false,
         },
       ],
@@ -150,6 +154,7 @@ export default {
           image: `<img src=${cmmde.img} alt="Image"/>`,
           intitule: cmmde.intitule,
           prix: cmmde.price + " fcfa",
+          catégorie: cmmde.type,
           beneficiaire: cmmde.beneficiaireName,
           ticket: `<img src=${cmmde.qrcode} alt="Ticket"/>`,
           print: `<div class="text-center"><i class="fa-solid fa-print text-fourth printIcon cursor-pointer" 
