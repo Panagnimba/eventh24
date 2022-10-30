@@ -100,6 +100,7 @@ export default {
   data() {
     return {
       isTimePass: false, // to know if the event is still evailable or already pass
+      gmtDate: this.event.gmtDate, //gmtDate is get from the server to initialise coutdown with actual GMT date
       time: {
         days: "00",
         hours: "00",
@@ -116,9 +117,9 @@ export default {
   methods: {
     countDown(date) {
       let eventDate = new Date(date).getTime();
-      let actualDate = new Date().getTime();
+      let actualDate = new Date(this.gmtDate).getTime(); //gmtDate is get from the server
       let gap = eventDate - actualDate;
-
+      this.gmtDate -= 1000; // moins 1 seconde à chaque seconde
       if (gap < 0) {
         this.isTimePass = true;
       }

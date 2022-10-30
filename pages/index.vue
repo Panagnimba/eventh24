@@ -67,7 +67,7 @@ export default {
     if (resp.data.success) {
       this.eventList = resp.data.result.reverse();
       this.$store.commit("fillEventList", resp.data.result);
-      console.log(resp);
+      console.log(resp.data.result);
     }
   },
   methods: {
