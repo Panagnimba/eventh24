@@ -158,7 +158,7 @@ export default {
               this.$router.push("/");
             }
           });
-        }, 700);
+        }, 300);
       } else {
         this.notif.show = true;
         this.notif.type = "warning";

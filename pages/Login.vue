@@ -27,7 +27,7 @@
         >
           <div class="w-full">
             <input
-              type="text"
+              type="type"
               v-model="user.tel"
               required
               autofocus
@@ -129,7 +129,7 @@ export default {
               this.$router.push("/");
             }
           });
-        }, 700);
+        }, 300);
       } else {
         this.notif.show = true;
         this.notif.type = "warning";

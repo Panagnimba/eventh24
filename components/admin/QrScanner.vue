@@ -64,11 +64,17 @@
       <div class="w-full" v-if="this.isPending">
         <loader></loader>
       </div>
-      <!--  -->
-      <div v-else class="text-third font-bold text-center">
-        {{ this.error }}
+      <!-- La categorie du ticket normal couple vip ... -->
+      <div v-else class="text-2xl text-fourth text-center font-bold">
+        {{ this.eventCategorie }}
       </div>
     </div>
+    <!--  -->
+    <notification-notif
+      v-if="this.notif.show"
+      @closeNotif="notif.show = false"
+      :notif="this.notif"
+    ></notification-notif>
   </div>
 </template>
 <script>
@@ -78,16 +84,19 @@ export default {
     return {
       isPending: false, //loader
       qrScanner: null,
+      eventId: null,
+      eventCategorie: "josue",
+      events: [],
       //
       scanResult: {
         eventId: "null",
         cmmdeId: "null",
       },
-      error: "",
-      //
-      eventId: null,
-      events: [],
-
+      notif: {
+        show: false,
+        type: "",
+        message: "",
+      },
       //
       requestHeader: {
         Authorization: `Bearer ${this.$store.state.admin.token}`,
@@ -132,18 +141,27 @@ export default {
         if (resp.data.success) {
           // restart scannning process
           document.querySelector("#success_audio").play();
-          (this.scanResult = {
+          this.scanResult = {
             eventId: "null",
             cmmdeId: "null",
-          }),
-            this.qrScanner.start();
+          };
+          this.notif.show = true;
+          this.notif.type = "success";
+          this.notif.message = `${resp.data.message} ==> (${resp.data.categorie})`;
+          this.eventCategorie = resp.data.categorie;
+          //
+          this.qrScanner.start();
         } else {
           document.querySelector("#error_audio").play();
-          this.error = resp.data.message;
+          this.notif.show = true;
+          this.notif.type = "error";
+          this.notif.message = resp.data.message;
         }
       } else {
         document.querySelector("#error_audio").play();
-        this.error = "Evènement non disponible actuellement";
+        this.notif.show = true;
+        this.notif.type = "warning";
+        this.notif.message = "Evènement non disponible actuellement";
       }
     });
     this.qrScanner.setInversionMode("both");
@@ -152,7 +170,7 @@ export default {
     startScanner() {
       if (QrScanner.hasCamera()) this.qrScanner.start();
       else console.log("Cet appareil ne dispose pas de camera");
-      this.error = "";
+      this.eventCategorie = "";
       this.scanResult = {
         eventId: "null",
         cmmdeId: "null",
