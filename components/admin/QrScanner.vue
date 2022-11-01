@@ -85,7 +85,7 @@ export default {
       isPending: false, //loader
       qrScanner: null,
       eventId: null,
-      eventCategorie: "josue",
+      eventCategorie: "",
       events: [],
       //
       scanResult: {
