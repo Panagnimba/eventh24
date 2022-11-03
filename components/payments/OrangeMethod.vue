@@ -1,5 +1,15 @@
 <template>
-  <div class="w-full flex flex-col justify-center items-center relative">
+  <div
+    class="
+      w-full
+      flex flex-col
+      justify-center
+      items-center
+      relative
+      lg:w-80
+      xl:w-96
+    "
+  >
     <div class="wrapper">
       <div class="header">
         <ul>
@@ -22,7 +32,7 @@
       </div>
       <!--  -->
       <form action="" @submit.prevent="">
-        <div class="form_wrap lg:w-80 xl:w-96">
+        <div class="form_wrap">
           <div class="form_1 data_info">
             <!-- <div class="flex flex-col items-center">
               <img src="/logo.png" alt="" class="w-16 h-16 rounded-full" />
@@ -46,7 +56,7 @@
           </div>
           <div class="form_2 data_info" style="display: none">
             <p class="text-justify text-sm pb-5">
-              Veuillez composer ce Numéro
+              Veuillez le
               <a :href="`tel:*866*4*6*${this.getTotal}#`" class="text-blue-900">
                 {{ `*866*4*6*${this.getTotal}#` }}
               </a>
@@ -128,6 +138,7 @@ export default {
     },
   },
   mounted() {
+    // calcul du total
     let total = 0;
     this.$store.state.panier.forEach((elmt) => {
       total += elmt.qte * elmt.price;
@@ -248,8 +259,8 @@ export default {
 .wrapper {
   max-width: 100%;
   background: white;
-  margin: 100px auto 0;
-  padding: 50px;
+  margin: 30px;
+  padding: 30px;
   border-radius: 5px;
 }
 
@@ -316,15 +327,15 @@ export default {
 }
 
 .wrapper .form_wrap h2 {
-  color: var(--second);
+  color: var(--primary);
   text-align: center;
   text-transform: uppercase;
   margin-bottom: 20px;
   font-weight: bold;
+  font-size: 14px;
 }
 
 .wrapper .form_wrap .input_wrap {
-  width: 350px;
   max-width: 100%;
   margin: 0 auto 20px;
 }

@@ -13,7 +13,7 @@
     "
     ref="wrapper"
   >
-    <div class="w-full sm:w-1/3 lg:w-1/4 bg-white rounded-lg text-lg">
+    <div class="w-full sm:w-1/3 lg:w-1/4 bg-white rounded-lg text-lg m-5">
       <div
         v-if="this.notif.type == 'confirm'"
         class="flex flex-col justify-center items-center gap-4 p-2 text-center"
