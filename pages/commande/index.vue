@@ -8,9 +8,10 @@
         v-else
         class="w-full min-h-screen p-6 flex justify-evenly items-center"
       >
-        <payments-bank-method
+        <!-- <payments-bank-method
           v-if="this.panierContent[0].paymentMethod == 'bank'"
-        ></payments-bank-method>
+        ></payments-bank-method> -->
+        <payments-orange-method></payments-orange-method>
       </div>
     </div>
     <footer-comp></footer-comp>
@@ -35,15 +36,15 @@ export default {
       return this.$store.state.panier;
     },
   },
+  // if no products in the cart or products exists in the cart
+  // user not authenticated
   middleware({ store, redirect }) {
-    // if no products in the cart or products exists in the cart
-    // user not authenticated
-    // if (
-    //   store.state.panier.length == 0 ||
-    //   store.state.user.token == null ||
-    //   store.state.user.prenom.length == 0
-    // )
-    //   return redirect("/");
+    if (
+      store.state.panier.length <= 0 ||
+      store.state.user.token == null ||
+      store.state.user.prenom.length == 0
+    )
+      return redirect("/panier");
   },
 };
 </script>
