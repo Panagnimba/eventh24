@@ -22,7 +22,7 @@
       </div>
       <!--  -->
       <form action="" @submit.prevent="">
-        <div class="form_wrap">
+        <div class="form_wrap lg:w-80 xl:w-96">
           <div class="form_1 data_info">
             <!-- <div class="flex flex-col items-center">
               <img src="/logo.png" alt="" class="w-16 h-16 rounded-full" />
@@ -44,11 +44,11 @@
               </div>
             </div>
           </div>
-          <div class="form_2 data_info w-80" style="display: none">
+          <div class="form_2 data_info" style="display: none">
             <p class="text-justify text-sm pb-5">
               Veuillez composer ce Numéro
-              <a href="tel:*866*4*6*montant#" class="text-third">
-                *866*4*6*montant#
+              <a :href="`tel:*866*4*6*${this.getTotal}#`" class="text-blue-900">
+                {{ `*866*4*6*${this.getTotal}#` }}
               </a>
               pour générer votre code de commande
             </p>
@@ -80,8 +80,8 @@
             <button type="button" class="btn_next">Next</button>
           </div>
           <div class="common_btns form_2_btns" style="display: none">
-            <button type="submit" class="w-80 btn_next btn_done">
-              Vérifier
+            <button type="submit" class="w-full btn_next btn_done">
+              Valider
             </button>
           </div>
         </div>
@@ -102,6 +102,7 @@ export default {
     return {
       //
       isPending: false,
+      getTotal: 0,
       paymentInfo: {
         userTel: "",
         userOtp: "",
@@ -118,6 +119,7 @@ export default {
     panierContent() {
       return this.$store.state.panier;
     },
+
     requestHeader() {
       return {
         Authorization: `Bearer ${this.$store.state.user.token}`,
@@ -126,6 +128,12 @@ export default {
     },
   },
   mounted() {
+    let total = 0;
+    this.$store.state.panier.forEach((elmt) => {
+      total += elmt.qte * elmt.price;
+    });
+    this.getTotal = total;
+
     if (this.panierContent.length <= 0) {
       this.$router.push("/panier");
     }
@@ -368,7 +376,7 @@ export default {
 .wrapper .btns_wrap .common_btns button {
   border: 0;
   padding: 12px 15px;
-  background: var(--fourth);
+  background: var(--third);
   color: white;
   justify-content: center;
   display: flex;
@@ -386,7 +394,7 @@ export default {
 
 .wrapper .btns_wrap .common_btns button.btn_next:hover,
 .wrapper .btns_wrap .common_btns button.btn_done:hover {
-  background: var(--fourth);
+  background: var(--third);
   opacity: 0.9;
 }
 
