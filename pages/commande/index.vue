@@ -35,14 +35,14 @@ export default {
   },
   // if no products in the cart or products exists in the cart
   // user not authenticated
-  // middleware({ store, redirect }) {
-  //   if (
-  //     store.state.panier.length <= 0 ||
-  //     store.state.user.token == null ||
-  //     store.state.user.prenom.length == 0
-  //   )
-  //     return redirect("/panier");
-  // },
+  middleware({ store, redirect }) {
+    if (
+      store.state.panier.length <= 0 ||
+      store.state.user.token == null ||
+      store.state.user.prenom.length == 0
+    )
+      return redirect("/panier");
+  },
 };
 </script>
 <style scoped>
