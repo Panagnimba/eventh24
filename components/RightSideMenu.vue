@@ -6,7 +6,7 @@
   >
     <div
       class="
-        w-64
+        w-60
         h-screen
         bg-white
         flex flex-col
