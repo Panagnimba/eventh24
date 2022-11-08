@@ -149,7 +149,7 @@ export default {
     if (resp.data.success) {
       resp.data.result.reverse().forEach((cmmde) => {
         let item = {
-          date: new Date(cmmde.commandeDate).toLocaleString(),
+          date: new Date(cmmde.eventDate).toLocaleString(),
           image: `<img src=${cmmde.img} alt="Image"/>`,
           intitule: cmmde.intitule,
           prix: cmmde.price + " fcfa",
@@ -206,7 +206,11 @@ export default {
               window.URL.revokeObjectURL(blob);
               this.isDownloading = false;
             })
-            .catch(() => console.log("An error in downloading the file sorry"));
+            .catch(() => {
+              this.notif.show = true;
+              this.notif.type = "error";
+              this.notif.message = "An error in downloading the file sorry";
+            });
           this.isDownloading = false;
         }
       });
