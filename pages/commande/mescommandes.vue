@@ -80,18 +80,18 @@ export default {
           field: "date",
           type: "String",
         },
-        {
-          label: "Image",
-          field: "image",
-          html: true,
-          width: "80px",
-          height: "50px",
-        },
-        {
-          label: "Intitule",
-          field: "intitule",
-          type: "String",
-        },
+        // {
+        //   label: "Image",
+        //   field: "image",
+        //   html: true,
+        //   width: "80px",
+        //   height: "50px",
+        // },
+        // {
+        //   label: "Intitule",
+        //   field: "intitule",
+        //   type: "String",
+        // },
         {
           label: "Prix",
           field: "prix",
@@ -102,16 +102,15 @@ export default {
           field: "catégorie",
           type: "String",
         },
-        {
-          label: "Beneficiaire",
-          field: "beneficiaire",
-          type: "String",
-        },
+        // {
+        //   label: "Beneficiaire",
+        //   field: "beneficiaire",
+        //   type: "String",
+        // },
         {
           label: "Ticket",
           field: "ticket",
           html: true,
-          width: "80px",
           height: "50px",
         },
         {
@@ -157,7 +156,7 @@ export default {
           catégorie: cmmde.type,
           beneficiaire: cmmde.beneficiaireName,
           ticket: `<img src=${cmmde.qrcode} alt="Ticket"/>`,
-          print: `<div class="text-center"><i class="fa-solid fa-print text-fourth printIcon cursor-pointer" 
+          print: `<div class="text-center"><i class="fa-solid fa-print text-fourth printIcon cursor-pointer p-1" 
           data-url=${cmmde.qrcode} 
           data-name=${cmmde.intitule.replace(/\s/g, "_")}></i>
           </div>`,
