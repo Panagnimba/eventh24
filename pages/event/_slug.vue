@@ -344,7 +344,6 @@ export default {
       event: {},
       notFound: false, //
       isTimePass: false, // to know if the event is still evailable or already pass
-      relatedEvent: [],
       type: "Normal",
       qte: 1,
       price: 100,
@@ -370,9 +369,6 @@ export default {
       this.isPending = false;
       if (resp.data.success) {
         this.event = resp.data.result;
-        this.relatedEvent = this.$store.state.eventList.filter(
-          (item) => item.categorie == this.event.categorie
-        );
         //
         this.type = this.event.prices[0].type;
         this.price = this.event.prices[0].price;
@@ -422,6 +418,11 @@ export default {
         this.price = prix[0] && prix[0].price;
         return this.qte * this.price;
       }
+    },
+    relatedEvent() {
+      return this.$store.state.eventList.filter(
+        (item) => item.categorie == this.event.categorie
+      );
     },
   },
   mounted() {

@@ -57,7 +57,7 @@ export default {
     return {
       //
       isPending: false,
-      eventList: this.$store.state.eventList,
+      eventList: [], //this.$store.state.eventList,
     };
   },
   async fetch() {
@@ -67,7 +67,7 @@ export default {
     if (resp.data.success) {
       this.eventList = resp.data.result.reverse();
       this.$store.commit("fillEventList", resp.data.result);
-      console.log(resp.data.result);
+      // console.log(resp.data.result);
     }
   },
   methods: {
