@@ -27,7 +27,7 @@
         >
           <div class="w-full">
             <input
-              type="type"
+              type="tel"
               v-model="user.tel"
               required
               autofocus
