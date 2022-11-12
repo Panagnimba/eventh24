@@ -94,7 +94,6 @@
       </div>
       <!-- Main content -->
       <div class="w-full h-screen bg-white overflow-auto no-scrollbar">
-        <div @click="changeToken">changeeeee token</div>
         <component :is="this.mainComponent" />
       </div>
     </div>
@@ -110,9 +109,6 @@ export default {
   },
 
   methods: {
-    changeToken() {
-      this.$store.commit("authenticateAdmin", this.$store.state.user);
-    },
     selectMenu(e) {
       let clickedMenu;
       if (e.target.classList.contains("menuItem")) clickedMenu = e.target;
