@@ -137,15 +137,9 @@ export default {
     });
     this.isPending = false;
     if (resp1.data.success) {
-      this.events = resp1.data.result.filter((evnt) => {
-        let eventDate = new Date(evnt.date).getTime();
-        let actualDate = new Date().getTime();
-        // au moins un jour avant le spectacle et 5h apres
-        return (
-          actualDate > eventDate - 24 * 60 * 60 * 1000 &&
-          actualDate < eventDate + 5 * 60 * 60 * 1000
-        );
-      });
+      this.events = resp1.data.result;
+    } else {
+      this.$router.push("/partner/login");
     }
   },
   async mounted() {
@@ -157,7 +151,7 @@ export default {
       if (this.scanResult.eventId == this.eventId) {
         this.isPending = true;
         let resp = await this.$axios.post(
-          `/eventh24/deleteCommande`,
+          "/partner/deleteCommande",
           { commandeId: this.scanResult.cmmdeId, eventId: this.eventId },
           {
             headers: this.requestHeader,
@@ -190,7 +184,7 @@ export default {
         this.notif.message = "Evènement non disponible actuellement";
       }
     });
-    this.qrScanner.setInversionMode("both");
+    // this.qrScanner.setInversionMode("both");
   },
   methods: {
     startScanner() {

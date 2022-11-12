@@ -246,6 +246,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 /* Menu component */
 .small-menu-item {

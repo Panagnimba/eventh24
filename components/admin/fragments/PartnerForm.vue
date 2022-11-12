@@ -17,10 +17,10 @@
             rounded-tl-xl rounded-tr-xl
           "
         >
-          PARTENAIRE
+          NOUVEAU PARTENAIRE
         </h1>
         <form
-          @submit.prevent="partnerLogin"
+          @submit.prevent="createNewPartner"
           action=""
           method="post"
           class="lg:w-80 xl:w-96 flex flex-col items-center gap-4 my-4 px-6"
@@ -31,7 +31,7 @@
               name="username"
               v-model="partner.username"
               required
-              placeholder="Votre Identifiant"
+              placeholder="Identifiant du partenaire"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
           </div>
@@ -41,14 +41,14 @@
               name="password"
               v-model="partner.password"
               required
-              placeholder="Votre mot de passe"
+              placeholder="Mot de passe du partenaire"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
           </div>
           <div class="w-full">
             <input
               type="submit"
-              value="SE CONNECTER"
+              value="CREER"
               class="
                 bg-second
                 text-white
@@ -63,35 +63,58 @@
         </form>
       </div>
     </div>
+    <!--  -->
+    <notification-notif
+      v-if="this.notif.show"
+      @closeNotif="notif.show = false"
+      :notif="this.notif"
+    ></notification-notif>
     <footer-comp></footer-comp>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
+      isPending: false,
       partner: {
         username: "",
         password: "",
       },
-      isPending: false,
+      notif: {
+        show: false,
+        type: "",
+        message: "",
+      },
+      //
+      requestHeader: {
+        Authorization: `Bearer ${this.$store.state.admin.token}`,
+        "Content-Type": "application/json",
+      },
     };
   },
   methods: {
-    async partnerLogin() {
+    async createNewPartner() {
       this.isPending = true;
-      let resp = await this.$axios.post("/partnerLoggin", this.partner);
-      this.partner = { username: "", password: "" }; //remettre les form input a vide
+      let resp = await this.$axios.post(
+        "/eventh24/createNewPartner",
+        this.partner,
+        {
+          headers: this.requestHeader,
+        }
+      );
       this.isPending = false;
-
       if (resp.data.success) {
-        let auth = {
-          isAuthenticated: true,
-          token: resp.data.token,
-        };
-        //commit state to authenticate partner
-        this.$store.commit("authenticatePartner", auth);
-        this.$router.push("/partner/scanner");
+        this.notif.show = true;
+        this.notif.type = "success";
+        this.notif.message = resp.data.message;
+        //remettre les form input a vide
+        this.partner = { username: "", password: "" };
+      } else {
+        this.notif.show = true;
+        this.notif.type = "error";
+        this.notif.message = resp.data.message;
       }
     },
   },

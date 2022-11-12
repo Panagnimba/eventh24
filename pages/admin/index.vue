@@ -76,6 +76,12 @@
             <i class="fa-solid fa-camera text-xl"></i>
             <div v-if="this.rightSideWidth > 16">camera</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="users">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-users text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Users</div>
+          </div>
         </div>
 
         <!-- Settings -->
@@ -88,6 +94,7 @@
       </div>
       <!-- Main content -->
       <div class="w-full h-screen bg-white overflow-auto no-scrollbar">
+        <div @click="changeToken">changeeeee token</div>
         <component :is="this.mainComponent" />
       </div>
     </div>
@@ -103,6 +110,9 @@ export default {
   },
 
   methods: {
+    changeToken() {
+      this.$store.commit("authenticateAdmin", this.$store.state.user);
+    },
     selectMenu(e) {
       let clickedMenu;
       if (e.target.classList.contains("menuItem")) clickedMenu = e.target;
@@ -129,6 +139,8 @@ export default {
         this.mainComponent = "admin-paralax";
       else if (item.title.toLowerCase().includes("camera"))
         this.mainComponent = "admin-qrScanner";
+      else if (item.title.toLowerCase().includes("users"))
+        this.mainComponent = "admin-users";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
