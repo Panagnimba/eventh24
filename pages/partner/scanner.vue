@@ -126,7 +126,7 @@ export default {
   middleware({ store, redirect }) {
     if (
       store.state.partner.isAuthenticated == false ||
-      store.state.partne.token == null
+      store.state.partner.token == null
     )
       return redirect("/partner/login");
   },
