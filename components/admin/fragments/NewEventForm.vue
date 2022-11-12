@@ -348,9 +348,11 @@ export default {
       this.event.prices.push(newPrix);
     },
     deletePrix(id) {
-      this.event.prices = this.event.prices.filter(
-        (item) => item !== this.event.prices[id]
-      );
+      if (this.event.prices.length > 1) {
+        this.event.prices = this.event.prices.filter(
+          (item) => item !== this.event.prices[id]
+        );
+      }
     },
     // ---------- Gestion upload image -------------//
     uploadBtnClicked(ClickedButton) {

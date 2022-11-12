@@ -11,6 +11,11 @@ export const state = ()=>({
         isAuthenticated:false,
         token:null
     },
+    // partner for scanning tickets
+    partner:{
+        isAuthenticated:false,
+        token:null
+    },
     eventList:[],
     panier:[]
 })
@@ -26,6 +31,9 @@ export const mutations={
     },
     authenticateAdmin(state,val){
         state.admin = val
+    },
+    authenticatePartner(state,val){
+        state.partner = val
     },
     authenticateUser(state,val){
         state.user = val

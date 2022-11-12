@@ -1,80 +1,98 @@
 <template>
-  <div class="h-screen flex flex-col scanwrapper sm:flex-row p-4">
-    <div class="w-full h-full flex flex-col gap-2 justify-center items-center">
-      <!-- Select event -->
-
-      <select class="w-72 p-2" v-model="eventId">
-        <option :value="null" disabled>Selectionner l'évènement</option>
-        <option v-for="(evt, k) in this.events" :key="k" :value="evt._id">
-          {{ evt.intitule }}
-        </option>
-      </select>
-
-      <!-- scanner -->
-      <div class="scan w-72 h-72">
-        <div class="qrcode w-full h-full">
-          <video ref="video" class="w-full h-full object-cover"></video>
-        </div>
-        <h3>Qr Code Scanning...</h3>
-        <div class="scanborder"></div>
-      </div>
-      <!--  -->
-      <div class="w-72 flex justify-between" v-if="this.eventId">
-        <button
-          @click="startScanner"
-          class="bg-fourth text-white px-8 font-semibold p-1 rounded-xl"
-        >
-          Start
-        </button>
-        <button
-          @click="stopScanner"
-          class="bg-third text-white px-8 font-semibold p-1 rounded-xl"
-        >
-          Stop
-        </button>
-      </div>
-      <!--  -->
-
-      <audio id="success_audio" src="/Scanner/beep_success.wav" />
-      <audio id="error_audio" src="/Scanner/beep_error.mp3" />
-    </div>
-    <!-- result -->
-    <div class="w-full flex flex-col gap-3 bg-general h-1/2 p-2">
-      <div class="w-full flex flex-col gap-3 p-2">
-        <div class="font-bold text-second text-sm">
-          CMDID:
-          <span class="text-third px-2">{{ this.scanResult.cmmdeId }}</span>
-        </div>
-        <div class="font-bold text-second text-sm">
-          EVTID:
-          <span class="text-third px-2">{{ this.scanResult.eventId }}</span>
-        </div>
-
-        <!-- event -->
-        <div class="font-bold text-second text-sm">
-          EVENT:
-          <span class="text-third px-2">{{ this.eventId }}</span>
-        </div>
-        <div class="font-bold text-second text-sm">
-          EVENT:
-          <span class="text-third px-2">{{ this.eventId }}</span>
-        </div>
-      </div>
-      <!-- loader -->
-      <div class="w-full" v-if="this.isPending">
-        <loader></loader>
-      </div>
-      <!-- La categorie du ticket normal couple vip ... -->
-      <div v-else class="text-2xl text-fourth text-center font-bold">
-        {{ this.eventCategorie }}
+  <div class="w-full h-full overflow-hidden">
+    <!-- partner header -->
+    <div
+      class="flex justify-between items-center bg-primary text-white px-4 py-1"
+    >
+      <nuxt-link to="/" class="font-bold text-xl">
+        Vino<span class="text-third">Ticket</span>
+        <!-- <img src="/logo.png" class="w-12" /> -->
+      </nuxt-link>
+      <div
+        @click="deconnexion"
+        class="flex flex-col items-center gap-1 cursor-pointer"
+      >
+        <i class="fa-solid fa-power-off"></i>
+        <span class="text-xs">Deconnexion</span>
       </div>
     </div>
-    <!--  -->
-    <notification-notif
-      v-if="this.notif.show"
-      @closeNotif="notif.show = false"
-      :notif="this.notif"
-    ></notification-notif>
+    <div class="h-screen flex flex-col scanwrapper sm:flex-row p-4">
+      <div
+        class="w-full h-full flex flex-col gap-2 justify-center items-center"
+      >
+        <!-- Select event -->
+        <select class="w-72 p-2" v-model="eventId">
+          <option :value="null" disabled>Selectionner l'évènement</option>
+          <option v-for="(evt, k) in this.events" :key="k" :value="evt._id">
+            {{ evt.intitule }}
+          </option>
+        </select>
+        <!-- scanner -->
+        <div class="scan w-72 h-72">
+          <div class="qrcode w-full h-full">
+            <video ref="video" class="w-full h-full object-cover"></video>
+          </div>
+          <h3>Qr Code Scanning...</h3>
+          <div class="scanborder"></div>
+        </div>
+        <!--  -->
+        <div class="w-72 flex justify-between" v-if="this.eventId">
+          <button
+            @click="startScanner"
+            class="bg-fourth text-white px-8 font-semibold p-1 rounded-xl"
+          >
+            Start
+          </button>
+          <button
+            @click="stopScanner"
+            class="bg-third text-white px-8 font-semibold p-1 rounded-xl"
+          >
+            Stop
+          </button>
+        </div>
+        <!--  -->
+
+        <audio id="success_audio" src="/Scanner/beep_success.wav" />
+        <audio id="error_audio" src="/Scanner/beep_error.mp3" />
+      </div>
+      <!-- result -->
+      <div class="w-full flex flex-col gap-3 bg-general h-1/2 p-2">
+        <div class="w-full flex flex-col gap-3 p-2">
+          <div class="font-bold text-second text-sm">
+            CMDID:
+            <span class="text-third px-2">{{ this.scanResult.cmmdeId }}</span>
+          </div>
+          <div class="font-bold text-second text-sm">
+            EVTID:
+            <span class="text-third px-2">{{ this.scanResult.eventId }}</span>
+          </div>
+
+          <!-- event -->
+          <div class="font-bold text-second text-sm">
+            EVENT:
+            <span class="text-third px-2">{{ this.eventId }}</span>
+          </div>
+          <div class="font-bold text-second text-sm">
+            EVENT:
+            <span class="text-third px-2">{{ this.eventId }}</span>
+          </div>
+        </div>
+        <!-- loader -->
+        <div class="w-full" v-if="this.isPending">
+          <loader></loader>
+        </div>
+        <!-- La categorie du ticket normal couple vip ... -->
+        <div v-else class="text-2xl text-fourth text-center font-bold">
+          {{ this.eventCategorie }}
+        </div>
+      </div>
+      <!--  -->
+      <notification-notif
+        v-if="this.notif.show"
+        @closeNotif="notif.show = false"
+        :notif="this.notif"
+      ></notification-notif>
+    </div>
   </div>
 </template>
 <script>
@@ -99,14 +117,22 @@ export default {
       },
       //
       requestHeader: {
-        Authorization: `Bearer ${this.$store.state.admin.token}`,
+        Authorization: `Bearer ${this.$store.state.partner.token}`,
         "Content-Type": "application/json",
       },
     };
   },
+  // Check partner login
+  middleware({ store, redirect }) {
+    if (
+      store.state.partner.isAuthenticated == false ||
+      store.state.partne.token == null
+    )
+      return redirect("/partner/login");
+  },
   async fetch() {
     this.isPending = true;
-    let resp1 = await this.$axios.get("/eventh24/getScanEvents", {
+    let resp1 = await this.$axios.get("/partner/getScanEvents", {
       headers: this.requestHeader,
     });
     this.isPending = false;
@@ -182,6 +208,15 @@ export default {
         eventId: "null",
         cmmdeId: "null",
       };
+    },
+    deconnexion() {
+      let auth = {
+        isAuthenticated: false,
+        token: null,
+      };
+      //commit state to logout admin
+      this.$store.commit("authenticatePartner", auth);
+      this.$router.push("/partner/login");
     },
   },
 };
