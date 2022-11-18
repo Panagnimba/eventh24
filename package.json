@@ -1,8 +1,8 @@
 {
-  "name": "eventh24",
+  "name": "vinoticket",
   "version": "1.0.0",
   "private": true,
-  "proxy": "https://serverticket.herokuapp.com",
+  "proxy": "https://vinoticket.herokuapp.com/",
   "engines": {
     "node": "15.10.0"
   },

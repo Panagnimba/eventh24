@@ -1,8 +1,8 @@
-let server_url = process.env.NODE_ENV !== 'production' ? 'http://localhost:9000' : 'https://serverticket.herokuapp.com';
+let server_url = process.env.NODE_ENV !== 'production' ? 'http://localhost:9000' : 'https://vinoticket.herokuapp.com/';
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'EventH24',
+    title: 'VINOTICKET',
     htmlAttrs: {
       lang: 'en'
     },
