@@ -97,7 +97,7 @@
               <!-- Beneficiaires form goes here-->
               <div class="w-full flex flex-col gap-2 mt-2 pt-2">
                 <!-- useSameNameInfo Selector-->
-                <div class="flex items-center gap-2">
+                <div v-if="panierItem.qte > 1" class="flex items-center gap-2">
                   <input
                     type="checkbox"
                     class="w-4 h-4"
@@ -110,7 +110,7 @@
                     :for="`sameNameInfo- ${k}`"
                     class="text-sm text-second"
                   >
-                    Je désire utiliser le même nom
+                    Utiliser le même nom
                   </label>
                 </div>
                 <!-- useSameNameInfo unique form -->

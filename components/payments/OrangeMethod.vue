@@ -56,21 +56,21 @@
           </div>
           <div class="form_2 data_info" style="display: none">
             <p class="text-justify text-sm pb-5">
-              Veuillez le
+              Veuillez composer le
               <a :href="`tel:*866*4*6*${this.getTotal}#`" class="text-blue-900">
                 {{ `*866*4*6*${this.getTotal}#` }}
               </a>
-              pour générer votre code de commande
+              pour générer votre code de paiement
             </p>
             <div class="form_container">
               <div class="input_wrap">
-                <label for="email">Code de vérification</label>
+                <label for="email">Code de paiement</label>
                 <input
                   type="tel"
                   class="input"
-                  placeholder="XXXX"
+                  placeholder="XXXXXX"
                   required="true"
-                  pattern="^[0-9]{4}$"
+                  pattern="^[0-9]{6}$"
                   v-model="paymentInfo.userOtp"
                 />
               </div>
@@ -122,6 +122,14 @@ export default {
         type: "",
         message: "",
       },
+      //
+      form_1: "",
+      form_2: "",
+      form_3: "",
+      form_1_btns: "",
+      form_2_btns: "",
+      form_2_progessbar: "",
+      form_3_progessbar: "",
     };
   },
 
@@ -149,27 +157,27 @@ export default {
       this.$router.push("/panier");
     }
     //
-    var form_1 = document.querySelector(".form_1");
-    var form_2 = document.querySelector(".form_2");
-    var form_3 = document.querySelector(".form_3");
+    this.form_1 = document.querySelector(".form_1");
+    this.form_2 = document.querySelector(".form_2");
+    this.form_3 = document.querySelector(".form_3");
 
-    var form_1_btns = document.querySelector(".form_1_btns");
-    var form_2_btns = document.querySelector(".form_2_btns");
+    this.form_1_btns = document.querySelector(".form_1_btns");
+    this.form_2_btns = document.querySelector(".form_2_btns");
 
     var form_1_next_btn = document.querySelector(".form_1_btns .btn_next");
     var form_2_next_btn = document.querySelector(".form_2_btns .btn_next");
 
-    var form_2_progessbar = document.querySelector(".form_2_progessbar");
-    var form_3_progessbar = document.querySelector(".form_3_progessbar");
+    this.form_2_progessbar = document.querySelector(".form_2_progessbar");
+    this.form_3_progessbar = document.querySelector(".form_3_progessbar");
 
     form_1_next_btn.addEventListener("click", () => {
       let pattern1 = /^[0-9]{8}$/;
       if (pattern1.test(this.paymentInfo.userTel)) {
-        form_1.style.display = "none";
-        form_2.style.display = "block";
-        form_1_btns.style.display = "none";
-        form_2_btns.style.display = "flex";
-        form_2_progessbar.classList.add("active");
+        this.form_1.style.display = "none";
+        this.form_2.style.display = "block";
+        this.form_1_btns.style.display = "none";
+        this.form_2_btns.style.display = "flex";
+        this.form_2_progessbar.classList.add("active");
       } else {
         this.notif.show = true;
         this.notif.type = "warning";
@@ -179,15 +187,15 @@ export default {
 
     form_2_next_btn.addEventListener("click", () => {
       let pattern1 = /^[0-9]{8}$/;
-      let pattern2 = /^[0-9]{4}$/;
+      let pattern2 = /^[0-9]{6}$/;
       if (
         pattern1.test(this.paymentInfo.userTel) &&
         pattern2.test(this.paymentInfo.userOtp)
       ) {
-        form_2.style.display = "none";
-        form_3.style.display = "block";
-        form_2_btns.style.display = "none";
-        form_3_progessbar.classList.add("active");
+        this.form_2.style.display = "none";
+        this.form_3.style.display = "block";
+        this.form_2_btns.style.display = "none";
+        this.form_3_progessbar.classList.add("active");
         //
         this.sendCommande(); // call function to save commande
       }
@@ -200,11 +208,11 @@ export default {
       //   else if tel number invalid return back to phone number form
       else {
         this.paymentInfo.userOtp = "";
-        form_1.style.display = "block";
-        form_2.style.display = "none";
-        form_1_btns.style.display = "flex";
-        form_2_btns.style.display = "none";
-        form_2_progessbar.classList.remove("active");
+        this.form_1.style.display = "block";
+        this.form_2.style.display = "none";
+        this.form_1_btns.style.display = "flex";
+        this.form_2_btns.style.display = "none";
+        this.form_2_progessbar.classList.remove("active");
       }
     });
   },
@@ -249,6 +257,15 @@ export default {
         this.notif.show = true;
         this.notif.type = "error";
         this.notif.message = resp.data.message;
+        // If error occurs in the command process
+        // return the the form and fill it again
+        this.paymentInfo.userOtp = "";
+        this.form_1.style.display = "block";
+        this.form_2.style.display = "none";
+        this.form_3.style.display = "none";
+        this.form_1_btns.style.display = "flex";
+        this.form_2_btns.style.display = "none";
+        this.form_2_progessbar.classList.remove("active");
       }
     },
   },
