@@ -1,23 +1,24 @@
 <template>
-  <div class="overflow-hidden">
-    <header-top></header-top>
-    <menu-items></menu-items>
-    <div
-      class="
-        h-full
-        flex flex-col
-        justify-evenly
-        gap-4
-        bg-general
-        p-6
-        sm:flex-row
-      "
-    >
-      <!-- Left -->
-      <div class="w-full bg-white border flex flex-col px-4">
-        <h3 class="text-xl font-bold text-second py-2">Mon panier</h3>
-        <!-- Panier items -->
-        <client-only>
+  <client-only>
+    <div class="overflow-hidden">
+      <header-top></header-top>
+      <menu-items></menu-items>
+      <div
+        class="
+          h-full
+          flex flex-col
+          justify-evenly
+          gap-4
+          bg-general
+          p-6
+          sm:flex-row
+        "
+      >
+        <!-- Left -->
+        <div class="w-full bg-white border flex flex-col px-4">
+          <h3 class="text-xl font-bold text-second py-2">Mon panier</h3>
+          <!-- Panier items -->
+
           <form action="" method="post" @submit.prevent="commander">
             <div
               v-for="(panierItem, k) in this.panierList"
@@ -145,7 +146,10 @@
                   <input
                     type="text"
                     required
-                    :value="panierItem.beneficiairesNames[k]"
+                    :value="
+                      panierItem.beneficiairesNames &&
+                      panierItem.beneficiairesNames[k]
+                    "
                     @change="beneficiaireNamesHandle($event)"
                     :itemid="panierItem._id"
                     :rang="k"
@@ -158,19 +162,19 @@
             </div>
             <input type="submit" id="submitButton" hidden />
           </form>
-        </client-only>
+        </div>
+        <!-- RIGHT -->
+        <div class="w-full flex flex-col gap-4">
+          <panier-total-panier></panier-total-panier>
+          <panier-payment-method
+            @commandeBtnClicked="commandeBtnClicked"
+          ></panier-payment-method>
+        </div>
       </div>
-      <!-- RIGHT -->
-      <div class="w-full flex flex-col gap-4">
-        <panier-total-panier></panier-total-panier>
-        <panier-payment-method
-          @commandeBtnClicked="commandeBtnClicked"
-        ></panier-payment-method>
-      </div>
-    </div>
 
-    <footer-comp></footer-comp>
-  </div>
+      <footer-comp></footer-comp>
+    </div>
+  </client-only>
 </template>
 <script>
 export default {

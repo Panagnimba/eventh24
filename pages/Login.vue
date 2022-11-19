@@ -60,7 +60,9 @@
             />
           </div>
           <hr class="w-full" />
-          <nuxt-link to="" class="text-sm">Mot de passe noublié ?</nuxt-link>
+          <nuxt-link to="account/reset" class="text-sm">
+            Mot de passe noublié ?
+          </nuxt-link>
           <nuxt-link to="/register" class="text-sm text-blue-800"
             >Créer un compte</nuxt-link
           >
@@ -99,13 +101,15 @@ export default {
 
       let resp = await this.$axios.post("/userLoggin", this.user);
       this.isPending = false;
-      // Remise à zero des champs
-      this.user = {
-        username: "",
-        password: "",
-      };
+
       // setup notification
       if (resp.data.success) {
+        // Remise à zero des champs
+        this.user = {
+          username: "",
+          password: "",
+        };
+        //
         this.notif.show = true;
         this.notif.type = "success";
         this.notif.message = resp.data.message;

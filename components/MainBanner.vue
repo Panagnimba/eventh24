@@ -2,7 +2,7 @@
   <client-only>
     <div class="banner-wrapper overflow-hidden p-5 py-8" ref="bannerWrapper">
       <div class="swiper mySwiper h-36 sm:h-48 md:h-48 xl:h-96" ref="swiper">
-        <div class="swiper-wrapper h-full" v-if="this.banner">
+        <div class="swiper-wrapper h-full">
           <div
             class="swiper-slide h-full w-full"
             v-for="(item, i) in this.banner.items"
@@ -37,10 +37,10 @@ export default {
   watch: {
     "banner.bgImage": {
       handler(newVal) {
-        if (this.banner)
+        if (this.banner.bgImage)
           this.$refs.bannerWrapper.style.backgroundImage = `url(${this.banner.bgImage})`;
       },
-      // deep: true,
+      deep: true,
     },
   },
   mounted() {

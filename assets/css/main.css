@@ -16,6 +16,17 @@
     -ms-overflow-style: none;
     scrollbar-width: none; /* Firefox */
   }
+  /* disable default appearence of inputs */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
   
 .container{
     min-width: 100vw;
