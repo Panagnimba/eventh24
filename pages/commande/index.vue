@@ -39,7 +39,7 @@ export default {
     if (
       store.state.panier.length <= 0 ||
       store.state.user.token == null ||
-      store.state.user.prenom.length == 0
+      store.state.user._id == ""
     )
       return redirect("/panier");
   },

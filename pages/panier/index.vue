@@ -196,8 +196,12 @@ export default {
       document.cookie =
         "redirect_url" + "=" + ("/commande" || "/") + expires + "; path=/";
       //
-      // this.$router.push("/login");
-      this.$store.commit("toggleLoginPopup", true);
+      if (this.$store.state.user._id && this.$store.state.user.token) {
+        this.$router.push("/commande");
+      } else {
+        // this.$router.push("/login");
+        this.$store.commit("toggleLoginPopup", true);
+      }
     },
     decreaseQte(itemId) {
       this.$store.commit("decreaseQte", itemId);
