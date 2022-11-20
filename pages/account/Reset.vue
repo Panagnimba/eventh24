@@ -8,7 +8,7 @@
       </h2>
       <form
         @submit.prevent="resetPassword"
-        class="lg:w-80 xl:w-96 flex flex-col items-center gap-4 my-4 px-6"
+        class="w-80 xl:w-1/3 flex flex-col items-center gap-4 my-4"
       >
         <h1
           class="
@@ -97,6 +97,9 @@ export default {
         this.notif.type = "success";
         this.notif.message = resp.data.message;
         //
+        setTimeout(() => {
+          this.$router.push("/");
+        }, 800);
       } else {
         //
         this.notif.show = true;
