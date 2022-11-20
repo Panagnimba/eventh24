@@ -5,7 +5,7 @@
       class="flex justify-start gap-2 items-center text-white"
     >
       <nuxt-link to="/" class="font-bold text-lg">
-        <span>VINO<span class="text-third">TICKET</span><sub>SARL</sub></span>
+        <span>Vino<span class="text-third">Ticket</span></span>
         <!-- <img src="/logo.png" class="w-12" /> -->
       </nuxt-link>
     </div>
