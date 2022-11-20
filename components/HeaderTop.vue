@@ -1,11 +1,11 @@
 <template>
-  <div class="container bg-second flex gap-2 justify-between items-center py-1">
+  <div class="container bg-second flex gap-6 justify-between items-center py-1">
     <div
       v-if="this.bigScreen || (!this.bigScreen && !this.showSearchBox)"
       class="flex justify-start gap-2 items-center text-white"
     >
       <nuxt-link to="/" class="font-bold text-lg">
-        Vino<span class="text-third">Ticket</span>
+        <span>VINO<span class="text-third">TICKET</span><sub>SARL</sub></span>
         <!-- <img src="/logo.png" class="w-12" /> -->
       </nuxt-link>
     </div>
@@ -102,7 +102,9 @@
         @click.prevent="connexionUrl"
       >
         <i class="fa-solid fa-user text-xl"></i>
-        <span class="text-xs">Connexion</span>
+        <span class="text-xs">{{
+          this.$store.state.user.token ? "Connecté" : "Connexion"
+        }}</span>
       </div>
       <div
         class="flex flex-col items-center cursor-pointer"

@@ -11,7 +11,7 @@
     >
       <!--  col 1-->
       <div class="flex flex-col gap-3 items-center">
-        <h1 class="text-xl font-bold text-gray-300">Vino Ticket</h1>
+        <h1 class="text-xl font-bold text-gray-300">VINOTICKET SARL</h1>
         <p class="text-justify text-gray-500">
           Un site de billetterie nouvelle génération vous offrant la possibilité
           d’acheter en ligne des tickets pour les événements de votre choix. Sa
@@ -22,7 +22,7 @@
       </div>
       <!-- col 2 -->
       <div class="flex flex-col gap-3 items-center">
-        <h3 class="text-xl font-bold text-gray-300">LIENS UTILS</h3>
+        <h3 class="text-xl font-bold text-gray-300">LIENS UTILES</h3>
         <div
           class="
             grid grid-cols-2
