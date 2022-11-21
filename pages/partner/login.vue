@@ -62,6 +62,12 @@
           </div>
         </form>
       </div>
+      <!--  -->
+      <notification-notif
+        v-if="this.notif.show"
+        @closeNotif="notif.show = false"
+        :notif="this.notif"
+      ></notification-notif>
     </div>
     <footer-comp></footer-comp>
   </div>
@@ -70,11 +76,16 @@
 export default {
   data() {
     return {
+      isPending: false,
+      notif: {
+        show: false,
+        type: "",
+        message: "",
+      },
       partner: {
         username: "",
         password: "",
       },
-      isPending: false,
     };
   },
   methods: {
@@ -85,13 +96,14 @@ export default {
       this.isPending = false;
 
       if (resp.data.success) {
-        let auth = {
-          isAuthenticated: true,
-          token: resp.data.token,
-        };
+        let auth = { isAuthenticated: true, token: resp.data.token };
         //commit state to authenticate partner
         this.$store.commit("authenticatePartner", auth);
         this.$router.push("/partner/scanner");
+      } else {
+        this.notif.show = true;
+        this.notif.type = "warning";
+        this.notif.message = resp.data.message;
       }
     },
   },
