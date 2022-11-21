@@ -144,14 +144,12 @@
             />
           </div>
           <div class="w-full">
-            <input
+            <!-- <input
               type="email"
               v-model="RegUser.email"
               placeholder="Votre adresse email"
               class="w-full p-1.5 rounded-md outline-none border-2"
-            />
-          </div>
-          <div class="w-full flex gap-3">
+            /> -->
             <input
               type="tel"
               required
@@ -159,6 +157,15 @@
               placeholder="Telephone"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
+          </div>
+          <div class="w-full flex gap-3">
+            <!-- <input
+              type="tel"
+              required
+              v-model="RegUser.tel"
+              placeholder="Telephone"
+              class="w-full p-1.5 rounded-md outline-none border-2"
+            /> -->
             <input
               type="password"
               required

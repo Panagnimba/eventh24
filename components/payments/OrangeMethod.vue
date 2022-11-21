@@ -43,10 +43,10 @@
               <div class="input_wrap">
                 <label for="tel">Numéro de téléphone</label>
                 <input
+                  id="tel"
                   type="tel"
                   class="input"
                   placeholder="Votre Numéro de téléphone"
-                  id="tel"
                   required="true"
                   pattern="^[0-9]{8}$"
                   v-model="paymentInfo.userTel"
@@ -64,8 +64,10 @@
             </p>
             <div class="form_container">
               <div class="input_wrap">
-                <label for="email">Code de paiement</label>
+                <label for="otp">Code de paiement</label>
                 <input
+                  id="otp"
+                  name="otp"
                   type="tel"
                   class="input"
                   placeholder="XXXXXX"
@@ -87,11 +89,26 @@
         <!-- btns -->
         <div class="btns_wrap">
           <div class="common_btns form_1_btns">
-            <button type="button" class="btn_next">Next</button>
+            <button type="button" class="flex justify-center btn_next">
+              <i
+                v-if="isNextPending"
+                class="fa-solid fa-spinner text-2xl animate-spin"
+              >
+              </i>
+              <span v-else>Next</span>
+            </button>
           </div>
           <div class="common_btns form_2_btns" style="display: none">
-            <button type="submit" class="w-full btn_next btn_done">
-              Valider
+            <button
+              type="button"
+              class="w-full flex justify-center btn_next btn_done"
+            >
+              <i
+                v-if="isNext2Pending"
+                class="fa-solid fa-spinner text-2xl animate-spin"
+              >
+              </i>
+              <span v-else>Valider</span>
             </button>
           </div>
         </div>
@@ -111,7 +128,9 @@ export default {
   data() {
     return {
       //
-      isPending: false,
+      isPending: false, //when saving request
+      isNextPending: false,
+      isNext2Pending: false,
       getTotal: 0,
       paymentInfo: {
         userTel: "",
@@ -170,14 +189,36 @@ export default {
     this.form_2_progessbar = document.querySelector(".form_2_progessbar");
     this.form_3_progessbar = document.querySelector(".form_3_progessbar");
 
-    form_1_next_btn.addEventListener("click", () => {
+    form_1_next_btn.addEventListener("click", async () => {
       let pattern1 = /^[0-9]{8}$/;
       if (pattern1.test(this.paymentInfo.userTel)) {
-        this.form_1.style.display = "none";
-        this.form_2.style.display = "block";
-        this.form_1_btns.style.display = "none";
-        this.form_2_btns.style.display = "flex";
-        this.form_2_progessbar.classList.add("active");
+        this.isNextPending = true;
+        let resp = await this.$axios.get("/user/getAuthenticate", {
+          headers: this.requestHeader,
+        });
+        this.isNextPending = false;
+        if (resp.data.success) {
+          this.form_1.style.display = "none";
+          this.form_2.style.display = "block";
+          this.form_1_btns.style.display = "none";
+          this.form_2_btns.style.display = "flex";
+          this.form_2_progessbar.classList.add("active");
+        } else {
+          let notAuthUser = {
+            _id: "",
+            prenom: "",
+            tel: "",
+            token: null,
+          };
+          this.$store.commit("authenticateUser", notAuthUser);
+          // set redirect_url cookie
+          var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+          let expires = "; expires=" + date.toUTCString();
+          document.cookie =
+            "redirect_url" + "=" + ("/commande" || "/") + expires + "; path=/";
+          //
+          this.$store.commit("toggleLoginPopup", true);
+        }
       } else {
         this.notif.show = true;
         this.notif.type = "warning";
@@ -185,19 +226,40 @@ export default {
       }
     });
 
-    form_2_next_btn.addEventListener("click", () => {
+    form_2_next_btn.addEventListener("click", async () => {
       let pattern1 = /^[0-9]{8}$/;
       let pattern2 = /^[0-9]{6}$/;
       if (
         pattern1.test(this.paymentInfo.userTel) &&
         pattern2.test(this.paymentInfo.userOtp)
       ) {
-        this.form_2.style.display = "none";
-        this.form_3.style.display = "block";
-        this.form_2_btns.style.display = "none";
-        this.form_3_progessbar.classList.add("active");
-        //
-        this.sendCommande(); // call function to save commande
+        this.isNext2Pending = true;
+        let resp = await this.$axios.get("/user/getAuthenticate", {
+          headers: this.requestHeader,
+        });
+        this.isNext2Pending = false;
+        if (resp.data.success) {
+          this.form_2.style.display = "none";
+          this.form_3.style.display = "block";
+          this.form_2_btns.style.display = "none";
+          this.form_3_progessbar.classList.add("active");
+          this.sendCommande(); // call function to save commande
+        } else {
+          let notAuthUser = {
+            _id: "",
+            prenom: "",
+            tel: "",
+            token: null,
+          };
+          this.$store.commit("authenticateUser", notAuthUser);
+          // set redirect_url cookie
+          var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+          let expires = "; expires=" + date.toUTCString();
+          document.cookie =
+            "redirect_url" + "=" + ("/commande" || "/") + expires + "; path=/";
+          //
+          this.$store.commit("toggleLoginPopup", true);
+        }
       }
       //   if tel number is valid then means that otp is invalid
       else if (pattern1.test(this.paymentInfo.userTel)) {
@@ -239,14 +301,27 @@ export default {
         this.$router.push("/commande/mescommandes");
         //
       } else if (resp.data.isNotAuth) {
-        // set redirect_url cookie
-        var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
-        let expires = "; expires=" + date.toUTCString();
-        document.cookie =
-          "redirect_url" + "=" + ("/commande" || "/") + expires + "; path=/";
+        let notAuthUser = {
+          _id: "",
+          prenom: "",
+          tel: "",
+          token: null,
+        };
+        this.$store.commit("authenticateUser", notAuthUser);
         //
-        // this.$router.push("/login");
-        this.$store.commit("toggleLoginPopup", true);
+        this.notif.show = true;
+        this.notif.type = "warning";
+        this.notif.message = "Veuillez vous connectez puis rééssayer";
+        // If error occurs or user not connected in the command process
+        // return the the form and fill it again
+        this.paymentInfo.userOtp = "";
+        this.form_1.style.display = "block";
+        this.form_2.style.display = "none";
+        this.form_3.style.display = "none";
+        this.form_1_btns.style.display = "flex";
+        this.form_2_btns.style.display = "none";
+        this.form_2_progessbar.classList.remove("active");
+        //
       } else if (resp.data.eventNonDispo) {
         this.notif.show = true;
         this.notif.type = "warning";

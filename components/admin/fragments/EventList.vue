@@ -109,7 +109,23 @@ export default {
     });
     this.isPending = false;
     if (resp1.data.success) {
+      let actualDate = new Date(resp1.data.gmtDate).getTime(); //gmtDate is get from the server
       resp1.data.result.reverse().forEach((event) => {
+        let eventDate = new Date(event.date).getTime();
+        let actionBtn = "";
+        if (actualDate > eventDate + 24 * 60 * 60 * 1000) {
+          // 1 jour apres la date de l'event on pourra le supp
+          actionBtn = `<p class="flex justify-between">
+                        <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${event._id} ></i>
+                        <i class="fa-solid fa-trash-can cursor-pointer text-third deleteBtn" data-id=${event._id}></i>
+                       </p>
+                     `;
+        } else {
+          actionBtn = `<p class="flex justify-between">
+                        <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${event._id} ></i>
+                       </p>
+                     `;
+        }
         let item = {
           createAt: new Date(event.publishDate).toLocaleString(),
           image: `<img src=${event.img} alt="Image"/>`,
@@ -117,10 +133,7 @@ export default {
           artiste: event.artiste,
           lieu: event.lieu,
           dateC: new Date(event.date).toLocaleString(),
-          action: `<p class="flex justify-between">
-                    <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${event._id} ></i>
-                    <i class="fa-solid fa-trash-can cursor-pointer text-third deleteBtn" data-id=${event._id}></i>
-              </p> `,
+          action: actionBtn,
           // identifiant mise à la fin
           // qui ne va pas s'afficher
           //mais permet de se referer

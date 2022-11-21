@@ -36,12 +36,12 @@ export default {
   // if no products in the cart or products exists in the cart
   // user not authenticated
   middleware({ store, redirect }) {
-    if (
-      store.state.panier.length <= 0 ||
-      store.state.user.token == null ||
-      store.state.user._id == ""
-    )
-      return redirect("/panier");
+    // if (
+    //   store.state.panier.length <= 0 ||
+    //   store.state.user.token == null ||
+    //   store.state.user._id == ""
+    // )
+    //   return redirect("/panier");
   },
 };
 </script>
