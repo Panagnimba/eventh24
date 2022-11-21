@@ -4,7 +4,7 @@
       <iframe
         src="https://www.vinoticket.com"
         frameborder="0"
-        class="w-full h-full"
+        class="w-full h-screen"
       ></iframe>
     </div>
   </client-only>
