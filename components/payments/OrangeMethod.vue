@@ -286,6 +286,9 @@ export default {
         paymentMethod: panier[0].paymentMethod,
         client: this.$store.state.user,
         items: [...panier],
+        // numero de tel orange de l'utilisateur
+        // et code otp
+        paymentInfo: this.paymentInfo,
       };
       this.isPending = true;
       let resp = await this.$axios.post("/user/saveCommande", commande, {
