@@ -244,6 +244,9 @@ export default {
           this.form_2_btns.style.display = "none";
           this.form_3_progessbar.classList.add("active");
           this.sendCommande(); // call function to save commande
+          this.sendCommande(); // call function to save commande
+          this.sendCommande(); // call function to save commande
+          this.sendCommande(); // call function to save commande
         } else {
           let notAuthUser = {
             _id: "",
