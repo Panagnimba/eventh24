@@ -10,8 +10,6 @@
       xl:w-96
     "
   >
-    <div @click="this.saveget">saveget</div>
-    <div @click="this.savepost">savepost</div>
     <div class="wrapper">
       <div class="header">
         <ul>
@@ -286,16 +284,6 @@ export default {
   },
 
   methods: {
-    async saveget() {
-      let resp = await this.$axios.get("https://testom.orange.bf:9008/payment");
-      console.log(resp);
-    },
-    async savepost() {
-      let resp = await this.$axios.post(
-        "https://testom.orange.bf:9008/payment"
-      );
-      console.log(resp);
-    },
     async sendCommande() {
       let panier = this.$store.state.panier;
       this.paymentInfo.method = "orange"; // tel , otp , method
