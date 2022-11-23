@@ -125,8 +125,9 @@
                 <input
                   type="number"
                   min="1"
+                  max="10"
                   v-model="qte"
-                  @change="qte = qte <= 0 ? 1 : qte"
+                  @change="qte = qte <= 0 ? 1 : qte || qte > 10 ? 10 : qte"
                   class="w-full h-full px-4 rounded-xl outline-none font-bold"
                 />
                 <span class="flex flex-col absolute right-2 top-0.5">
@@ -441,7 +442,7 @@ export default {
   },
   methods: {
     increaseQte() {
-      this.qte++;
+      if (this.qte < 10) this.qte++;
     },
     decreaseQte() {
       if (this.qte >= 2) this.qte--;
@@ -521,9 +522,6 @@ export default {
       //
       this.$store.commit("fillEPanier", panierItem);
       this.$router.push("/panier");
-    },
-    toggleEventPopup() {
-      this.$store.commit("toggleEventPopup", true);
     },
   },
 };

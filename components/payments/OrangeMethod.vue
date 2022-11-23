@@ -165,13 +165,14 @@ export default {
     },
   },
   mounted() {
-    // calcul du total
+    this.$store.commit("setPaymentMethod", "orange");
+    // calcul du total utiliser dans la generation du code otp
     let total = 0;
     this.$store.state.panier.forEach((elmt) => {
       total += elmt.qte * elmt.price;
     });
     this.getTotal = total;
-
+    //
     if (this.panierContent.length <= 0) {
       this.$router.push("/panier");
     }
@@ -244,9 +245,9 @@ export default {
           this.form_2_btns.style.display = "none";
           this.form_3_progessbar.classList.add("active");
           this.sendCommande(); // call function to save commande
-          this.sendCommande(); // call function to save commande
-          this.sendCommande(); // call function to save commande
-          this.sendCommande(); // call function to save commande
+          // this.sendCommande(); // call function to save commande
+          // this.sendCommande(); // call function to save commande
+          // this.sendCommande(); // call function to save commande
         } else {
           let notAuthUser = {
             _id: "",
@@ -285,16 +286,15 @@ export default {
   methods: {
     async sendCommande() {
       let panier = this.$store.state.panier;
+      this.paymentInfo.method = "orange"; // tel , otp , method
       let commande = {
-        paymentMethod: panier[0].paymentMethod,
         client: this.$store.state.user,
         items: [...panier],
-        // numero de tel orange de l'utilisateur
-        // et code otp
+        // tel , otp , method
         paymentInfo: this.paymentInfo,
       };
       this.isPending = true;
-      let resp = await this.$axios.post("/user/saveCommande", commande, {
+      let resp = await this.$axios.post("/user/saveCommande2", commande, {
         headers: this.requestHeader,
       });
       this.isPending = false;

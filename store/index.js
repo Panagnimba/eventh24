@@ -89,7 +89,8 @@ export const mutations={
     increaseQte(state,itemId){
         state.panier.forEach(item=>{
             if(item._id == itemId){
-                item.qte++;
+                if(item.qte < 10)
+                    item.qte++;
             }
         })
     },
@@ -105,7 +106,7 @@ export const mutations={
     modifyQte(state,panierItem){
         state.panier.forEach(item=>{
             if(item._id == panierItem.id){
-                if( panierItem.qte > 0)
+                if( panierItem.qte > 0 && panierItem.qte <= 10)
                 {
                     item.qte = parseInt(panierItem.qte)
                     //for beneficiaires names table

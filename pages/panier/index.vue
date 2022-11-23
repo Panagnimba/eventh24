@@ -69,10 +69,11 @@
                   >-</span
                 >
                 <input
-                  type="numbre"
+                  type="number"
                   :value="panierItem.qte"
                   @change="qteInputHandle($event, panierItem._id)"
                   min="1"
+                  max="10"
                   class="w-16 outline-none border px-2 py-1 text-center"
                 />
                 <span
