@@ -178,47 +178,7 @@ export default {
     },
   },
   methods: {
-    async sendCommande() {
-      let panier = this.$store.state.panier;
-      let commande = {
-        paymentMethod: panier[0].paymentMethod,
-        client: this.$store.state.user,
-        items: [...panier],
-      };
-      this.isPending = true;
-      let resp = await this.$axios.post("/user/saveCommande", commande, {
-        headers: this.requestHeader,
-      });
-      this.isPending = false;
-      //
-      if (resp.data.success) {
-        this.notif.show = true;
-        this.notif.type = "success";
-        this.notif.message = resp.data.message;
-        //
-        this.$router.push("/commande/mescommandes");
-        //
-      } else if (resp.data.isNotAuth) {
-        // set redirect_url cookie
-        var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
-        let expires = "; expires=" + date.toUTCString();
-        document.cookie =
-          "redirect_url" + "=" + ("/commande" || "/") + expires + "; path=/";
-        //
-        // this.$router.push("/login");
-        this.$store.commit("toggleLoginPopup", true);
-      } else if (resp.data.eventNonDispo) {
-        this.notif.show = true;
-        this.notif.type = "warning";
-        this.notif.message = resp.data.message;
-        // remove the inexistant or unavaible event to the cart
-        this.$store.commit("removeToCart", resp.data.eventId);
-      } else {
-        this.notif.show = true;
-        this.notif.type = "error";
-        this.notif.message = resp.data.message;
-      }
-    },
+    async sendCommande() {},
   },
 };
 </script>

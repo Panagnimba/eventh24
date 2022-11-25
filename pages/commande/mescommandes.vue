@@ -163,8 +163,6 @@ export default {
         };
         this.rows.push(item);
       });
-      // vider le panier
-      this.$store.commit("viderPanier");
       //
     } else if (resp.data.isNotAuth) {
       // set redirect_url cookie

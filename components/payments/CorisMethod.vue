@@ -34,21 +34,18 @@
       <form action="" @submit.prevent="">
         <div class="form_wrap">
           <div class="form_1 data_info">
-            <!-- <div class="flex flex-col items-center">
-              <img src="/logo.png" alt="" class="w-16 h-16 rounded-full" />
-            </div> -->
             <h2>
-              Paiement d'une somme de {{ this.getTotal }}fcfa via Orange Money
+              Paiement d'une somme de {{ this.getTotal }}fcfa via Coris Money
             </h2>
 
             <div class="form_container">
               <div class="input_wrap">
-                <label for="tel">Numéro orange money</label>
+                <label for="tel">Numéro coris money</label>
                 <input
                   id="tel"
                   type="tel"
                   class="input"
-                  placeholder="Numéro orange money"
+                  placeholder="Numéro Coris money"
                   required="true"
                   pattern="^[0-9]{8}$"
                   v-model="paymentInfo.userTel"
@@ -58,11 +55,7 @@
           </div>
           <div class="form_2 data_info" style="display: none">
             <p class="text-justify text-sm pb-5">
-              Veuillez composer le
-              <a :href="`tel:*866*4*6*${this.getTotal}#`" class="text-blue-900">
-                {{ `*866*4*6*${this.getTotal}#` }}
-              </a>
-              pour générer votre code de paiement
+              Veuillez renseigner le code de paiement reçu sur votre téléphone
             </p>
             <div class="form_container">
               <div class="input_wrap">
@@ -72,9 +65,9 @@
                   name="otp"
                   type="tel"
                   class="input"
-                  placeholder="XXXXXX"
+                  placeholder="XXXXX"
                   required="true"
-                  pattern="^[0-9]{6}$"
+                  pattern="^[0-9]{5}$"
                   v-model="paymentInfo.userOtp"
                 />
               </div>
@@ -167,7 +160,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit("setPaymentMethod", "orange");
+    this.$store.commit("setPaymentMethod", "coris");
     // calcul du total utiliser dans la generation du code otp
     let total = 0;
     this.$store.state.panier.forEach((elmt) => {
@@ -198,9 +191,13 @@ export default {
         //
         this.isNextPending = true;
         form_1_next_btn.setAttribute("disabled", true); // evite l'envoi de plusieurs requetes
-        let resp = await this.$axios.get("/user/getAuthenticate", {
-          headers: this.requestHeader,
-        });
+        let resp = await this.$axios.post(
+          "/user/generateOtp",
+          { userTel: this.paymentInfo.userTel },
+          {
+            headers: this.requestHeader,
+          }
+        );
         this.isNextPending = false;
         form_1_next_btn.removeAttribute("disabled");
         //
@@ -211,20 +208,10 @@ export default {
           this.form_2_btns.style.display = "flex";
           this.form_2_progessbar.classList.add("active");
         } else {
-          let notAuthUser = {
-            _id: "",
-            prenom: "",
-            tel: "",
-            token: null,
-          };
-          this.$store.commit("authenticateUser", notAuthUser);
-          // set redirect_url cookie
-          var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
-          let expires = "; expires=" + date.toUTCString();
-          document.cookie =
-            "redirect_url" + "=" + ("/commande" || "/") + expires + "; path=/";
-          //
-          this.$store.commit("toggleLoginPopup", true);
+          // otp not generate
+          this.notif.show = true;
+          this.notif.type = "warning";
+          this.notif.message = resp.data.message;
         }
       } else {
         this.notif.show = true;
@@ -235,7 +222,7 @@ export default {
 
     form_2_next_btn.addEventListener("click", async () => {
       let pattern1 = /^[0-9]{8}$/;
-      let pattern2 = /^[0-9]{6}$/;
+      let pattern2 = /^[0-9]{5}$/;
       if (
         pattern1.test(this.paymentInfo.userTel) &&
         pattern2.test(this.paymentInfo.userOtp)
@@ -293,7 +280,7 @@ export default {
   methods: {
     async sendCommande() {
       let panier = this.$store.state.panier;
-      this.paymentInfo.method = "orange"; // tel , otp , method
+      this.paymentInfo.method = "coris"; // tel , otp , method
       let commande = {
         client: this.$store.state.user,
         items: [...panier],
@@ -513,64 +500,5 @@ export default {
 .wrapper .btns_wrap .common_btns button.btn_done:hover {
   background: var(--third);
   opacity: 0.9;
-}
-
-.modal_wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  visibility: hidden;
-}
-
-.modal_wrapper .shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  opacity: 0;
-  transition: 0.2s ease;
-}
-
-.modal_wrapper .success_wrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -800px);
-  background: white;
-  padding: 50px;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  transition: 0.5s ease;
-}
-
-.modal_wrapper .success_wrap .modal_icon {
-  margin-right: 20px;
-  width: 50px;
-  height: 50px;
-  background: var(--primary);
-  color: var(--white);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 32px;
-  font-weight: 700;
-}
-
-.modal_wrapper.active {
-  visibility: visible;
-}
-
-.modal_wrapper.active .shadow {
-  opacity: 1;
-}
-
-.modal_wrapper.active .success_wrap {
-  transform: translate(-50%, -50%);
 }
 </style>

@@ -1,14 +1,28 @@
 <template>
-  <div class="h-full overflow-auto bg-general">
+  <div class="h-screen overflow-auto bg-general">
     <header-top></header-top>
     <menu-items></menu-items>
-    <div>
+    <div class="min-h-full">
       <loader v-if="isPending"></loader>
-      <div v-else class="w-full p-6 flex justify-evenly items-center">
-        <!-- <payments-bank-method
-          v-if="this.panierContent[0].paymentMethod == 'bank'"
-        ></payments-bank-method> -->
-        <payments-orange-method></payments-orange-method>
+      <div v-else class="w-full p-6 flex justify-center">
+        <!-- bank -->
+        <client-only v-if="this.panier.length > 0">
+          <payments-bank-method
+            v-if="this.panier[0].paymentMethod == 'bank'"
+          ></payments-bank-method>
+        </client-only>
+        <!-- orange -->
+        <client-only v-if="this.panier.length > 0">
+          <payments-orange-method
+            v-if="this.panier[0].paymentMethod == 'orange'"
+          >
+          </payments-orange-method>
+        </client-only>
+        <!-- coris -->
+        <client-only v-if="this.panier.length > 0">
+          <payments-coris-method v-if="this.panier[0].paymentMethod == 'coris'">
+          </payments-coris-method>
+        </client-only>
       </div>
     </div>
     <footer-comp></footer-comp>
@@ -29,7 +43,7 @@ export default {
     };
   },
   computed: {
-    panierContent() {
+    panier() {
       return this.$store.state.panier;
     },
   },
