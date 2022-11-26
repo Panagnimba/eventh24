@@ -82,6 +82,12 @@
             <i class="fa-solid fa-users text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Users</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="Graphics">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-chart-line text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Graphics</div>
+          </div>
         </div>
 
         <!-- Settings -->
@@ -137,6 +143,8 @@ export default {
         this.mainComponent = "admin-qrScanner";
       else if (item.title.toLowerCase().includes("users"))
         this.mainComponent = "admin-users";
+      else if (item.title.toLowerCase().includes("graphics"))
+        this.mainComponent = "admin-graphics";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
