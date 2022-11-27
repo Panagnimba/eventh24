@@ -128,7 +128,6 @@ export default {
     };
   },
   mounted() {
-    
     if (window.innerWidth >= 200 && window.innerWidth <= 600) {
       this.showSearchBox = false;
       this.bigScreen = false;

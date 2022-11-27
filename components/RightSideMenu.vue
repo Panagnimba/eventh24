@@ -62,14 +62,6 @@
         </nuxt-link>
       </ul>
       <!--  -->
-      <h2 class="font-bold px-4">Magazine</h2>
-      <!--  -->
-      <ul class="text-md text-black">
-        <nuxt-link to="" v-for="(menu, id) in this.menuList" :key="id">
-          <li class="px-4 py-2 hover:bg-gray-100">{{ menu.name }}</li>
-        </nuxt-link>
-      </ul>
-      <!--  -->
       <h2 class="font-bold px-4">Mon compte</h2>
       <div
         @click="getMyCommandes"
@@ -84,7 +76,7 @@
           hover:bg-gray-100
         "
       >
-        <i class="fa-solid fa-file-invoice"></i>
+        <i class="fa-solid fa-arrow-right-to-bracket text-xl"></i>
         <span>Mes commandes</span>
       </div>
       <div

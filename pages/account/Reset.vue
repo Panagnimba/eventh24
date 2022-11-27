@@ -28,10 +28,11 @@
         <div class="w-full">
           <input
             type="tel"
-            required
-            autofocus
             v-model="myCompte.tel"
-            placeholder="Votre numéro de téléphone"
+            autofocus
+            placeholder="Numéro de téléphone"
+            required="true"
+            pattern="^[0-9]{8}$"
             class="w-full p-1.5 rounded-md outline-none border-2"
           />
         </div>
@@ -89,26 +90,31 @@ export default {
   methods: {
     async resetPassword() {
       this.isPending = true;
-      let resp = await this.$axios.post("/resetPassword", this.myCompte);
-      if (resp.data.success) {
-        this.myCompte = { tel: "", password: "" };
-        //
-        this.notif.show = true;
-        this.notif.type = "success";
-        this.notif.message = resp.data.message;
-        //
-        setTimeout(() => {
-          this.$router.push("/");
-        }, 800);
+      let pattern = /^[0-9]{8}$/;
+      if (pattern.test(this.myCompte.tel)) {
+        let resp = await this.$axios.post("/resetPassword", this.myCompte);
+        if (resp.data.success) {
+          this.myCompte = { tel: "", password: "" };
+          //
+          this.notif.show = true;
+          this.notif.type = "success";
+          this.notif.message = resp.data.message;
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 800);
+          //
+        } else {
+          this.notif.show = true;
+          this.notif.type = "warning";
+          this.notif.message = resp.data.message;
+          //
+        }
       } else {
-        //
         this.notif.show = true;
         this.notif.type = "warning";
-        this.notif.message = resp.data.message;
-        //
+        this.notif.message = "Numéro de téléphone incorrect";
       }
       this.isPending = false;
-      console.log(this.myCompte);
     },
   },
 };

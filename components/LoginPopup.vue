@@ -60,9 +60,10 @@
             <input
               type="tel"
               v-model="user.tel"
-              required
               autofocus
               placeholder="Numéro de téléphone"
+              required="true"
+              pattern="^[0-9]{8}$"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
           </div>
@@ -152,9 +153,11 @@
             /> -->
             <input
               type="tel"
-              required
               v-model="RegUser.tel"
-              placeholder="Telephone"
+              autofocus
+              placeholder="Numéro de téléphone"
+              required="true"
+              pattern="^[0-9]{8}$"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
           </div>
@@ -250,101 +253,103 @@ export default {
     // Logged in user
     async userLoggin() {
       this.isPending = true;
-
-      let resp = await this.$axios.post("/userLoggin", this.user);
-      this.isPending = false;
-
-      // setup notification
-      if (resp.data.success) {
-        this.notif.show = true;
-        this.notif.type = "success";
-        this.notif.message = resp.data.message;
-        // Remise à zero des champs
-        this.user = {
-          tel: "",
-          password: "",
-        };
-        //
-        let authUser = {
-          _id: resp.data.user._id,
-          prenom: resp.data.user.prenom,
-          tel: resp.data.user.tel,
-          token: resp.data.token,
-        };
-        this.$store.commit("authenticateUser", authUser);
-        //
-        this.$store.commit("toggleLoginPopup", false);
-
-        //
-        // Reading cookie and goes to the redirect url
-        setTimeout(() => {
-          this.notif.show = false;
-          // reading redirect_url cookie to determine the next page to show
-          document.cookie.split(";").forEach((e) => {
-            if (e.includes("redirect_url")) {
-              let url = e.split("=")[1];
-              this.$router.push(url);
-            } else {
-              this.$router.push("/");
-            }
-          });
-        }, 300);
+      let pattern = /^[0-9]{8}$/;
+      if (pattern.test(this.user.tel)) {
+        let resp = await this.$axios.post("/userLoggin", this.user);
+        if (resp.data.success) {
+          // Remise à zero des champs
+          this.user = {
+            tel: "",
+            password: "",
+          };
+          //
+          this.notif.show = true;
+          this.notif.type = "success";
+          this.notif.message = resp.data.message;
+          //
+          let authUser = {
+            _id: resp.data.user._id,
+            prenom: resp.data.user.prenom,
+            tel: resp.data.user.tel,
+            token: resp.data.token,
+          };
+          this.$store.commit("authenticateUser", authUser);
+          //
+          // Reading cookie and goes to the redirect url
+          setTimeout(() => {
+            // reading redirect_url cookie to determine the next page to show
+            document.cookie.split(";").forEach((e) => {
+              if (e.includes("redirect_url")) {
+                let url = e.split("=")[1];
+                this.$router.push(url);
+              } else {
+                this.$router.push("/");
+              }
+            });
+          }, 300);
+        } else {
+          this.notif.show = true;
+          this.notif.type = "warning";
+          this.notif.message = resp.data.message;
+        }
       } else {
         this.notif.show = true;
         this.notif.type = "warning";
-        this.notif.message = resp.data.message;
+        this.notif.message = "Numéro de téléphone incorrect";
       }
+      this.isPending = false;
     },
     // Register user
     async registerUser() {
       this.isPending = true;
-      let resp = await this.$axios.post("/userRegister", this.RegUser);
-      this.isPending = false;
-
-      // setup notification
-      if (resp.data.success) {
-        this.notif.show = true;
-        this.notif.type = "success";
-        this.notif.message = resp.data.message;
-        // Remise à zero des champs
-        this.RegUser = {
-          nom: "",
-          prenom: "",
-          email: "",
-          tel: "",
-          password: "",
-        };
-        //
-        let authUser = {
-          _id: resp.data.user._id,
-          prenom: resp.data.user.prenom,
-          tel: resp.data.user.tel,
-          token: resp.data.token,
-        };
-
-        this.toogleToRegisterForm = false;
-        this.$store.commit("authenticateUser", authUser);
-        //
-        this.$store.commit("toggleLoginPopup", false);
-        //
-        // Reading cookie and goes to the redirect url
-        setTimeout(() => {
-          this.notif.show = false;
-          // reading redirect_url cookie to determine the next page to show
-          document.cookie.split(";").forEach((e) => {
-            if (e.includes("redirect_url")) {
-              let url = e.split("=")[1];
-              this.$router.push(url);
-            } else {
-              this.$router.push("/");
-            }
-          });
-        }, 300);
+      let pattern = /^[0-9]{8}$/;
+      if (pattern.test(this.RegUser.tel)) {
+        let resp = await this.$axios.post("/userRegister", this.RegUser);
+        if (resp.data.success) {
+          // Remise à zero des champs
+          this.RegUser = {
+            nom: "",
+            prenom: "",
+            email: "",
+            tel: "",
+            password: "",
+          };
+          //
+          this.notif.show = true;
+          this.notif.type = "success";
+          this.notif.message = resp.data.message;
+          //
+          let authUser = {
+            _id: resp.data.user._id,
+            prenom: resp.data.user.prenom,
+            tel: resp.data.user.tel,
+            token: resp.data.token,
+          };
+          this.$store.commit("authenticateUser", authUser);
+          //
+          // Reading cookie and goes to the redirect url
+          setTimeout(() => {
+            // reading redirect_url cookie to determine the next page to show
+            document.cookie.split(";").forEach((e) => {
+              if (e.includes("redirect_url")) {
+                let url = e.split("=")[1];
+                this.$router.push(url);
+              } else {
+                this.$router.push("/");
+              }
+            });
+          }, 300);
+        } else {
+          this.notif.show = true;
+          this.notif.type = "warning";
+          this.notif.message = resp.data.message;
+        }
       } else {
         this.notif.show = true;
         this.notif.type = "warning";
-        this.notif.message = resp.data.message;
+        this.notif.message = "Numéro de téléphone incorrect";
       }
+      this.isPending = false;
     },
   },
 };

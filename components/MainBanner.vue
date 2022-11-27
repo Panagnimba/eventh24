@@ -32,28 +32,48 @@ export default {
         items: [],
       },
       slidesPerView: 3,
+      setInterval: null, // will clear when swiper carousel is operationnel
     };
-  },
-  watch: {
-    "banner.bgImage": {
-      handler(newVal) {
-        if (this.banner.bgImage)
-          this.$refs.bannerWrapper.style.backgroundImage = `url(${this.banner.bgImage})`;
-      },
-      deep: true,
-    },
   },
   mounted() {
     if (window.innerWidth >= 200 && window.innerWidth <= 600) {
       this.slidesPerView = 2;
     }
+    //
+    this.setInterval = setInterval(() => {
+      if (this.$refs.swiper && this.banner.bgImage) {
+        // Create nuxt instance
+        new Swiper(this.$refs.swiper, {
+          slidesPerView: this.slidesPerView,
+          spaceBetween: 40,
+          slidesPerGroup: 1,
+          loop: true,
+          autoplay: {
+            delay: 2000,
+            disableOnInteraction: true,
+          },
+          on: {
+            init() {
+              this.el.addEventListener("mouseenter", () => {
+                this.autoplay.stop();
+              });
+
+              this.el.addEventListener("mouseleave", () => {
+                this.autoplay.start();
+              });
+            },
+          },
+        });
+        this.$refs.bannerWrapper.style.backgroundImage = `url(${this.banner.bgImage})`;
+        window.clearInterval(this.setInterval);
+      }
+    }, 1000);
   },
   async fetch() {
     let resp = await this.$axios.get("/getBanner");
     if (resp.data.success) {
       this.banner = resp.data.result;
-
-      await this.$nextTick();
+      // await this.$nextTick();
       // Create nuxt instance
       new Swiper(this.$refs.swiper, {
         slidesPerView: this.slidesPerView,

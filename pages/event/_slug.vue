@@ -434,7 +434,9 @@ export default {
       if (gap > 0) {
         this.countDown(gap); // function call to countdown
         this.event.gmtDate += 1000; // moins 1 seconde à chaque seconde
-      } else {
+        this.isTimePass = false;
+      } else if (this.event.date) {
+        // gap < 0 but eventDate not null
         this.isTimePass = true;
         window.clearInterval(this.setInterval);
       }

@@ -9,6 +9,18 @@ function getCookie(cookieName) {
   }
 
 
+  // 
+    // adaption du numero de telephone
+    req.body.tel = req.body.tel.replace(/\s/g, "");
+    let phone = req.body.tel;
+    if (!phone.startsWith("+226") && !phone.startsWith("00226")) {
+      req.body.tel = `+226${phone}`;
+    }
+    if (phone.startsWith("00226")) {
+      req.body.tel = `+226${phone.slice(5)}`;
+    }
+    // 
+
   function setCookie(name, value, days) {
     var expires = "";
     if (days) {

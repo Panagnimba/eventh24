@@ -63,12 +63,12 @@ export default {
   async fetch() {
     this.isPending = true;
     let resp = await this.$axios.get("/getEvents");
-    this.isPending = false;
     if (resp.data.success) {
       this.eventList = resp.data.result.reverse();
       this.$store.commit("fillEventList", resp.data.result);
       // console.log(resp.data.result);
     }
+    this.isPending = false;
   },
   methods: {
     filterHandle(filterText) {
