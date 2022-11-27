@@ -1,5 +1,5 @@
 <template>
-  <client-only>
+  <client-only v-show="this.isSwiperReady">
     <div class="banner-wrapper overflow-hidden p-5 py-8" ref="bannerWrapper">
       <div class="swiper mySwiper h-36 sm:h-48 md:h-48 xl:h-96" ref="swiper">
         <div class="swiper-wrapper h-full">
@@ -33,6 +33,7 @@ export default {
       },
       slidesPerView: 3,
       setInterval: null, // will clear when swiper carousel is operationnel
+      isSwiperReady: false,
     };
   },
   mounted() {
@@ -65,6 +66,7 @@ export default {
           },
         });
         this.$refs.bannerWrapper.style.backgroundImage = `url(${this.banner.bgImage})`;
+        this.isSwiperReady = true;
         window.clearInterval(this.setInterval);
       }
     }, 1000);
