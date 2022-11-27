@@ -1,6 +1,10 @@
 <template>
-  <client-only v-show="this.isSwiperReady">
-    <div class="banner-wrapper overflow-hidden p-5 py-8" ref="bannerWrapper">
+  <client-only>
+    <div
+      v-show="this.isSwiperReady"
+      class="banner-wrapper overflow-hidden p-5 py-8"
+      ref="bannerWrapper"
+    >
       <div class="swiper mySwiper h-36 sm:h-48 md:h-48 xl:h-96" ref="swiper">
         <div class="swiper-wrapper h-full">
           <div
