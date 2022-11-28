@@ -274,6 +274,7 @@ export default {
             token: resp.data.token,
           };
           this.$store.commit("authenticateUser", authUser);
+          this.$store.commit("toggleLoginPopup", false);
           //
           // Reading cookie and goes to the redirect url
           setTimeout(() => {
@@ -326,6 +327,7 @@ export default {
             token: resp.data.token,
           };
           this.$store.commit("authenticateUser", authUser);
+          this.$store.commit("toggleLoginPopup", false);
           //
           // Reading cookie and goes to the redirect url
           setTimeout(() => {
