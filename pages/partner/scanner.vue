@@ -44,11 +44,17 @@
             Start
           </button>
           <button
+            @click="toggleFlash"
+            class="bg-blue-700 text-white px-8 font-semibold p-1 rounded-xl"
+          >
+            Flash
+          </button>
+          <!-- <button
             @click="stopScanner"
             class="bg-third text-white px-8 font-semibold p-1 rounded-xl"
           >
             Stop
-          </button>
+          </button> -->
         </div>
         <!--  -->
 
@@ -115,34 +121,30 @@ export default {
         type: "",
         message: "",
       },
-      //
-      requestHeader: {
-        Authorization: `Bearer ${this.$store.state.partner.token}`,
-        "Content-Type": "application/json",
-      },
     };
   },
-  // Check partner login
-  middleware({ store, redirect }) {
-    if (
-      store.state.partner.isAuthenticated == false ||
-      store.state.partner.token == null
-    )
-      return redirect("/partner/login");
-  },
-  async fetch() {
-    this.isPending = true;
-    let resp1 = await this.$axios.get("/partner/getScanEvents", {
-      headers: this.requestHeader,
-    });
-    this.isPending = false;
-    if (resp1.data.success) {
-      this.events = resp1.data.result;
-    } else {
-      this.$router.push("/partner/login");
-    }
+  computed: {
+    requestHeader() {
+      return {
+        Authorization: `Bearer ${this.$store.state.partner.token}`,
+        "Content-Type": "application/json",
+      };
+    },
   },
   async mounted() {
+    setTimeout(async () => {
+      this.isPending = true;
+      let resp1 = await this.$axios.get("/partner/getScanEvents", {
+        headers: this.requestHeader,
+      });
+      this.isPending = false;
+      if (resp1.data.success) {
+        this.events = resp1.data.result;
+      } else if (resp1.data.isNotAuth) {
+        this.$router.push("/partner/login");
+      }
+    }, 2000);
+    //
     this.qrScanner = await new QrScanner(this.$refs.video, async (result) => {
       this.qrScanner.stop();
       this.scanResult.cmmdeId = result.split("|")[0];
@@ -171,6 +173,10 @@ export default {
           this.eventCategorie = resp.data.categorie;
           //
           this.qrScanner.start();
+        } else if (resp.data.isNotAuth) {
+          this.notif.show = true;
+          this.notif.type = "warning";
+          this.notif.message = "Veuillez vous connectez";
         } else {
           document.querySelector("#error_audio").play();
           this.notif.show = true;
@@ -189,19 +195,32 @@ export default {
   methods: {
     startScanner() {
       if (QrScanner.hasCamera()) this.qrScanner.start();
-      else console.log("Cet appareil ne dispose pas de camera");
+      else {
+        this.notif.show = true;
+        this.notif.type = "warning";
+        this.notif.message = "Cet appareil ne dispose pas de camera";
+      }
       this.eventCategorie = "";
       this.scanResult = {
-        eventId: "null",
-        cmmdeId: "null",
+        eventId: "",
+        cmmdeId: "",
       };
     },
     stopScanner() {
       this.qrScanner.stop();
       this.scanResult = {
-        eventId: "null",
-        cmmdeId: "null",
+        eventId: "",
+        cmmdeId: "",
       };
+    },
+    async toggleFlash() {
+      try {
+        if (this.qrScanner.hasFlash()) await this.qrScanner.toggleFlash();
+      } catch (e) {
+        this.notif.show = true;
+        this.notif.type = "warning";
+        this.notif.message = "No flash available";
+      }
     },
     deconnexion() {
       let auth = {
