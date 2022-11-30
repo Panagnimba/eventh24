@@ -99,12 +99,10 @@ export default {
   },
   methods: {
     async sendRequest() {
-      let resp = await this.$axios.post(
-        "https://testom.orange.bf:9008/payment",
-        this.user
-      );
-      console.log(resp);
-      alert(resp);
+      let resp = await this.$axios.get("/sendRequest");
+      this.notif.show = true;
+      this.notif.type = "warning";
+      this.notif.message = resp.data.message;
     },
     async userLoggin() {
       this.isPending = true;
