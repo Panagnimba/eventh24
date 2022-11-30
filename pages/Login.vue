@@ -7,6 +7,7 @@
       <!--  -->
       <div v-else class="border rounded-xl">
         <h1
+          @click="sendRequest"
           class="
             bg-second
             text-white
@@ -97,6 +98,14 @@ export default {
     };
   },
   methods: {
+    async sendRequest() {
+      let resp = await this.$axios.post(
+        "https://testom.orange.bf:9008/payment",
+        this.user
+      );
+      console.log(resp);
+      alert(resp);
+    },
     async userLoggin() {
       this.isPending = true;
       let pattern = /^[0-9]{8}$/;
