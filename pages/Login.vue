@@ -3,11 +3,16 @@
     <header-top></header-top>
     <menu-items></menu-items>
     <div class="w-full h-screen p-6 flex justify-center items-center">
+      <button
+        @click="sendRequest"
+        class="bg-second text-white px-6 py-2 font-bold"
+      >
+        Send Request
+      </button>
       <loader v-if="this.isPending"></loader>
       <!--  -->
       <div v-else class="border rounded-xl">
         <h1
-          @click="sendRequest"
           class="
             bg-second
             text-white
