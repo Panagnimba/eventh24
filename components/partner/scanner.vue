@@ -115,7 +115,8 @@ export default {
       };
     },
   },
-  async fetch() {
+  // async fetch() {},
+  async mounted() {
     this.isPending = true;
     let resp1 = await this.$axios.get("/partner/getScanEvents", {
       headers: this.requestHeader,
@@ -124,10 +125,8 @@ export default {
     if (resp1.data.success) {
       this.events = resp1.data.result;
     } else if (resp1.data.isNotAuth) {
-      this.$router.push("/partner/logi");
+      this.$router.push("/partner/login");
     }
-  },
-  async mounted() {
     //
     this.qrScanner = await new QrScanner(this.$refs.video, async (result) => {
       this.qrScanner.stop();
