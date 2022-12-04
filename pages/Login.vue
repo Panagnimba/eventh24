@@ -3,12 +3,6 @@
     <header-top></header-top>
     <menu-items></menu-items>
     <div class="w-full h-screen p-6 flex justify-center items-center">
-      <button
-        @click="sendRequest"
-        class="bg-second text-white px-6 py-2 font-bold"
-      >
-        Send Request
-      </button>
       <loader v-if="this.isPending"></loader>
       <!--  -->
       <div v-else class="border rounded-xl">
@@ -103,12 +97,6 @@ export default {
     };
   },
   methods: {
-    async sendRequest() {
-      let resp = await this.$axios.get("/sendRequest");
-      this.notif.show = true;
-      this.notif.type = "warning";
-      this.notif.message = resp.data.message;
-    },
     async userLoggin() {
       this.isPending = true;
       let pattern = /^[0-9]{8}$/;

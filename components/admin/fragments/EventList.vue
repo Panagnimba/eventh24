@@ -144,7 +144,7 @@ export default {
           description: event.description,
           img: event.img,
           date: event.date,
-          organisateurId: event._id,
+          organisateurId: event.organisateurId,
           organisateurName: event.organisateurName,
           organisateurTel: event.organisateurTel,
         };

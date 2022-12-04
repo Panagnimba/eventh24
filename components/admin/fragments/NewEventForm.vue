@@ -176,6 +176,7 @@
                   v-for="(partner, i) in partners"
                   :key="i"
                   :value="partner.username"
+                  :v-model="partner.username"
                 >
                   {{ partner.username }}
                 </option>
@@ -392,7 +393,6 @@ export default {
   mounted() {
     // // affectation du props a event data
     // this.event = this.eventProp;
-
     document.querySelector(
       ".image-wrapper"
     ).style.backgroundImage = `url(${this.event.img})`;
