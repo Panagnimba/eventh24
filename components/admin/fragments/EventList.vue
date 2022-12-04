@@ -144,6 +144,9 @@ export default {
           description: event.description,
           img: event.img,
           date: event.date,
+          organisateurId: event._id,
+          organisateurName: event.organisateurName,
+          organisateurTel: event.organisateurTel,
         };
         this.rows.push(item);
       });

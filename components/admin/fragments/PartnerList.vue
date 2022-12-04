@@ -56,6 +56,11 @@ export default {
           type: "String",
         },
         {
+          label: "Téléphone",
+          field: "telephone",
+          type: "String",
+        },
+        {
           label: "Mot de passe",
           field: "password",
           type: "String",
@@ -93,6 +98,7 @@ export default {
       resp.data.result.reverse().forEach((partner) => {
         let item = {
           identifiant: partner.username,
+          telephone: partner.tel,
           password: partner.password,
           action: `<p class="flex justify-between">
                     <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${partner._id} ></i>

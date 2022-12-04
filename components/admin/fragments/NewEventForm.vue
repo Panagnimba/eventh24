@@ -155,6 +155,48 @@
             </div>
           </div>
         </fieldset>
+        <!-- Partner (organisateur) -->
+        <fieldset class="w-full border border-gray-300 p-2">
+          <legend class="text-second font-bold text-center">Partenaire</legend>
+          <div class="w-full row gap-2 flex-wrap sm:flex-nowrap">
+            <div class="col w-full">
+              <span class="text-xs text-gray-400 self-start p-1"
+                >Organisateur de l'évènement</span
+              >
+              <!-- Select partner -->
+              <select
+                class="w-full h-full outline-none border p-2 rounded-md"
+                required
+                v-model="event.organisateurName"
+              >
+                <option value="" disabled selected>
+                  Selectionner l'organisateur
+                </option>
+                <option
+                  v-for="(partner, i) in partners"
+                  :key="i"
+                  :value="partner.username"
+                >
+                  {{ partner.username }}
+                </option>
+              </select>
+            </div>
+            <div class="col w-full">
+              <span class="text-xs text-gray-400 self-start p-1"
+                >Téléphone de l'organisateur</span
+              >
+              <input
+                type="tel"
+                required
+                v-model="event.organisateurTel"
+                pattern="^[0-9]{8}$"
+                name="tel"
+                placeholder="Téléphone de l'organisateur"
+                class="w-full h-full outline-none border p-2 rounded-md"
+              />
+            </div>
+          </div>
+        </fieldset>
         <!-- Types et Prix -->
         <fieldset class="w-full border border-gray-300 p-2">
           <legend class="text-second font-bold text-center">Prix</legend>
@@ -296,6 +338,14 @@ export default {
     eventProp(propChange, old) {
       this.event = propChange;
     },
+    "event.organisateurName"(nameChange) {
+      this.partners.forEach((element) => {
+        if (element.username == nameChange) {
+          this.event.organisateurTel = element.tel;
+          this.event.organisateurId = element._id;
+        }
+      });
+    },
   },
   data() {
     return {
@@ -312,6 +362,7 @@ export default {
       },
 
       categories: [], // get the list of all menus
+      partners: [], // get the list of events organisators
       requestHeader: {
         Authorization: `Bearer ${this.$store.state.admin.token}`,
         "Content-Type": "application/json",
@@ -329,6 +380,13 @@ export default {
       this.notif.show = true;
       this.notif.type = "error";
       this.notif.message = resp.data.message;
+    }
+    // Get list of events organisators
+    let resp2 = await this.$axios.get("/eventh24/getPartners", {
+      headers: this.requestHeader,
+    });
+    if (resp2.data.success) {
+      this.partners = resp2.data.result;
     }
   },
   mounted() {

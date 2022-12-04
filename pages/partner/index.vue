@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full overflow-hidden">
-    <!-- admin header -->
+    <!-- partner header -->
     <div
       class="flex justify-between items-center bg-primary text-white px-4 py-1"
     >
@@ -16,7 +16,7 @@
         <span class="text-xs">Deconnexion</span>
       </div>
     </div>
-    <!-- Admin content -->
+    <!-- Partner content -->
     <div class="w-full flex">
       <!-- left side menu -->
       <div
@@ -40,53 +40,24 @@
           <p class="text-sm px-4">
             <i class="fa-solid fa-bars" @click="toggleRightSideWidth()"></i>
           </p>
-          <div @click="selectMenu" class="menuItem selected" title="Home">
-            <span></span>
-            <span></span>
-            <i class="fa-solid fa-house text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Home</div>
-          </div>
-          <div @click="selectMenu" class="menuItem" title="Menu">
-            <span></span>
-            <span></span>
-            <i class="fa-solid fa-bars text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Menu</div>
-          </div>
-          <div @click="selectMenu" class="menuItem" title="Slider">
-            <span></span>
-            <span></span>
-            <i class="fa-solid fa-sliders text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Slider</div>
-          </div>
-          <div @click="selectMenu" class="menuItem" title="Event">
-            <span></span>
-            <span></span>
-            <i class="fa-regular fa-calendar-days text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Event</div>
-          </div>
-          <div @click="selectMenu" class="menuItem" title="Paralax">
-            <span></span>
-            <span></span>
-            <i class="fa-solid fa-align-center text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Paralax</div>
-          </div>
-          <div @click="selectMenu" class="menuItem" title="camera">
+          <div @click="selectMenu" class="menuItem selected" title="Scanner">
             <span></span>
             <span></span>
             <i class="fa-solid fa-camera text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">camera</div>
+            <div v-if="this.rightSideWidth > 16">Scanner</div>
           </div>
-          <div @click="selectMenu" class="menuItem" title="users">
+
+          <div @click="selectMenu" class="menuItem" title="Vente">
             <span></span>
             <span></span>
-            <i class="fa-solid fa-users text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Users</div>
+            <i class="fa-solid fa-chart-pie text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Vente</div>
           </div>
-          <div @click="selectMenu" class="menuItem" title="Graphics">
+          <div @click="selectMenu" class="menuItem" title="Scannage">
             <span></span>
             <span></span>
-            <i class="fa-solid fa-chart-line text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Graphics</div>
+            <i class="fa-solid fa-chart-simple text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Scannage</div>
           </div>
         </div>
 
@@ -105,33 +76,43 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
       rightSideWidth: 16,
-      mainComponent: "admin-iframe",
+      mainComponent: "partner-scanner",
     };
   },
   computed: {
     requestHeader() {
       return {
-        Authorization: `Bearer ${this.$store.state.admin.token}`,
+        Authorization: `Bearer ${this.$store.state.partner.token}`,
         "Content-Type": "application/json",
       };
     },
   },
   mounted() {
     setTimeout(async () => {
-      let resp1 = await this.$axios.get("/eventh24/getAuthenticate", {
+      let resp1 = await this.$axios.get("/partner/getAuthenticate", {
         headers: this.requestHeader,
       });
       if (resp1.data.isNotAuth) {
-        this.$router.push("/admin/login");
+        this.$router.push("/partner/login");
       }
     }, 2000);
   },
   methods: {
+    deconnexion() {
+      let auth = {
+        isAuthenticated: false,
+        token: null,
+      };
+      //commit state to logout admin
+      this.$store.commit("authenticatePartner", auth);
+      this.$router.push("/partner/login");
+    },
     selectMenu(e) {
       let clickedMenu;
       if (e.target.classList.contains("menuItem")) clickedMenu = e.target;
@@ -146,40 +127,22 @@ export default {
       });
     },
     displayMainComponent(item) {
-      if (item.title.toLowerCase().includes("home"))
-        this.mainComponent = "admin-iframe";
-      else if (item.title.toLowerCase().includes("menu"))
-        this.mainComponent = "admin-menu";
-      else if (item.title.toLowerCase().includes("slider"))
-        this.mainComponent = "admin-banner";
-      else if (item.title.toLowerCase().includes("event"))
-        this.mainComponent = "admin-event";
-      else if (item.title.toLowerCase().includes("paralax"))
-        this.mainComponent = "admin-paralax";
-      else if (item.title.toLowerCase().includes("camera"))
-        this.mainComponent = "admin-qrScanner";
-      else if (item.title.toLowerCase().includes("users"))
-        this.mainComponent = "admin-users";
-      else if (item.title.toLowerCase().includes("graphics"))
-        this.mainComponent = "admin-graphics";
+      if (item.title.toLowerCase().includes("scanner"))
+        this.mainComponent = "partner-scanner";
+      else if (item.title.toLowerCase().includes("vente"))
+        this.mainComponent = "partner-graphics-pie";
+      else if (item.title.toLowerCase().includes("scannage"))
+        this.mainComponent = "partner-graphics-column";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
       if (this.rightSideWidth == 16) this.rightSideWidth = 52;
       else this.rightSideWidth = 16;
     },
-    deconnexion() {
-      let auth = {
-        isAuthenticated: false,
-        token: null,
-      };
-      //commit state to logout admin
-      this.$store.commit("authenticateAdmin", auth);
-      this.$router.push("/admin/login");
-    },
   },
 };
 </script>
+
 <style scoped>
 .menuItem {
   display: flex;

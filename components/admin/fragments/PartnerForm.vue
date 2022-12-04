@@ -31,7 +31,18 @@
               name="username"
               v-model="partner.username"
               required
+              autofocus
               placeholder="Identifiant du partenaire"
+              class="w-full p-1.5 rounded-md outline-none border-2"
+            />
+          </div>
+          <div class="w-full">
+            <input
+              type="tel"
+              v-model="partner.tel"
+              placeholder="Numéro de téléphone"
+              required="true"
+              pattern="^[0-9]{8}$"
               class="w-full p-1.5 rounded-md outline-none border-2"
             />
           </div>
@@ -80,6 +91,7 @@ export default {
       isPending: false,
       partner: {
         username: "",
+        tel: "",
         password: "",
       },
       notif: {
@@ -97,25 +109,32 @@ export default {
   methods: {
     async createNewPartner() {
       this.isPending = true;
-      let resp = await this.$axios.post(
-        "/eventh24/createNewPartner",
-        this.partner,
-        {
-          headers: this.requestHeader,
+      let pattern = /^[0-9]{8}$/;
+      if (pattern.test(this.partner.tel)) {
+        let resp = await this.$axios.post(
+          "/eventh24/createNewPartner",
+          this.partner,
+          {
+            headers: this.requestHeader,
+          }
+        );
+        if (resp.data.success) {
+          this.notif.show = true;
+          this.notif.type = "success";
+          this.notif.message = resp.data.message;
+          //remettre les form input a vide
+          this.partner = { username: "", password: "" };
+        } else {
+          this.notif.show = true;
+          this.notif.type = "error";
+          this.notif.message = resp.data.message;
         }
-      );
-      this.isPending = false;
-      if (resp.data.success) {
-        this.notif.show = true;
-        this.notif.type = "success";
-        this.notif.message = resp.data.message;
-        //remettre les form input a vide
-        this.partner = { username: "", password: "" };
       } else {
         this.notif.show = true;
-        this.notif.type = "error";
-        this.notif.message = resp.data.message;
+        this.notif.type = "warning";
+        this.notif.message = "Numéro de téléphone incorrect";
       }
+      this.isPending = false;
     },
   },
 };

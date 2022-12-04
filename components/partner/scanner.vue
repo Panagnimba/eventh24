@@ -1,21 +1,5 @@
 <template>
   <div class="w-full h-full overflow-hidden">
-    <!-- partner header -->
-    <div
-      class="flex justify-between items-center bg-primary text-white px-4 py-1"
-    >
-      <nuxt-link to="/" class="font-bold text-xl">
-        Vino<span class="text-third">Ticket</span>
-        <!-- <img src="/logo.png" class="w-12" /> -->
-      </nuxt-link>
-      <div
-        @click="deconnexion"
-        class="flex flex-col items-center gap-1 cursor-pointer"
-      >
-        <i class="fa-solid fa-power-off"></i>
-        <span class="text-xs">Deconnexion</span>
-      </div>
-    </div>
     <div class="h-screen flex flex-col scanwrapper sm:flex-row p-4">
       <div
         class="w-full h-full flex flex-col gap-2 justify-center items-center"
@@ -131,19 +115,19 @@ export default {
       };
     },
   },
+  async fetch() {
+    this.isPending = true;
+    let resp1 = await this.$axios.get("/partner/getScanEvents", {
+      headers: this.requestHeader,
+    });
+    this.isPending = false;
+    if (resp1.data.success) {
+      this.events = resp1.data.result;
+    } else if (resp1.data.isNotAuth) {
+      this.$router.push("/partner/logi");
+    }
+  },
   async mounted() {
-    setTimeout(async () => {
-      this.isPending = true;
-      let resp1 = await this.$axios.get("/partner/getScanEvents", {
-        headers: this.requestHeader,
-      });
-      this.isPending = false;
-      if (resp1.data.success) {
-        this.events = resp1.data.result;
-      } else if (resp1.data.isNotAuth) {
-        this.$router.push("/partner/login");
-      }
-    }, 2000);
     //
     this.qrScanner = await new QrScanner(this.$refs.video, async (result) => {
       this.qrScanner.stop();
@@ -161,7 +145,6 @@ export default {
         );
         this.isPending = false;
         if (resp.data.success) {
-          // restart scannning process
           document.querySelector("#success_audio").play();
           this.scanResult = {
             eventId: "null",
@@ -172,7 +155,7 @@ export default {
           this.notif.message = `${resp.data.message} ==> (${resp.data.categorie})`;
           this.eventCategorie = resp.data.categorie;
           //
-          this.qrScanner.start();
+          // this.qrScanner.start();
         } else if (resp.data.isNotAuth) {
           this.notif.show = true;
           this.notif.type = "warning";
@@ -221,15 +204,6 @@ export default {
         this.notif.type = "warning";
         this.notif.message = "No flash available";
       }
-    },
-    deconnexion() {
-      let auth = {
-        isAuthenticated: false,
-        token: null,
-      };
-      //commit state to logout admin
-      this.$store.commit("authenticatePartner", auth);
-      this.$router.push("/partner/login");
     },
   },
 };
