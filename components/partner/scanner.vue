@@ -25,11 +25,19 @@
             @click="startScanner"
             class="bg-fourth text-white px-8 font-semibold p-1 rounded-xl"
           >
-            Start
+            Scanner
           </button>
           <button
             @click="toggleFlash"
-            class="bg-blue-700 text-white px-8 font-semibold p-1 rounded-xl"
+            class="
+              w-32
+              bg-blue-700
+              text-white
+              px-8
+              font-semibold
+              p-1
+              rounded-xl
+            "
           >
             Flash
           </button>
