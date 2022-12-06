@@ -99,7 +99,7 @@ export default {
   },
   data() {
     return {
-      isTimePass: false, // to know if the event is still evailable or already pass
+      isTimePass: true, // to know if the event is still evailable or already pass
       gmtDate: this.event.gmtDate, //gmtDate is get from the server to initialise coutdown with actual GMT date
       time: {
         days: "00",
