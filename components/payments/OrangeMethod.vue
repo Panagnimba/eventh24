@@ -314,7 +314,7 @@ export default {
         this.$store.commit("viderPanier");
         setInterval(() => {
           this.$router.push("/commande/mescommandes");
-        }, 300);
+        }, 800);
         //
       } else if (resp.data.isNotAuth) {
         let notAuthUser = {
