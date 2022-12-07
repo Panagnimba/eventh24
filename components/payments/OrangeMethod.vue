@@ -312,9 +312,9 @@ export default {
         this.notif.message = resp.data.message;
         // vider le panier
         this.$store.commit("viderPanier");
-        setInterval(() => {
+        setTimeout(() => {
           this.$router.push("/commande/mescommandes");
-        }, 800);
+        }, 500);
         //
       } else if (resp.data.isNotAuth) {
         let notAuthUser = {
