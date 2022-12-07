@@ -311,10 +311,10 @@ export default {
         this.notif.type = "success";
         this.notif.message = resp.data.message;
         // vider le panier
-        this.$store.commit("viderPanier");
+        // this.$store.commit("viderPanier");
         setTimeout(() => {
           this.$router.push("/commande/mescommandes");
-        }, 500);
+        }, 3000);
         //
       } else if (resp.data.isNotAuth) {
         let notAuthUser = {
