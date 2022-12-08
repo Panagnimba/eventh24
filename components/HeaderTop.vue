@@ -159,13 +159,15 @@ export default {
     },
     //
     connexionUrl() {
-      // set redirect_url cookie
-      var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
-      let expires = "; expires=" + date.toUTCString();
-      document.cookie =
-        "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
-      //
-      this.$router.push("/login");
+      if (!this.$store.state.user.token) {
+        // set redirect_url cookie
+        var date = new Date(Date.now() + 10 * 60 * 60 * 1000); // 10mn
+        let expires = "; expires=" + date.toUTCString();
+        document.cookie =
+          "redirect_url" + "=" + ("/" || "/") + expires + "; path=/";
+        //
+        this.$router.push("/login");
+      }
     },
     //
     getMyCommandes() {

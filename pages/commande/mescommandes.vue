@@ -175,6 +175,14 @@ export default {
         expires +
         "; path=/";
       //
+      let notAuthUser = {
+        _id: "",
+        prenom: "",
+        tel: "",
+        token: null,
+      };
+      this.$store.commit("authenticateUser", notAuthUser);
+      //
       this.$router.push("/login");
       // this.$store.commit("toggleLoginPopup", true);
     } else {
@@ -207,7 +215,7 @@ export default {
             .catch(() => {
               this.notif.show = true;
               this.notif.type = "error";
-              this.notif.message = "An error in downloading the file sorry";
+              this.notif.message = "Erreur survenue lors du téléchargement";
             });
           this.isDownloading = false;
         }

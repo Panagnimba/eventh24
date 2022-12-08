@@ -20,7 +20,7 @@
       <div
         class="flex justify-between items-center gap-2 bg-second sticky top-0"
       >
-        <nuxt-link to="/login">
+        <nuxt-link :to="this.$store.state.user.token ? '' : '/login'">
           <p class="flex gap-3 justify-center items-center m-2">
             <span
               class="
@@ -39,7 +39,7 @@
             <span class="text-white text-sm font-semibold text-center">
               Bonjour,
               {{
-                this.$store.state.user.prenom.length > 0
+                this.$store.state.user.token
                   ? this.$store.state.user.prenom
                   : "Identifiez-vous"
               }}
@@ -101,7 +101,7 @@
 
 <script>
 export default {
-  date() {
+  data() {
     return {
       menuList: [],
     };
