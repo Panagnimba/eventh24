@@ -19,6 +19,7 @@
     "nuxt": "^2.15.3",
     "qr-scanner": "^1.4.1",
     "qrcode-reader": "^1.0.4",
+    "redirect-ssl": "^3.0.0",
     "swiper": "^7.0.9",
     "tinymce": "^6.2.0",
     "vue-good-table": "^2.21.11",

@@ -199,3 +199,30 @@ async function createTicket(Pevtimg,pqrcode,peventtitle,pheure,plieu,pnomclient)
 }
 createTicket('lenna.png','qrcode.png',"Floby en concert live des artistes","20h45","Stade municipa","Panagnimba")
 module.exports = createTicket;
+
+
+
+
+
+// COUNTER OF NUMBER OF FILE AND LINES
+
+var fs=require('fs');
+filename=process.argv[2];
+var data=fs.readFileSync(filename);
+var res=data.toString().split('\n').length;
+console.log(res-1);
+//
+
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+async function fileLineCount({ fileLocation }) {
+  const { stdout } = await exec(`cat ${fileLocation} | wc -l`);
+  return parseInt(stdout);
+};
+
+// Usage
+
+async someFunction() {
+  const lineCount = await fileLineCount({ fileLocation: 'some/file.json' });
+}

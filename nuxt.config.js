@@ -1,4 +1,5 @@
 let server_url =  process.env.NODE_ENV !== 'production' ? 'http://localhost:9000' : 'https://api.vinoticket.com';
+import redirectSSL from 'redirect-ssl'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -47,7 +48,12 @@ export default {
     baseURL: server_url, // Used as fallback if no runtime config is provided
     credentials: true
   },
-
+  // 
+    serverMiddleware: [
+      redirectSSL.create({
+        enabled: process.env.NODE_ENV === 'production'
+      }),
+    ],
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
