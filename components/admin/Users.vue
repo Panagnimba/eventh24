@@ -51,6 +51,25 @@
         </div>
         <hr class="w-full" />
       </div>
+      <!-- Newsletters -->
+      <div class="w-56 flex flex-col gap-2 p-4">
+        <div class="font-bold text-second">Newsletters</div>
+        <hr class="w-full" />
+        <div
+          @click="selectMenu"
+          class="small-menu-item"
+          title="Manage newsletter"
+        >
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Personnaliser</span>
+        </div>
+        <hr class="w-full" />
+        <div @click="selectMenu" class="small-menu-item" title="New newsletter">
+          <i class="fa-solid fa-plus"></i>
+          <span>Nouveau</span>
+        </div>
+        <hr class="w-full" />
+      </div>
     </div>
     <!-- Main content display -->
     <div class="w-full h-full flex justify-center items-center border">
@@ -93,6 +112,10 @@ export default {
         this.mainContent = "admin-fragments-userList";
       } else if (item.title.toLowerCase().includes("new user")) {
         this.mainContent = "admin-fragments-userForm";
+      } else if (item.title.toLowerCase().includes("manage newsletter")) {
+        this.mainContent = "admin-fragments-newsletterList";
+      } else if (item.title.toLowerCase().includes("new newsletter")) {
+        this.mainContent = "admin-fragments-newsletterForm";
       }
     },
   },

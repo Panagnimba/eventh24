@@ -57,19 +57,14 @@
       <div class="w-full flex flex-col gap-3 bg-general h-1/2 p-2">
         <div class="w-full flex flex-col gap-3 p-2">
           <div class="font-bold text-second text-sm">
-            CMDID:
-            <span class="text-third px-2">{{ this.scanResult.cmmdeId }}</span>
-          </div>
-          <div class="font-bold text-second text-sm">
             EVTID:
             <span class="text-third px-2">{{ this.scanResult.eventId }}</span>
           </div>
-
-          <!-- event -->
           <div class="font-bold text-second text-sm">
-            EVENT:
-            <span class="text-third px-2">{{ this.eventId }}</span>
+            CMDID:
+            <span class="text-third px-2">{{ this.scanResult.cmmdeId }}</span>
           </div>
+          <!-- event -->
           <div class="font-bold text-second text-sm">
             EVENT:
             <span class="text-third px-2">{{ this.eventId }}</span>
@@ -105,8 +100,8 @@ export default {
       events: [],
       //
       scanResult: {
-        eventId: "null",
-        cmmdeId: "null",
+        eventId: "",
+        cmmdeId: "",
       },
       notif: {
         show: false,
@@ -154,8 +149,8 @@ export default {
         if (resp.data.success) {
           document.querySelector("#success_audio").play();
           this.scanResult = {
-            eventId: "null",
-            cmmdeId: "null",
+            eventId: "",
+            cmmdeId: "",
           };
           this.notif.show = true;
           this.notif.type = "success";

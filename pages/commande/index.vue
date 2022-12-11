@@ -5,12 +5,6 @@
     <div class="min-h-full">
       <loader v-if="isPending"></loader>
       <div v-else class="w-full p-6 flex justify-center">
-        <!-- bank -->
-        <client-only v-if="this.panier.length > 0">
-          <payments-bank-method
-            v-if="this.panier[0].paymentMethod == 'bank'"
-          ></payments-bank-method>
-        </client-only>
         <!-- orange -->
         <client-only v-if="this.panier.length > 0">
           <payments-orange-method

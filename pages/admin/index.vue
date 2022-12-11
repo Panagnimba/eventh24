@@ -76,6 +76,12 @@
             <i class="fa-solid fa-camera text-xl"></i>
             <div v-if="this.rightSideWidth > 16">camera</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="Payment">
+            <span></span>
+            <span></span>
+            <i class="fa-brands fa-sellcast text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Payment</div>
+          </div>
           <div @click="selectMenu" class="menuItem" title="users">
             <span></span>
             <span></span>
@@ -162,6 +168,8 @@ export default {
         this.mainComponent = "admin-users";
       else if (item.title.toLowerCase().includes("graphics"))
         this.mainComponent = "admin-graphics";
+      else if (item.title.toLowerCase().includes("payment"))
+        this.mainComponent = "admin-payments";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {

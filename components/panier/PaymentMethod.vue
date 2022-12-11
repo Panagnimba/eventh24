@@ -6,21 +6,11 @@
   >
     <div class="font-bold text-second">Mode de payement</div>
     <hr class="w-full" />
-    <div class="flex items-center gap-2 cursor-pointer">
-      <input
-        type="radio"
-        name="paymentMethod"
-        @change="getPaymentMethod"
-        checked
-        id="bank"
-        class="w-4 h-4"
-      />
-      <label for="bank">Carte Bancaire</label>
-    </div>
     <div class="flex items-center gap-2">
       <input
         type="radio"
         name="paymentMethod"
+        checked
         @change="getPaymentMethod"
         id="orange"
         class="w-4 h-4"
@@ -36,16 +26,6 @@
         class="w-4 h-4"
       />
       <label for="coris">Coris Money</label>
-    </div>
-    <div class="flex items-center gap-2">
-      <input
-        type="radio"
-        name="paymentMethod"
-        @change="getPaymentMethod"
-        id="sank"
-        class="w-4 h-4"
-      />
-      <label for="sank">Sank Pay</label>
     </div>
     <hr class="w-full" />
     <p class="text-xs text-second">
@@ -75,7 +55,7 @@ export default {
   data() {
     return {
       panierList: this.$store.state.panier,
-      paymentMethod: "bank",
+      paymentMethod: "orange",
     };
   },
   mounted() {

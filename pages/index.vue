@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full bg-general overflow-hidden">
+  <div class="w-full h-screen bg-general overflow-hidden">
     <!--// Filter based on the search input -->
     <header-top @filter="filterSearchHandle"></header-top>
     <!--// Filter based on the event categorie -->
