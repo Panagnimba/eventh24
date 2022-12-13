@@ -82,17 +82,23 @@
             <i class="fa-brands fa-sellcast text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Payment</div>
           </div>
+          <div @click="selectMenu" class="menuItem" title="Vente">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-chart-pie text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Vente</div>
+          </div>
+          <div @click="selectMenu" class="menuItem" title="scannage">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-chart-simple text-xl"></i>
+            <div v-if="this.rightSideWidth > 16">Scannage</div>
+          </div>
           <div @click="selectMenu" class="menuItem" title="users">
             <span></span>
             <span></span>
             <i class="fa-solid fa-users text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Users</div>
-          </div>
-          <div @click="selectMenu" class="menuItem" title="Graphics">
-            <span></span>
-            <span></span>
-            <i class="fa-solid fa-chart-line text-xl"></i>
-            <div v-if="this.rightSideWidth > 16">Graphics</div>
           </div>
         </div>
 
@@ -163,13 +169,15 @@ export default {
       else if (item.title.toLowerCase().includes("paralax"))
         this.mainComponent = "admin-paralax";
       else if (item.title.toLowerCase().includes("camera"))
-        this.mainComponent = "admin-qrScanner";
+        this.mainComponent = "admin-scanner";
       else if (item.title.toLowerCase().includes("users"))
         this.mainComponent = "admin-users";
-      else if (item.title.toLowerCase().includes("graphics"))
-        this.mainComponent = "admin-graphics";
       else if (item.title.toLowerCase().includes("payment"))
         this.mainComponent = "admin-payments";
+      else if (item.title.toLowerCase().includes("vente"))
+        this.mainComponent = "admin-graphics-pie";
+      else if (item.title.toLowerCase().includes("scannage"))
+        this.mainComponent = "admin-graphics-column";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
