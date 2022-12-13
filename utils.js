@@ -204,6 +204,30 @@ module.exports = createTicket;
 
 
 
+// 
+fetch("https://api.vinoticket.com/user/saveCommande", {
+  "headers": {
+    "accept": "application/json, text/plain, */*",
+    "accept-language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgzNjJiYjZjNzMzODRkMDY3ZmU0MGYiLCJ0ZWwiOiI3MzIwMDc5MiIsInByZW5vbSI6IktLREQiLCJpYXQiOjE2Njk5MjM5OTUsImV4cCI6MTY4NTQ3NTk5NX0.r4PLRPTcz8cf4hjU2LXcl7TpbQspcmSusLE-6MkaRoY",
+    "content-type": "application/json",
+  },
+  "referrer": "https://vinoticket.com/",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": "{"client":{"_id":"638362bb6c73384d067fe40f","prenom":"KKDD","tel":"73200792","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgzNjJiYjZjNzMzODRkMDY3ZmU0MGYiLCJ0ZWwiOiI3MzIwMDc5MiIsInByZW5vbSI6IktLREQiLCJpYXQiOjE2Njk5MjM5OTUsImV4cCI6MTY4NTQ3NTk5NX0.r4PLRPTcz8cf4hjU2LXcl7TpbQspcmSusLE-6MkaRoY"},"items":[{"_id":"635407237197909d00cf5185","img":"https://ik.imagekit.io/g8k0fkvg9/Events/event_WGGyHygMx.png","intitule":"Floby en scène","qte":1,"price":5000,"type":"Normal","beneficiairesNames":["HOL"],"useSameNameInfo":false,"paymentMethod":"orange"}],"paymentInfo":{"userTel":"74722501","userOtp":"564728","method":"orange"}}",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "include"
+});
+// 
+
+
+
+
+
+
+
+
 // COUNTER OF NUMBER OF FILE AND LINES
 
 var fs=require('fs');

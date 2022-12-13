@@ -36,12 +36,11 @@
             text-gray-500
           "
         >
-          <nuxt-link to="">SIAO</nuxt-link>
-          <nuxt-link to="">NAK</nuxt-link>
-          <nuxt-link to="">SNC</nuxt-link>
-          <nuxt-link to="">SIAO</nuxt-link>
-          <nuxt-link to="">NAK</nuxt-link>
-          <nuxt-link to="">SNC</nuxt-link>
+          <a href="https://siao.bf/" target="_blank">SIAO</a>
+          <a href="https://www.ontb.bf/evenements/nak" target="_blank">NAK</a>
+          <a href="https://www.ontb.bf/evenements/snc" target="_blank">SNC</a>
+
+          <a href="https://www.burkina24.com/" target="_blank">Burkina24</a>
         </div>
       </div>
       <!-- col 3 -->
@@ -70,8 +69,8 @@
         <h3 class="text-xl font-bold text-gray-300">Newsletter</h3>
         <div class="flex flex-col justify-evenly gap-4 h-full text-gray-500">
           <p class="text-gray-500 text-justify">
-            Vous serez alertez en amont des meilleurs plans, spectacles,
-            concerts,...
+            Inscrivez-vous à notre newsletter pour ne rien rater des meilleurs
+            plans, spectacles, concerts,...
           </p>
           <form
             @submit.prevent="subscribeTonewsletter"
@@ -146,6 +145,7 @@ export default {
       let resp = await this.$axios.post("/saveNewsletter", {
         email: this.email,
       });
+      this.email = "";
       this.pop.text = resp.data.message;
       this.pop.success = resp.data.success;
       this.pop.show = true;
