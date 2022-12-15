@@ -446,29 +446,30 @@ export default {
         headers: this.requestHeader,
       });
       this.isPending = false;
-      //
-      this.event = {
-        img: null,
-        categorie: "Concerts",
-        intitule: "",
-        artiste: "",
-        date: "",
-        openTime: "",
-        lieu: "",
-        description: "",
-        prices: [
-          {
-            type: "Normal",
-            price: 100,
-          },
-        ],
-      };
-      this.conf = {
-        titleText: "Ajouter un nouveau évènement",
-        submitText: "Ajouter",
-      };
-      //
+
       if (resp.data.success) {
+        // Remise à zero des champs
+        this.event = {
+          img: null,
+          categorie: "Concerts",
+          intitule: "",
+          artiste: "",
+          date: "",
+          openTime: "",
+          lieu: "",
+          description: "",
+          prices: [
+            {
+              type: "Normal",
+              price: 100,
+            },
+          ],
+        };
+        this.conf = {
+          titleText: "Ajouter un nouveau évènement",
+          submitText: "Ajouter",
+        };
+        //
         this.notif.show = true;
         this.notif.type = "success";
         this.notif.message = resp.data.message;
