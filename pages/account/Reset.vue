@@ -47,7 +47,6 @@
           <input
             type="tel"
             v-model="myCompte.tel"
-            autofocus
             placeholder="Numéro de téléphone"
             required="true"
             pattern="^[0-9]{8}$"
@@ -59,7 +58,6 @@
           <input
             type="password"
             required
-            autofocus
             v-model="myCompte.password"
             placeholder="Nouveau mot de passe"
             class="w-full p-1.5 rounded-md outline-none border-2"
