@@ -182,5 +182,20 @@ export default {
       this.isPending = false;
     },
   },
+  //
+  head() {
+    return {
+      title: "Mon compte",
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: "description",
+          name: "description",
+          content:
+            "En créant votre compte vous bénéficiez de nos offres de spectacles, concerts, festivals, danses...",
+        },
+      ],
+    };
+  },
 };
 </script>

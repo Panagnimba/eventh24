@@ -16,8 +16,8 @@
           Est une plateforme de billetterie nouvelle génération vous offrant la
           possibilité d’acheter depuis votre téléphone vos tickets d’évènements.
           Sa vocation est de vous faciliter la vie en vous évitant les
-          déplacements et les long fils d’attente. La plateforme vous propose
-          les ticket d’évènement de votre choix allant du sport, du cinéma, dès
+          déplacements et les longues files d’attente. La plateforme vous propose
+          des ticket d’évènement de votre choix allant du sport, du cinéma, dès
           concerts à l’humour et aux festival... VINOTICKET SARL, Révolutionner
           l’événementiel!
         </p>

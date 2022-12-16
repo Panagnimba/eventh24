@@ -9,9 +9,11 @@ export default {
     },
     meta: [
       { charset: 'utf-8' },
+      { hid: 'author', name: 'author', content: 'VINOTICKET SARL' },
+      { hid: 'description', name: 'description', content: 'VINOTICKET SARL Est une plateforme de billetterie nouvelle génération vous offrant la possibilité d’acheter depuis votre téléphone vos tickets d’évènements.' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
     ],
+    
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       // fontawesome link

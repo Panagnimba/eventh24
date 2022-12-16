@@ -241,5 +241,19 @@ export default {
       });
     },
   },
+  //
+  head() {
+    return {
+      title: "Panier d'achat",
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: "description",
+          name: "description",
+          content: "Vinoticket: Concerts, festivals, danses...",
+        },
+      ],
+    };
+  },
 };
 </script>

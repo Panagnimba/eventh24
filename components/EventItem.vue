@@ -8,7 +8,7 @@
       >
         <img
           :src="this.event.img"
-          alt=""
+          alt="Event Image"
           class="
             h-full
             w-full
@@ -30,12 +30,12 @@
     <!-- Artiste -->
     <div class="flex m-2 items-center gap-2">
       <i class="fa-solid fa-microphone text-lg text-second"></i>
-      <h6 class="text-sm italic">{{ this.event.artiste }}</h6>
+      <h3 class="text-sm italic">{{ this.event.artiste }}</h3>
     </div>
     <!-- lieu -->
     <div class="flex m-2 items-center gap-2">
       <i class="fa-solid fa-location-dot text-lg text-second"></i>
-      <h6 class="text-sm italic">{{ this.event.lieu }}</h6>
+      <h3 class="text-sm italic">{{ this.event.lieu }}</h3>
     </div>
     <!-- time -->
     <div class="flex m-2 items-center gap-2">

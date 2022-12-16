@@ -207,7 +207,31 @@
               Partager cet evenement
             </h3>
             <div class="flex gap-4 justify-center mt-6">
-              <div
+              <!-- whatsapp -->
+              <a
+                :href="`https://api.whatsapp.com/send?text=https://vinoticket.com/event/${this.$route.params.slug}`"
+                target="_blank"
+                title="Partager sur whatsapp"
+                class="
+                  w-8
+                  h-8
+                  border
+                  p-2
+                  rounded-full
+                  flex
+                  justify-center
+                  items-center
+                  cursor-pointer
+                  bg-primary
+                "
+              >
+                <i class="fa-brands fa-whatsapp"></i>
+              </a>
+              <!-- facebook -->
+              <a
+                :href="`https://www.facebook.com/sharer/sharer.php?u=https://vinoticket.com/event/${this.$route.params.slug}&t=${this.event.intitule}`"
+                target="_blank"
+                title="Partager sur facebook"
                 class="
                   w-8
                   h-8
@@ -222,8 +246,12 @@
                 "
               >
                 <i class="fa-brands fa-facebook"></i>
-              </div>
-              <div
+              </a>
+              <!-- twitter -->
+              <a
+                :href="`https://twitter.com/share?url=https://vinoticket.com/event/${this.$route.params.slug}&text=${this.event.intitule}`"
+                target="_blank"
+                title="Partager sur twitter"
                 class="
                   w-8
                   h-8
@@ -237,9 +265,13 @@
                   bg-primary
                 "
               >
-                <i class="fa-brands fa-facebook"></i>
-              </div>
-              <div
+                <i class="fa-brands fa-twitter"></i>
+              </a>
+              <!-- linkedin -->
+              <a
+                :href="`https://www.linkedin.com/shareArticle?mini=true&url=https://vinoticket.com/event/${this.$route.params.slug}&title=${this.event.intitule}&summary=${this.event.description}&source=https://vinoticket.com/event/${this.$route.params.slug}`"
+                target="_blank"
+                title="Partager sur linkedin"
                 class="
                   w-8
                   h-8
@@ -253,9 +285,13 @@
                   bg-primary
                 "
               >
-                <i class="fa-brands fa-facebook"></i>
-              </div>
-              <div
+                <i class="fa-brands fa-linkedin-in"></i>
+              </a>
+              <!-- email -->
+              <a
+                :href="`mailto:?subject=VINOTICKET: ${this.event.intitule}&body=https://vinoticket.com/event/${this.$route.params.slug}`"
+                target="_blank"
+                title="Partager sur email"
                 class="
                   w-8
                   h-8
@@ -269,24 +305,8 @@
                   bg-primary
                 "
               >
-                <i class="fa-brands fa-facebook"></i>
-              </div>
-              <div
-                class="
-                  w-8
-                  h-8
-                  border
-                  p-2
-                  rounded-full
-                  flex
-                  justify-center
-                  items-center
-                  cursor-pointer
-                  bg-primary
-                "
-              >
-                <i class="fa-brands fa-facebook"></i>
-              </div>
+                <i class="fa-sharp fa-solid fa-envelope"></i>
+              </a>
             </div>
           </div>
           <!--  -->
@@ -297,7 +317,7 @@
       </div>
       <!-- Description part -->
       <div class="h-48 border m-6 p-5 overflow-auto">
-        <div v-html="this.event.description"></div>
+        <p v-html="this.event.description"></p>
       </div>
     </div>
     <!-- Event not found -->
@@ -525,6 +545,20 @@ export default {
       this.$store.commit("fillEPanier", panierItem);
       this.$router.push("/panier");
     },
+  },
+  //
+  head() {
+    return {
+      title: this.event.intitule,
+      meta: [
+        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+        {
+          hid: "description",
+          name: "description",
+          content: this.event.description,
+        },
+      ],
+    };
   },
 };
 </script>
