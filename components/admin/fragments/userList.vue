@@ -51,8 +51,13 @@ export default {
 
       columns: [
         {
-          label: "Username",
-          field: "username",
+          label: "Nom",
+          field: "nom",
+          type: "String",
+        },
+        {
+          label: "Prenom",
+          field: "prenom",
           type: "String",
         },
         {
@@ -60,12 +65,6 @@ export default {
           field: "telephone",
           type: "String",
         },
-        {
-          label: "Email",
-          field: "email",
-          type: "String",
-        },
-
         {
           label: "Action",
           field: "action",
@@ -97,9 +96,9 @@ export default {
     if (resp.data.success) {
       resp.data.result.reverse().forEach((user) => {
         let item = {
-          username: user.prenom,
+          nom: user.nom,
+          prenom: user.prenom,
           telephone: user.tel,
-          email: user.email,
           action: `<p class="flex justify-between">
                     <i class="fa-solid fa-pen-to-square cursor-pointer text-fourth updateBtn" data-id=${user._id} ></i>
                     <i class="fa-solid fa-trash-can cursor-pointer text-third deleteBtn" data-id=${user._id}></i>

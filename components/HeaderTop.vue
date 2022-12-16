@@ -123,8 +123,8 @@ export default {
       categorie: "All",
       searchText: "",
       menuList: [],
-      showSearchBox: true,
-      bigScreen: true,
+      showSearchBox: false,
+      bigScreen: false,
     };
   },
   mounted() {

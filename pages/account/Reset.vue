@@ -24,6 +24,24 @@
         >
           MON COMPTE
         </h1>
+        <!-- Nom & Prenom -->
+        <div class="w-full flex gap-3">
+          <input
+            type="text"
+            v-model="myCompte.nom"
+            required
+            autofocus
+            placeholder="Votre nom"
+            class="w-full p-1.5 rounded-md outline-none border-2"
+          />
+          <input
+            type="text"
+            v-model="myCompte.prenom"
+            required
+            placeholder="Votre prenom"
+            class="w-full p-1.5 rounded-md outline-none border-2"
+          />
+        </div>
         <!-- tel -->
         <div class="w-full">
           <input
@@ -82,6 +100,8 @@ export default {
         message: "",
       },
       myCompte: {
+        nom: "",
+        prenom: "",
         tel: "",
         password: "",
       },
@@ -94,7 +114,7 @@ export default {
       if (pattern.test(this.myCompte.tel)) {
         let resp = await this.$axios.post("/resetPassword", this.myCompte);
         if (resp.data.success) {
-          this.myCompte = { tel: "", password: "" };
+          this.myCompte = { nom: "", prenom: "", tel: "", password: "" };
           //
           this.notif.show = true;
           this.notif.type = "success";
