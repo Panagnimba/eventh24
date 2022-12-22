@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /vinoticket/
+Disallow: /vinoticket/635407237197909d00cf5185/
+Allow: /

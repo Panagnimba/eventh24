@@ -201,7 +201,9 @@ createTicket('lenna.png','qrcode.png',"Floby en concert live des artistes","20h4
 module.exports = createTicket;
 
 
-
+"engines": {
+  "node": "15.10.0"
+},
 
 
 
