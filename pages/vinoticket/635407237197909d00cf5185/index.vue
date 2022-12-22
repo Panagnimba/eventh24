@@ -139,7 +139,7 @@ export default {
         headers: this.requestHeader,
       });
       if (resp1.data.isNotAuth) {
-        this.$router.push("/admin/login");
+        this.$router.push("/vinoticket/635407237197909d00cf5185/login");
       }
     }, 2000);
   },
@@ -191,7 +191,7 @@ export default {
       };
       //commit state to logout admin
       this.$store.commit("authenticateAdmin", auth);
-      this.$router.push("/admin/login");
+      this.$router.push("/vinoticket/635407237197909d00cf5185/login");
     },
   },
 };

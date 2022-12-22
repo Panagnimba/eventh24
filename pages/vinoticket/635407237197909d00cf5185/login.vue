@@ -17,7 +17,7 @@
             rounded-tl-xl rounded-tr-xl
           "
         >
-          ADMINISTRATEUR
+          CONNEXION
         </h1>
         <form
           @submit.prevent="adminLogin"
@@ -71,8 +71,8 @@ export default {
   data() {
     return {
       admin: {
-        username: "josue",
-        password: "josuee",
+        username: "",
+        password: "",
       },
       isPending: false,
     };
@@ -89,8 +89,9 @@ export default {
         };
         //commit state to authenticate admin
         this.$store.commit("authenticateAdmin", auth);
-        this.$router.push("/admin");
+        this.$router.push("/vinoticket/635407237197909d00cf5185/");
       }
+      this.isPending = false;
     },
   },
 };

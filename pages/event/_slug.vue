@@ -269,7 +269,7 @@
               </a>
               <!-- linkedin -->
               <a
-                :href="`https://www.linkedin.com/shareArticle?mini=true&url=https://vinoticket.com/event/${this.$route.params.slug}&title=${this.event.intitule}&summary=${this.event.description}&source=https://vinoticket.com/event/${this.$route.params.slug}`"
+                :href="`https://www.linkedin.com/shareArticle?mini=true&url=https://vinoticket.com/event/${this.$route.params.slug}&title=${this.event.intitule}&source=https://vinoticket.com/event/${this.$route.params.slug}`"
                 target="_blank"
                 title="Partager sur linkedin"
                 class="

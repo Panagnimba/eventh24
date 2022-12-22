@@ -45,7 +45,12 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['@nuxtjs/axios'],
+  modules: ['@nuxtjs/axios','@nuxtjs/robots'],
+  robots: {
+    UserAgent: '*',
+    Disallow: ['/vinoticket','/commande'],
+    Allow: '/'
+  },
   axios: {
     baseURL: server_url, // Used as fallback if no runtime config is provided
     credentials: true
