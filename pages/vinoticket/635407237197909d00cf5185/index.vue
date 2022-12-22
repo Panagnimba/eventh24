@@ -133,6 +133,10 @@ export default {
       };
     },
   },
+  middleware({ store, redirect }) {
+    if (!store.state.admin.isAuthenticated || !store.state.admin.token)
+      return redirect("/vinoticket/635407237197909d00cf5185/login");
+  },
   mounted() {
     setTimeout(async () => {
       let resp1 = await this.$axios.get("/eventh24/getAuthenticate", {
