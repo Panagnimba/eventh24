@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full overflow-auto no-scrollbar p-4">
-    <loader v-show="this.isPending"></loader>
     <h4 class="font-bold text-primary text-center text-lg m-5">Newsletters</h4>
+    <loader v-show="this.isPending"></loader>
     <div
       v-show="!this.isPending && this.rows.length > 0"
       class="w-full flex justify-center overflow-hidden"

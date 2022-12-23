@@ -100,15 +100,16 @@
             <i class="fa-solid fa-users text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Users</div>
           </div>
-        </div>
 
-        <!-- Settings -->
-        <div @click="selectMenu" class="menuItem">
-          <span></span>
-          <span></span>
-          <i class="fa-solid fa-gear"></i>
-          <div v-if="this.rightSideWidth > 16">Settings</div>
+          <!-- Settings -->
+          <div @click="selectMenu" class="menuItem" title="Activity">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-gear"></i>
+            <div v-if="this.rightSideWidth > 16">Activity</div>
+          </div>
         </div>
+        <!-- settings -->
       </div>
       <!-- Main content -->
       <div class="w-full h-screen bg-white overflow-auto no-scrollbar">
@@ -182,6 +183,8 @@ export default {
         this.mainComponent = "admin-graphics-pie";
       else if (item.title.toLowerCase().includes("scannage"))
         this.mainComponent = "admin-graphics-column";
+      else if (item.title.toLowerCase().includes("activity"))
+        this.mainComponent = "admin-activity";
       else this.mainComponent = "";
     },
     toggleRightSideWidth() {
