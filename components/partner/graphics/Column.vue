@@ -61,6 +61,7 @@ export default {
         exportEnabled: true,
         axisX: {
           labelMaxWidth: 100,
+          labelAngle: 0,
           labelWrap: false, // change it to false
           labelAutoFit: true,
           interval: 1,

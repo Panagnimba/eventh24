@@ -1,4 +1,9 @@
 User-agent: *
+Disallow: /panier/
+Disallow: /partner/
+Disallow: /commande/
+Disallow: /admin/
 Disallow: /vinoticket/
 Disallow: /vinoticket/635407237197909d00cf5185/
+Disallow: /commande/mescommandes
 Allow: /

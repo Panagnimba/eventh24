@@ -94,6 +94,14 @@
             <i class="fa-solid fa-chart-simple text-xl"></i>
             <div v-if="this.rightSideWidth > 16">Scannage</div>
           </div>
+          <!-- Recettes -->
+          <div @click="selectMenu" class="menuItem" title="Recette">
+            <span></span>
+            <span></span>
+            <i class="fa-solid fa-comments-dollar"></i>
+            <div v-if="this.rightSideWidth > 16">Recette</div>
+          </div>
+          <!-- Users -->
           <div @click="selectMenu" class="menuItem" title="users">
             <span></span>
             <span></span>
@@ -183,6 +191,8 @@ export default {
         this.mainComponent = "admin-graphics-pie";
       else if (item.title.toLowerCase().includes("scannage"))
         this.mainComponent = "admin-graphics-column";
+      else if (item.title.toLowerCase().includes("recette"))
+        this.mainComponent = "admin-recette";
       else if (item.title.toLowerCase().includes("activity"))
         this.mainComponent = "admin-activity";
       else this.mainComponent = "";
