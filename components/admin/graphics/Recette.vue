@@ -1,7 +1,9 @@
 <template>
-  <div class="h-full p-5 flex flex-col justify-start">
+  <div class="h-full p-5 fle flex-col justify-start">
     <loader v-if="this.isPending"></loader>
-    <div v-else id="chartContainer" style="height: 95%; width: 100%"></div>
+    <div class="w-full h-full">
+      <div id="chartContainer" style="height: 100%; width: 100%"></div>
+    </div>
     <notification-notif
       v-if="this.notif.show"
       @closeNotif="notif.show = false"
@@ -41,9 +43,8 @@ export default {
       immediate: true,
       deep: true,
       handler() {
-        this.isPending = true;
+        //  if the props receive change
         this.getGraphicsData();
-        this.isPending = false;
       },
     },
   },
@@ -61,13 +62,11 @@ export default {
         },
         axisX: {
           title: this.filter.periode + " ⟶",
-          interval: 1,
           intervalType: this.filter.periode, // hour day week month year
           labelMaxWidth: 100,
           labelAngle: 0,
           labelWrap: false, // change it to false
           labelAutoFit: true,
-          interval: 1,
           crosshair: {
             enabled: true,
             snapToDataPoint: false,
@@ -99,6 +98,7 @@ export default {
     },
     //
     async getGraphicsData() {
+      this.isPending = true;
       let resp = await this.$axios.post(
         "/eventh24/getGraphicsData",
         this.filter,
@@ -106,6 +106,7 @@ export default {
           headers: this.requestHeader,
         }
       );
+      this.isPending = false;
       if (resp.data.success) {
         this.dataPoints = [];
         resp.data.result.forEach((element) => {
