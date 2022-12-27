@@ -31,12 +31,14 @@
         md:justify-evenly
       "
     >
-      <li @click="selectMenu">
+      <li>
         <nuxt-link to="/" class="menu-items current-menu">Accueil</nuxt-link>
       </li>
       <!--  -->
-      <li v-for="(menu, id) in this.menuList" :key="id" @click="selectMenu">
-        <nuxt-link to="/" class="menu-items">{{ menu.name }}</nuxt-link>
+      <li v-for="(menu, id) in this.menuList" :key="id">
+        <nuxt-link :to="`/categorie/${menu.name}`" class="menu-items">{{
+          menu.name
+        }}</nuxt-link>
       </li>
     </ul>
     <!-- cart -->
@@ -74,27 +76,29 @@ export default {
       menuList: [],
     };
   },
-  async fetch() {
+  async mounted() {
     let resp = await this.$axios.get("/getMenus");
-    if (resp.data.success) this.menuList = resp.data.result;
+    if (resp.data.success) {
+      this.menuList = resp.data.result;
+      this.$nextTick(() => {
+        // nextTicket to wait menuList take effect before to select
+        this.selectMenu();
+      });
+    }
   },
   methods: {
     toggleRightSideMenu() {
       this.$store.commit("toggleRightSideMenu");
     },
 
-    selectMenu(e) {
-      let clickedMenu;
-      if (e.target.classList.contains("menu-items")) clickedMenu = e.target;
-      else clickedMenu = e.target.parentNode;
-      //
+    selectMenu() {
       let menus = document.querySelectorAll(".menu-items");
       menus.forEach((item) => {
-        if (item == clickedMenu) {
-          clickedMenu.classList.add("current-menu");
-          // Filter based on the categorie of menu
-          this.$emit("filter", clickedMenu.textContent);
-        } else item.classList.remove("current-menu");
+        if (window.location.pathname == "/" && item.textContent == "Accueil") {
+          item.classList.add("current-menu");
+        } else if (item.textContent == window.location.pathname.split("/")[2])
+          item.classList.add("current-menu");
+        else item.classList.remove("current-menu");
       });
     },
   },
@@ -103,6 +107,6 @@ export default {
 
 <style scoped>
 .current-menu {
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid var(--third);
 }
 </style>

@@ -2,13 +2,13 @@
   <div class="w-screen h-full">
     <header-top></header-top>
     <menu-items></menu-items>
-    <div class="w-full min-h-screen table-entire-wrapper">
+    <div class="w-full h-full table-entire-wrapper">
       <div class="h-full border flex flex-col px-4">
         <h3 class="text-xl font-bold text-second text-center p-4">
           Mes commandes
         </h3>
         <!-- loader -->
-        <div class="h-screen" v-if="this.isPending">
+        <div class="h-full" v-if="this.isPending">
           <loader></loader>
         </div>
         <!-- liste des commandes -->

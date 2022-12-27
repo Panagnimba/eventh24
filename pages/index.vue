@@ -3,7 +3,7 @@
     <!--// Filter based on the search input -->
     <header-top @filter="filterSearchHandle"></header-top>
     <!--// Filter based on the event categorie -->
-    <menu-items @filter="filterHandle"></menu-items>
+    <menu-items></menu-items>
     <!--  -->
     <main-banner></main-banner>
     <div class="w-full h-full mt-8">
@@ -71,17 +71,6 @@ export default {
     this.isPending = false;
   },
   methods: {
-    filterHandle(filterText) {
-      this.isPending = true;
-      if (filterText == "Accueil") this.eventList = this.$store.state.eventList;
-      else
-        this.eventList = this.$store.state.eventList.filter((evt) => {
-          return evt.categorie.includes(filterText);
-        });
-      console.log("Search Text ---->", filterText);
-      setTimeout(() => (this.isPending = false), 100);
-    },
-
     filterSearchHandle(filterObjt) {
       this.isPending = true;
       //

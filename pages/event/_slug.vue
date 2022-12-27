@@ -66,9 +66,9 @@
             <h3 class="text-xl text-center font-bold m-2">
               {{ this.event.lieu }}
             </h3>
-            <div class="flex justify-between m-2 text-xs sm:text-md">
+            <div class="grid grid-cols-2 gap-2 text-center text-xs sm:text-md">
               <span>{{ this.event.dateC }}</span>
-              <span>Ouverture des portes à {{ this.event.openTime }}mn</span>
+              <span>Ouverture des portes à {{ this.event.openTime }} mn</span>
             </div>
           </div>
           <!--  -->
@@ -321,16 +321,11 @@
       </div>
     </div>
     <!-- Event not found -->
-    <div
-      v-if="this.notFound"
-      class="w-full h-screen mt-8 flex justify-center items-center"
-    >
-      <div>
-        <p class="text-xl text-third font-bold">
-          Aucun résultat ne correspond à votre requête
-        </p>
-        <div class="text-center text-second mt-4">Merci de rééssayer</div>
-      </div>
+    <div v-if="this.notFound" class="w-full h-full mt-8 p-2 text-center">
+      <p class="text-xl text-third font-bold">
+        Aucun résultat ne correspond à votre requête
+      </p>
+      <div class="text-second mt-4">Merci de rééssayer</div>
     </div>
     <!-- Related events -->
     <h1 class="text-2xl text-second text-center m-6 font-bold">
